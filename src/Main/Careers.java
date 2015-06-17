@@ -1,20 +1,17 @@
 package Main;
 
 
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-/**
- *
- * @author 3106024814
- */
 public class Careers extends javax.swing.JFrame {
 
+    
+     FrmEditProfile editProfile;
+        
     /**
      * Creates new form careers
      */
@@ -32,21 +29,21 @@ public class Careers extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        BtnView_CareerChoices = new javax.swing.JButton();
+        JScrollPane_CareerChoices = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
-        jButton5 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        BtnRemove_CareerChoices = new javax.swing.JButton();
+        BtnBack_CareerChoices = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Your Career Choices", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12))); // NOI18N
         jPanel3.setPreferredSize(new java.awt.Dimension(202, 24));
 
-        jButton4.setText("View");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        BtnView_CareerChoices.setText("View");
+        BtnView_CareerChoices.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                BtnView_CareerChoicesActionPerformed(evt);
             }
         });
 
@@ -56,16 +53,21 @@ public class Careers extends javax.swing.JFrame {
             public Object getElementAt(int i) { return strings[i]; }
         });
         jList1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jScrollPane1.setViewportView(jList1);
+        JScrollPane_CareerChoices.setViewportView(jList1);
 
-        jButton5.setText("Remove");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        BtnRemove_CareerChoices.setText("Remove");
+        BtnRemove_CareerChoices.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                BtnRemove_CareerChoicesActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Back");
+        BtnBack_CareerChoices.setText("Back");
+        BtnBack_CareerChoices.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnBack_CareerChoicesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -74,27 +76,27 @@ public class Careers extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(114, 114, 114)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JScrollPane_CareerChoices, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton4)
+                        .addComponent(BtnView_CareerChoices)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5)))
+                        .addComponent(BtnRemove_CareerChoices)))
                 .addContainerGap(122, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1))
+                .addComponent(BtnBack_CareerChoices))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(JScrollPane_CareerChoices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(BtnView_CareerChoices)
+                    .addComponent(BtnRemove_CareerChoices))
                 .addGap(20, 20, 20)
-                .addComponent(jButton1))
+                .addComponent(BtnBack_CareerChoices))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -118,13 +120,24 @@ public class Careers extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void BtnView_CareerChoicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnView_CareerChoicesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_BtnView_CareerChoicesActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void BtnRemove_CareerChoicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRemove_CareerChoicesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_BtnRemove_CareerChoicesActionPerformed
+
+    private void BtnBack_CareerChoicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBack_CareerChoicesActionPerformed
+        // TODO add your handling code here:
+        
+        editProfile = new FrmEditProfile();
+        editProfile.setVisible(true);
+
+        this.dispose();
+        
+        
+    }//GEN-LAST:event_BtnBack_CareerChoicesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,11 +175,11 @@ public class Careers extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton BtnBack_CareerChoices;
+    private javax.swing.JButton BtnRemove_CareerChoices;
+    private javax.swing.JButton BtnView_CareerChoices;
+    private javax.swing.JScrollPane JScrollPane_CareerChoices;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

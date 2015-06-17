@@ -211,11 +211,7 @@ public class FrmEditProfile extends javax.swing.JFrame {
         // TODO add your handling code here:
       this.setVisible(false);
         
-//        if(mainFrm == null)
-//        {
-//            mainFrm = new MainScreen();
-//        }
-//            mainFrm.setVisible(true);
+
     }//GEN-LAST:event_BtnSaveDetailsActionPerformed
 
     private void BtnCareerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCareerActionPerformed
@@ -231,6 +227,9 @@ public class FrmEditProfile extends javax.swing.JFrame {
 
     private void BtnExit_FrmEditProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExit_FrmEditProfileActionPerformed
         // TODO add your handling code here:
+        
+        System.exit(0);  
+        
     }//GEN-LAST:event_BtnExit_FrmEditProfileActionPerformed
 
     /**
