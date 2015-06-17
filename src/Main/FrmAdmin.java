@@ -191,6 +191,12 @@ public class FrmAdmin extends javax.swing.JFrame {
 
         LblOptionName.setText("Name");
 
+        TxtOption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TxtOptionActionPerformed(evt);
+            }
+        });
+
         LblOptionDescr.setText("Description");
 
         TxtOptionDescr.setColumns(20);
@@ -728,6 +734,10 @@ public class FrmAdmin extends javax.swing.JFrame {
     private void CbxAdminActionsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxAdminActionsItemStateChanged
             
     }//GEN-LAST:event_CbxAdminActionsItemStateChanged
+
+    private void TxtOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtOptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TxtOptionActionPerformed
 
     /**
      * @param args the command line arguments
