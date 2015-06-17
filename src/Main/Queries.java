@@ -26,27 +26,30 @@ public class Queries extends Database
     
     public void execute(PreparedStatement query) throws SQLException 
     {
-         try 
-         {
-                //Pass to the prepared statement var the prepared statement for the query
-                prepStmt = query;
-                // execute the query
-                result = prepStmt.executeQuery();
+        try 
+        {
+            //Pass to the prepared statement var the prepared statement for the query
+            prepStmt = query;
+            // execute the query
+            result = prepStmt.executeQuery();
 
-                /****ASK TO DAVE ABOUT IT******/
+            /****ASK TO DAVE ABOUT IT******/
 
-                //Close the connection after the query is executed
-                //c.close();
-                while(result.next())
+            //Close the connection after the query is executed
+            //c.close();
+            /********Block of code to test the query********/
+            //IT'S NO ESSENTIAL FOR THE FUNCTION AND CAN BE DELETED AT WILL
+            while(result.next())
             {
                 String name = result.getString("firstName");
                 String age = result.getString("lastName");
                 System.out.println("Name: " + name + "      " + "Age: " + age);
             }
+            /**************************************************/
         } 
         catch (SQLException e) 
         {
-            
+            //
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, e);
             //Make appear a popup msgbox with the exception error
             msgbox.setMessage(e.getMessage());
@@ -77,18 +80,17 @@ public class Queries extends Database
         
         //Declare the connection var used in the program
         Connection c = null;
-        try {
         try 
         {
-        //Create the connection to the database
-        c = getConnection();
-        //Create the prepared statement for the query
-        PreparedStatement selectAll;
-        sql = "SELECT * FROM " +  table + ";";
-        //Pass to the prepared statement the query string
-        selectAll = c.prepareStatement(sql);
-        //Return the prepared statement which can now be executed by the execute method
-        return selectAll;
+            //Create the connection to the database
+            c = getConnection();
+            //Create the prepared statement for the query
+            PreparedStatement selectAll;
+            sql = "SELECT * FROM " +  table + ";";
+            //Pass to the prepared statement the query string
+            selectAll = c.prepareStatement(sql);
+            //Return the prepared statement which can now be executed by the execute method
+            return selectAll;
         }
         catch (SQLException e) 
         {
@@ -103,11 +105,6 @@ public class Queries extends Database
             //If the connection fails closes it
             if (c != null) { c.close(); }
         } 
-        }
-        catch(NullPointerException e){msgbox.setMessage(e.getMessage());
-            msgbox.setTitle("Error");
-            msgbox.setMsgBoxType("error");
-            msgbox.popUpMsgBox();}
         return null;
     }
     
