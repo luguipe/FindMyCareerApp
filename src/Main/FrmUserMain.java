@@ -12,17 +12,19 @@ import javax.swing.*;
  *
  * @author Donati
  */
-public class FrmUserMain extends javax.swing.JFrame {
-
-    /**
-     * Creates new form FrmUserMain1
-     */
-    public FrmUserMain() {
-      initComponents();
-    }
+public class FrmUserMain extends javax.swing.JFrame 
+{
+    CardLayout card; //Creates the layout the form will use - Jak
+    FrmLogin frmLogin;
     
-   
-              
+    FrmEditProfile frmUserProfile;
+    FrmAdmin frmAdminProfile;
+    
+    public FrmUserMain() 
+    {
+      initComponents();
+    }     
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -139,6 +141,7 @@ public class FrmUserMain extends javax.swing.JFrame {
         });
         TlbCardsLbl.add(BtnJobs);
 
+        CbxCategories_FrmUserMain.setEnabled(false);
         CbxCategories_FrmUserMain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxCategories_FrmUserMainActionPerformed(evt);
@@ -457,8 +460,11 @@ public class FrmUserMain extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+   
+    
+    
     private void CbxCourses_PanelCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxCourses_PanelCoursesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CbxCourses_PanelCoursesActionPerformed
@@ -481,23 +487,23 @@ public class FrmUserMain extends javax.swing.JFrame {
     }//GEN-LAST:event_CbxSkills_PanelSkillsActionPerformed
 
     private void BtnCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCategoryActionPerformed
-        CardLayout card = (CardLayout)main.getLayout();
-        card.show(main, "category");
+        card = (CardLayout)main.getLayout();
+        card.show(main, "category"); //Displays the panel named "category" - Jak
     }//GEN-LAST:event_BtnCategoryActionPerformed
 
     private void BtnCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCoursesActionPerformed
-        CardLayout card = (CardLayout)main.getLayout();
-        card.show(main, "courses");
+        card = (CardLayout)main.getLayout();
+        card.show(main, "courses"); //Displays the panel named "courses" - Jak
     }//GEN-LAST:event_BtnCoursesActionPerformed
 
     private void BtnSkillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSkillsActionPerformed
-        CardLayout card = (CardLayout)main.getLayout();
-        card.show(main, "skills");
+        card = (CardLayout)main.getLayout();
+        card.show(main, "skills"); //Displays the panel named "skills" - Jak
     }//GEN-LAST:event_BtnSkillsActionPerformed
 
     private void BtnJobsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnJobsActionPerformed
-        CardLayout card = (CardLayout)main.getLayout();
-        card.show(main, "jobs"); 
+        card = (CardLayout)main.getLayout();
+        card.show(main, "jobs");  //Displays the panel named "jobs" - Jak
     }//GEN-LAST:event_BtnJobsActionPerformed
 
     private void CbxJobs_PanelJobsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxJobs_PanelJobsActionPerformed
@@ -506,10 +512,37 @@ public class FrmUserMain extends javax.swing.JFrame {
 
     private void BtnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnProfileActionPerformed
         // TODO add your handling code here:
+        
+        int userType = 1; //TEST UNTIL DATABASE CONNECTION - Jak
+                          //"1" EQUALS USER - Jak
+                          //"2" EQUALS ADMIN - Jak
+        
+        if (userType == 1) //If the user logged in matches this account type, then takes the user to the correct profile - Jak
+        {
+            this.setVisible(false);
+            
+            if(frmUserProfile == null)
+            {
+                frmUserProfile = new FrmEditProfile();
+            }     
+                frmUserProfile.setVisible(true);
+        }
+        else if(userType == 2) //If the Admin is logged in, takes the Admin to his profile - Jak
+        {
+            this.setVisible(false);
+            
+            if(frmAdminProfile == null)
+            {
+                frmAdminProfile = new FrmAdmin();
+            }
+                frmAdminProfile.setVisible(true);
+        }       
     }//GEN-LAST:event_BtnProfileActionPerformed
 
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
-        this.dispose();
+        this.setVisible(false);
+        
+        //frmLogin.setVisible(true);
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     /**
@@ -546,6 +579,10 @@ public class FrmUserMain extends javax.swing.JFrame {
                 new FrmUserMain().setVisible(true);
             }
         });
+        
+        //Code for main
+        //CbxIndustries_FrmUserMain.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Test", "Test 2" }));
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
