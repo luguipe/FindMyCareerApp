@@ -1,22 +1,22 @@
-package Main;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
+package Main;
+
 /**
  *
- * @author 2104689414
+ * @author 1105642614
  */
-public class FrmLogin extends javax.swing.JDialog {
+public class FrmLogin extends javax.swing.JFrame {
+    FrmRegister frmRegister;
 
     /**
-     * Creates new form login
+     * Creates new form FrmLogin1
      */
-    public FrmLogin(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public FrmLogin() {
         initComponents();
     }
 
@@ -31,22 +31,16 @@ public class FrmLogin extends javax.swing.JDialog {
 
         TxtUserId = new javax.swing.JTextField();
         LblLogin = new javax.swing.JLabel();
-        LblUserId = new javax.swing.JLabel();
-        LblPassword = new javax.swing.JLabel();
         TxtPassword = new javax.swing.JPasswordField();
         BtnRegister = new javax.swing.JButton();
+        LblUserId = new javax.swing.JLabel();
+        LblPassword = new javax.swing.JLabel();
         BtnLogin = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         LblLogin.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         LblLogin.setText("Login");
-
-        LblUserId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        LblUserId.setText("User Identification");
-
-        LblPassword.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        LblPassword.setText("Password");
 
         BtnRegister.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnRegister.setText("Register");
@@ -55,6 +49,12 @@ public class FrmLogin extends javax.swing.JDialog {
                 BtnRegisterActionPerformed(evt);
             }
         });
+
+        LblUserId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        LblUserId.setText("User Identification");
+
+        LblPassword.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        LblPassword.setText("Password");
 
         BtnLogin.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnLogin.setText("Login");
@@ -103,12 +103,16 @@ public class FrmLogin extends javax.swing.JDialog {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegisterActionPerformed
         // TODO add your handling code here:
-        
+        this.setVisible(false);
+        if (frmRegister == null){
+            frmRegister = new FrmRegister();
+            
+            frmRegister.setVisible(true);
+        }
     }//GEN-LAST:event_BtnRegisterActionPerformed
 
     /**
@@ -137,19 +141,11 @@ public class FrmLogin extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the dialog */
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FrmLogin dialog = new FrmLogin(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                new FrmLogin().setVisible(true);
             }
         });
     }
