@@ -19,16 +19,25 @@ public class PopUpMsgBox
     //CLASS CONSTRUCTOR
     //
     //
-    public void asdf()
+    public String confMsgBox()
     {
+        String result = null;
         //Get the kind of msgbox wanted
         this.msgBoxType = this.getMsgBoxType();
         //Get the message to be dispalayed
         this.message = this.getMessage();
         //Get the title for the msgbox
         this.title = this.getTitle();
-        if (this.msgBoxType=="info"){this.typeMsgBox = 0;}
-        JOptionPane.showMessageDialog(null, this.message, this.title, this.typeMsgBox);
+        int dialogChoice = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog (null, this.message, this.msgBoxType, dialogChoice);   
+        //int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Save your Previous Note First?","Warning",dialogButton);
+    if(dialogResult == JOptionPane.YES_OPTION){
+        result = "yes";
+        
+    }
+    else if(dialogResult == JOptionPane.NO_OPTION){
+        result = "no";}
+    return result;
     }
     
     public void popUpMsgBox()
