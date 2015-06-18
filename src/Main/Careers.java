@@ -1,5 +1,10 @@
 package Main;
 
+import java.awt.Color;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,6 +22,8 @@ public class Careers extends javax.swing.JFrame {
      */
     public Careers() {
         initComponents();
+        
+        getContentPane().setBackground(Color.yellow);
     }
 
     /**
@@ -129,9 +136,13 @@ public class Careers extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnRemove_CareerChoicesActionPerformed
 
     private void BtnBack_CareerChoicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBack_CareerChoicesActionPerformed
-        // TODO add your handling code here:
-        
-        editProfile = new FrmEditProfile();
+         try {
+             // TODO add your handling code here:
+
+             editProfile = new FrmEditProfile();
+         } catch (SQLException ex) {
+             Logger.getLogger(Careers.class.getName()).log(Level.SEVERE, null, ex);
+         }
         editProfile.setVisible(true);
 
         this.dispose();
@@ -168,6 +179,7 @@ public class Careers extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Careers().setVisible(true);
             }

@@ -1,5 +1,12 @@
 package Main;
 
+import java.awt.Color;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+    
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,16 +18,42 @@ package Main;
  * @author 3106024814
  */
 public class FrmEditProfile extends javax.swing.JFrame {
-
+    
+    ResultSet rs;
+    Queries query = new Queries();
     Careers careers;
- //   MainScreen mainFrm;
+ 
     /**
      * Creates new form profile
+     * @throws java.sql.SQLException
      */
-    public FrmEditProfile() {
+    public FrmEditProfile() throws SQLException {
+       
         initComponents();
         careers = new Careers();
-   //     mainFrm = new MainScreen();
+        
+        getContentPane().setBackground(Color.yellow);
+        
+        query.setDatabase("findmycareer");
+        query.setHost("localhost");
+        query.setPassword("");
+        query.setPort("3306");
+        query.setUser("root");
+        
+        try
+        {
+        
+        String updateProfile = "UPDATE user SET 'userID' = '', 'firstName' = TxtFirstName, 'lastName' = TxtLastName, 'dob' = TxtDob, 'phone'= TxtPhone, 'email'= TxtEmail"; 
+            
+        PreparedStatement st = query.selectAll("user");
+        rs = query.execute(st);
+        
+        } catch{
+                
+            
+                
+        }
+        
     }
 
     /**
@@ -201,6 +234,11 @@ public class FrmEditProfile extends javax.swing.JFrame {
 
     private void TxtLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtLastNameActionPerformed
         // TODO add your handling code here:
+        
+                
+
+        
+        
     }//GEN-LAST:event_TxtLastNameActionPerformed
 
     private void TxtPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtPhoneActionPerformed
@@ -261,8 +299,13 @@ public class FrmEditProfile extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new FrmEditProfile().setVisible(true);
+                try {
+                    new FrmEditProfile().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(FrmEditProfile.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
