@@ -7,7 +7,7 @@
 package Main;
 
 
-import javax.swing.JDialog;
+
 
         
 /**
@@ -41,13 +41,13 @@ public class FrmRegister extends javax.swing.JFrame {
         LblDob1 = new javax.swing.JLabel();
         btnEditDet = new javax.swing.JButton();
         btnConfirmReg = new javax.swing.JButton();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
         LblEmail1 = new javax.swing.JLabel();
         LblFirstName1 = new javax.swing.JLabel();
         LblSurname1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         TxtEmail = new javax.swing.JTextField();
         TxtPassword = new javax.swing.JPasswordField();
@@ -70,7 +70,8 @@ public class FrmRegister extends javax.swing.JFrame {
         dgConfirm.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         dgConfirm.setAlwaysOnTop(true);
         dgConfirm.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        dgConfirm.setMinimumSize(new java.awt.Dimension(400, 400));
+        dgConfirm.setMinimumSize(new java.awt.Dimension(500, 400));
+        dgConfirm.setPreferredSize(new java.awt.Dimension(500, 400));
 
         lblRegister1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblRegister1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -96,14 +97,6 @@ public class FrmRegister extends javax.swing.JFrame {
             }
         });
 
-        jTextField4.setEditable(false);
-
-        jTextField3.setEditable(false);
-
-        jTextField2.setEditable(false);
-
-        jTextField1.setEditable(false);
-
         LblEmail1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LblEmail1.setText("Email");
 
@@ -113,6 +106,14 @@ public class FrmRegister extends javax.swing.JFrame {
         LblSurname1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LblSurname1.setText("Last Name");
 
+        jTextField1.setEditable(false);
+
+        jTextField2.setEditable(false);
+
+        jTextField3.setEditable(false);
+
+        jTextField4.setEditable(false);
+
         jTextField5.setEditable(false);
 
         javax.swing.GroupLayout dgConfirmLayout = new javax.swing.GroupLayout(dgConfirm.getContentPane());
@@ -120,44 +121,48 @@ public class FrmRegister extends javax.swing.JFrame {
         dgConfirmLayout.setHorizontalGroup(
             dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dgConfirmLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(50, 50, 50)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LblPhone1)
+                    .addComponent(LblEmail1)
                     .addComponent(LblFirstName1)
                     .addComponent(LblSurname1)
-                    .addComponent(LblDob1)
-                    .addComponent(LblPhone1)
-                    .addComponent(LblEmail1))
-                .addGap(45, 45, 45)
-                .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(dgConfirmLayout.createSequentialGroup()
-                        .addComponent(btnEditDet)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnConfirmReg, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(LblDob1))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(dgConfirmLayout.createSequentialGroup()
+                .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(dgConfirmLayout.createSequentialGroup()
-                            .addComponent(lblRegister1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(66, 66, 66))
-                        .addComponent(jTextField1)
-                        .addComponent(jTextField2)
-                        .addComponent(jTextField3)
-                        .addComponent(jTextField4)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING)))
-                .addContainerGap(86, Short.MAX_VALUE))
+                            .addContainerGap()
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dgConfirmLayout.createSequentialGroup()
+                            .addGap(126, 126, 126)
+                            .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(dgConfirmLayout.createSequentialGroup()
+                                    .addComponent(btnEditDet)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnConfirmReg, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lblRegister1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         dgConfirmLayout.setVerticalGroup(
             dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dgConfirmLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblRegister1)
-                .addGap(40, 40, 40)
+                .addGap(25, 25, 25)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LblFirstName1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LblSurname1)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LblDob1)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -165,18 +170,24 @@ public class FrmRegister extends javax.swing.JFrame {
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LblPhone1)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LblEmail1)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditDet)
                     .addComponent(btnConfirmReg))
-                .addContainerGap())
+                .addGap(18, 18, 18))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        TxtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TxtEmailActionPerformed(evt);
+            }
+        });
 
         LblRegister.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         LblRegister.setText("Register");
@@ -305,7 +316,9 @@ public class FrmRegister extends javax.swing.JFrame {
     private void BtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSaveActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        this.dgConfirm.setVisible(true);        
+        this.dgConfirm.setVisible(true);
+        
+        
     }//GEN-LAST:event_BtnSaveActionPerformed
 
     private void btnCancelRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelRegActionPerformed
@@ -334,6 +347,10 @@ public class FrmRegister extends javax.swing.JFrame {
             frmLogin.setVisible(true);
         }
     }//GEN-LAST:event_btnConfirmRegActionPerformed
+
+    private void TxtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtEmailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TxtEmailActionPerformed
 
     /**
      * @param args the command line arguments
