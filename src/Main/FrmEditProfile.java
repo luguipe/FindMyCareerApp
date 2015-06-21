@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
     
 
@@ -15,13 +16,18 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author 3106024814
+ * @author Gui Perez
  */
 public class FrmEditProfile extends javax.swing.JFrame {
     
     ResultSet rs;
-    Queries query = new Queries();
+    //Queries query = new Queries();
     Careers careers;
+    Connection con = null;
+    Statement st;
+    ResultSet resultSet;
+    
+    Database db = new Database();
  
     /**
      * Creates new form profile
@@ -32,25 +38,30 @@ public class FrmEditProfile extends javax.swing.JFrame {
         initComponents();
         careers = new Careers();
         
-        getContentPane().setBackground(Color.yellow);
+        //getContentPane().setBackground(Color.yellow);
         
-        query.setDatabase("findmycareer");
-        query.setHost("localhost");
-        query.setPassword("");
-        query.setPort("3306");
-        query.setUser("root");
+        db.setDatabase("findmycareer");
+        db.setHost("localhost");
+        db.setPassword("");
+        db.setPort("3306");
+        db.setUser("root");
         
         try
         {
-        
-        String updateProfile = "UPDATE user SET 'userID' = '', 'firstName' = TxtFirstName, 'lastName' = TxtLastName, 'dob' = TxtDob, 'phone'= TxtPhone, 'email'= TxtEmail"; 
+            con = db.getConnection();
+            System.out.println("Connected motherfu***");
             
-        PreparedStatement st = query.selectAll("user");
-        rs = query.execute(st);
-        
-        } catch{
+            
+            
+//        
+//        String updateProfile = "UPDATE user SET 'userID' = '', 'firstName' = TxtFirstName, 'lastName' = TxtLastName, 'dob' = TxtDob, 'phone'= TxtPhone, 'email'= TxtEmail"; 
+//            
+//        PreparedStatement st = query.selectAll("user");
+//        rs = query.execute(st);
+//        
+        } catch(Exception e){
                 
-            
+            JOptionPane.showMessageDialog(null,e);
                 
         }
         
@@ -273,6 +284,8 @@ public class FrmEditProfile extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -328,4 +341,6 @@ public class FrmEditProfile extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     // End of variables declaration//GEN-END:variables
+
 }
+

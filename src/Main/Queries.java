@@ -106,38 +106,38 @@ public class Queries extends Database
         return null;
     }
     
-    public PreparedStatement updateProfile (String edtprofile) throw SQLException
-    {
-    
-        Connection c = null;
-                
-        try
-        {
-        c = getConnection();
-        
-        PreparedStatement updateProfile;
-        sql = "UPDATE user SET 'userID' = '', 'firstName' = TxtFirstName, 'lastName' = TxtLastName, 'dob' = TxtDob, 'phone'= TxtPhone, 'email'= TxtEmail"; 
-        updateProfile = c.prepareStatement(sql);
-        
-        return updateProfile;
-        }
-        catch (SQLException e)
-        {
-            //Make appear a popup msgbox with the exception error
-            String message = "Prepared Statement creation failed"
-                           + "\n\n"
-                           + e.getMessage();
-            msgbox.setMessage(message);
-            msgbox.setTitle("Prepared Statement Error");
-            msgbox.setMsgBoxType("error");
-            msgbox.popUpMsgBox();
-            //If the connection fails closes it
-            if (c != null) { c.close(); }
-        }
-        return null;
-    
-    
-    }
+//    public PreparedStatement updateProfile (String edtprofile) throw SQLException
+//    {
+//    
+//        Connection c = null;
+//                
+//        try
+//        {
+//        c = getConnection();
+//        
+//        PreparedStatement updateProfile;
+//        sql = "UPDATE user SET 'userID' = '', 'firstName' = TxtFirstName, 'lastName' = TxtLastName, 'dob' = TxtDob, 'phone'= TxtPhone, 'email'= TxtEmail"; 
+//        updateProfile = c.prepareStatement(sql);
+//        
+//        return updateProfile;
+//        }
+//        catch (SQLException e)
+//        {
+//            //Make appear a popup msgbox with the exception error
+//            String message = "Prepared Statement creation failed"
+//                           + "\n\n"
+//                           + e.getMessage();
+//            msgbox.setMessage(message);
+//            msgbox.setTitle("Prepared Statement Error");
+//            msgbox.setMsgBoxType("error");
+//            msgbox.popUpMsgBox();
+//            //If the connection fails closes it
+//            if (c != null) { c.close(); }
+//        }
+//        return null;
+//    
+//    
+//    }
     
     
     

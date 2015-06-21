@@ -23,7 +23,7 @@ public class Careers extends javax.swing.JFrame {
     public Careers() {
         initComponents();
         
-        getContentPane().setBackground(Color.yellow);
+        //getContentPane().setBackground(Color.yellow);
     }
 
     /**
