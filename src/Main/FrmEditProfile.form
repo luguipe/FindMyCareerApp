@@ -159,6 +159,9 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="TxtFirstName">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TxtFirstNameActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="LblFirstName">
           <Properties>
