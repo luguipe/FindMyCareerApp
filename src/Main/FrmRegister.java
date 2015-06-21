@@ -443,12 +443,10 @@ public class FrmRegister extends javax.swing.JFrame {
 
     private void TxtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtEmailActionPerformed
         // TODO add your handling code here:
-        BtnSave.setEnabled(fieldsFull());
     }//GEN-LAST:event_TxtEmailActionPerformed
 
     private void TxtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtFirstNameActionPerformed
         // TODO add your handling code here:
-        BtnSave.setEnabled(fieldsFull());
     }//GEN-LAST:event_TxtFirstNameActionPerformed
 
     private void TxtFirstNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtFirstNameKeyTyped
@@ -468,12 +466,10 @@ public class FrmRegister extends javax.swing.JFrame {
 
     private void TxtPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtPhoneActionPerformed
         // TODO add your handling code here:
-        BtnSave.setEnabled(fieldsFull());
     }//GEN-LAST:event_TxtPhoneActionPerformed
 
     private void TxtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtPasswordActionPerformed
         // TODO add your handling code here:
-        BtnSave.setEnabled(fieldsFull());
     }//GEN-LAST:event_TxtPasswordActionPerformed
 
     private void TxtConfirmPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtConfirmPasswordKeyTyped
