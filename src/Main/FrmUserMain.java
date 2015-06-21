@@ -8,21 +8,129 @@ package Main;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
- * @author Donati
+ * @author Jak
  */
-public class FrmUserMain extends javax.swing.JFrame {
+public class FrmUserMain extends javax.swing.JFrame 
+{
+    CardLayout card; //Creates the layout the form will use - Jak
+    FrmLogin frmLogin;
     
-    /**
-     * Creates new form FrmUserMain1
-     */
-    public FrmUserMain() {
+    FrmEditProfile frmUserProfile;
+    FrmAdmin frmAdminProfile;
+    
+    //OLD DB CONNECTION !WORKING! - Jak
+//    private static final String user = "root";
+//    private static final String password = "";
+//    private static final String CONN_STRING = "jdbc:mysql://localhost:3306/findmycareer";
+     
+    //Sets up variables for query execution - Jak
+    Connection conn = null;
+    PreparedStatement statement;
+    ResultSet rs;
+    
+    Database db = new Database(); //Creates a database object - Jak
+    
+    public FrmUserMain() 
+    {
       initComponents();
-    }
+      
+      //DATABASE CONNECTION
+      //Calls the database class - Jak
+       
+      db.setUser("root"); //Sets the Username to log in to the database with - Jak
+      db.setPassword(""); //Sets the password to log in to the database with - Jak
+      db.setHost("localhost"); //Sets the host of the database - Jak
+      db.setPort("3306"); //Sets the port that the database server will use - Jak
+      db.setDatabase("findmycareer"); //Sets the Database that you will be connecting to - Jak
+      
+      //Attempts to connect to the database - Jak
+        try 
+        {
+            conn = db.getConnection();
+            //System.out.println("CONNECTED!"); //Testing connection - Jak
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+     //END DATABASE CONNECTION - Jak
+        
+     //METHODS
+//      fillCombo2();
+        selectIndustries(); //Runs the selectIndustries Method - Jak
+     //END METHODS   
+        
+    }//END FrmUserMain
     
-   
-              
+    //SELECT statement for Industries combo box - Jak
+    private void selectIndustries()
+    {       
+        ArrayList<String> industries = new ArrayList<>(); //Creates an array - Jak
+        String query = "SELECT industry FROM industry"; //Creates a query to fill the industries combo box - Jak        
+
+        //<editor-fold desc="Try-Catch Block">
+        try
+        {
+            statement = conn.prepareStatement(query); //Setup a prepared statement - Jak
+            rs = statement.executeQuery();
+         
+            while (rs.next())
+            {     
+                String industryName = rs.getString("industry"); //Add items from the industry column into the Array - Jak
+//                CbxIndustries_FrmUserMain.addItem(rs.getString("industry")); //This works too
+                industries.add(industryName);
+            }
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+//        finally //Closes the statement when complete - Jak
+//        {
+//            try
+//            {
+//                rs.close();
+//                statement.close();
+//                conn.close(); //Attempts to close the connection - Jak
+//            }
+//            catch(Exception e)
+//            {
+//                JOptionPane.showMessageDialog(null, e);
+//            }                 
+//        }
+//        //</editor-fold>
+        CbxIndustries_FrmUserMain.setModel(new javax.swing.DefaultComboBoxModel(industries.toArray())); //Sets the Array to the Model of the Combobox - Jak
+    }
+
+//    //WORKING
+//    public void fillCombo2()
+//    {
+//        String query = "select industry from industry";
+//        
+//        try
+//        {
+//        //conn = db.getConnection(); 
+//        statement = conn.prepareStatement(query); //Setup a prepared statement - Jak //convert to prepared?
+//        rs = statement.executeQuery();
+//         
+//        while (rs.next())
+//        {     
+//            //String industryName = rs.getString("industry"); //Add items from the industry column into the Array - Jak
+//            CbxIndustries_FrmUserMain.addItem(rs.getString("industry"));
+////          industries.add(industryName);
+//        }
+//         } catch (SQLException ex) {
+//            Logger.getLogger(FrmUserMain.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -79,6 +187,7 @@ public class FrmUserMain extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(580, 530));
 
+        TlbCardsLbl.setFloatable(false);
         TlbCardsLbl.setRollover(true);
 
         BtnCategory.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -138,6 +247,12 @@ public class FrmUserMain extends javax.swing.JFrame {
         });
         TlbCardsLbl.add(BtnJobs);
 
+        CbxCategories_FrmUserMain.setEnabled(false);
+        CbxCategories_FrmUserMain.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                CbxCategories_FrmUserMainItemStateChanged(evt);
+            }
+        });
         CbxCategories_FrmUserMain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxCategories_FrmUserMainActionPerformed(evt);
@@ -148,6 +263,12 @@ public class FrmUserMain extends javax.swing.JFrame {
 
         LblIndustry_FrmUserMain.setText("Industries");
 
+        CbxIndustries_FrmUserMain.setMaximumRowCount(6);
+        CbxIndustries_FrmUserMain.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                CbxIndustries_FrmUserMainItemStateChanged(evt);
+            }
+        });
         CbxIndustries_FrmUserMain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxIndustries_FrmUserMainActionPerformed(evt);
@@ -177,7 +298,7 @@ public class FrmUserMain extends javax.swing.JFrame {
         main.setPreferredSize(new java.awt.Dimension(500, 300));
         main.setLayout(new java.awt.CardLayout());
 
-        LblIndustry_PaneIndustry.setText("Description");
+        LblIndustry_PaneIndustry.setText("Industry Description");
 
         TxtDescrIndustry_PaneIndustry.setColumns(20);
         TxtDescrIndustry_PaneIndustry.setRows(5);
@@ -213,7 +334,7 @@ public class FrmUserMain extends javax.swing.JFrame {
         TxtDescrCategory_PanelCategory.setRows(5);
         ScrlPaneCatDescr_PanelCategory.setViewportView(TxtDescrCategory_PanelCategory);
 
-        LblCategoryDescr_PanelCategory.setText("Description");
+        LblCategoryDescr_PanelCategory.setText("Category Description");
 
         javax.swing.GroupLayout PanelCategoryLayout = new javax.swing.GroupLayout(PanelCategory);
         PanelCategory.setLayout(PanelCategoryLayout);
@@ -432,7 +553,7 @@ public class FrmUserMain extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addComponent(TlbCardsLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -456,8 +577,11 @@ public class FrmUserMain extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+   
+    
+    
     private void CbxCourses_PanelCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxCourses_PanelCoursesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CbxCourses_PanelCoursesActionPerformed
@@ -468,7 +592,7 @@ public class FrmUserMain extends javax.swing.JFrame {
     }//GEN-LAST:event_CbxCategories_FrmUserMainActionPerformed
 
     private void CbxIndustries_FrmUserMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxIndustries_FrmUserMainActionPerformed
-        // TODO add your handling code here:
+    
     }//GEN-LAST:event_CbxIndustries_FrmUserMainActionPerformed
 
     private void BtnSaveCareerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSaveCareerActionPerformed
@@ -480,23 +604,23 @@ public class FrmUserMain extends javax.swing.JFrame {
     }//GEN-LAST:event_CbxSkills_PanelSkillsActionPerformed
 
     private void BtnCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCategoryActionPerformed
-        CardLayout card = (CardLayout)main.getLayout();
-        card.show(main, "category");
+        card = (CardLayout)main.getLayout();
+        card.show(main, "category"); //Displays the panel named "category" - Jak
     }//GEN-LAST:event_BtnCategoryActionPerformed
 
     private void BtnCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCoursesActionPerformed
-        CardLayout card = (CardLayout)main.getLayout();
-        card.show(main, "courses");
+        card = (CardLayout)main.getLayout();
+        card.show(main, "courses"); //Displays the panel named "courses" - Jak
     }//GEN-LAST:event_BtnCoursesActionPerformed
 
     private void BtnSkillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSkillsActionPerformed
-        CardLayout card = (CardLayout)main.getLayout();
-        card.show(main, "skills");
+        card = (CardLayout)main.getLayout();
+        card.show(main, "skills"); //Displays the panel named "skills" - Jak
     }//GEN-LAST:event_BtnSkillsActionPerformed
 
     private void BtnJobsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnJobsActionPerformed
-        CardLayout card = (CardLayout)main.getLayout();
-        card.show(main, "jobs"); 
+        card = (CardLayout)main.getLayout();
+        card.show(main, "jobs");  //Displays the panel named "jobs" - Jak
     }//GEN-LAST:event_BtnJobsActionPerformed
 
     private void CbxJobs_PanelJobsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxJobs_PanelJobsActionPerformed
@@ -505,16 +629,132 @@ public class FrmUserMain extends javax.swing.JFrame {
 
     private void BtnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnProfileActionPerformed
         // TODO add your handling code here:
+        
+        //TO DO - JAK
+        //how to test if Login class isnt setup? Possible?
+        int userType = 1; //TEST UNTIL DATABASE CONNECTION - Jak
+                          //"1" EQUALS USER - Jak
+                          //"2" EQUALS ADMIN - Jak
+        
+        if (userType == 1) //If the user logged in matches this account type, then takes the user to the correct profile - Jak
+        {
+            this.setVisible(false);
+            
+            if(frmUserProfile == null)
+            {
+                frmUserProfile = new FrmEditProfile();
+            }     
+                frmUserProfile.setVisible(true);
+        }
+        
+        else if(userType == 2) //If the Admin is logged in, takes the Admin to his profile - Jak
+        {
+            this.setVisible(false);
+            
+            if(frmAdminProfile == null)
+            {
+                frmAdminProfile = new FrmAdmin();
+            }
+                frmAdminProfile.setVisible(true);
+        }       
     }//GEN-LAST:event_BtnProfileActionPerformed
 
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
-        this.dispose();
+        System.exit(0); //TO DO - Jak
+        //takes the user back to the login screen, Makes sure logged out?
+
+        //this.setVisible(false);
+        
+        //frmLogin.setVisible(true);
     }//GEN-LAST:event_BtnLogOutActionPerformed
+
+    private void CbxIndustries_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxIndustries_FrmUserMainItemStateChanged
+        // TODO add your handling code here:
+        CbxCategories_FrmUserMain.setEnabled(true); //Sets the categories combo box to true - Jak        
+        String query = "SELECT category FROM `category`"; //Categories combobox query - Jak
+               
+        ArrayList<String> categories = new ArrayList<>(); //Creates an arraylist - Jak
+        
+        //Fills the categories combobox - Jak
+        //<editor-fold desc="Try-Catch for Categories">
+        try 
+        {
+            statement = conn.prepareStatement(query); //setsup statement - Jak
+            rs = statement.executeQuery(); //resultset - Jak
+            
+            while (rs.next())
+            {
+                String categoryName = rs.getString("category");
+                categories.add(categoryName);
+                
+                CbxCategories_FrmUserMain.setModel(new javax.swing.DefaultComboBoxModel(categories.toArray()));
+            }
+            statement.close();
+            rs.close();
+        } 
+        catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }       
+        //</editor-fold>
+        
+        //Fills the description box for Industries Panel
+        //<editor-fold desc="Try-Catch for Description in Industries">
+        String selectedItem = CbxIndustries_FrmUserMain.getSelectedItem().toString(); //Grabs the selected item in the industries combobox - Jak
+        String queryDesc = "SELECT descr FROM industry WHERE industry = '"+selectedItem+"'"; //Description box query - Jak
+
+        try 
+        {
+            statement = conn.prepareStatement(queryDesc);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                TxtDescrIndustry_PaneIndustry.setText(rs.getString("descr"));
+            }
+            statement.close();
+            rs.close();
+        }
+        catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
+        
+    }//GEN-LAST:event_CbxIndustries_FrmUserMainItemStateChanged
+
+    private void CbxCategories_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxCategories_FrmUserMainItemStateChanged
+        // TODO add your handling code here:
+        
+        //<editor-fold desc="Try-Catch for Description in Categories Panel">
+        String selectedItem = CbxCategories_FrmUserMain.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
+        String queryDesc = "SELECT descr FROM category WHERE category = '"+selectedItem+"'"; //Description box query - Jak
+
+        try 
+        {
+            statement = conn.prepareStatement(queryDesc);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                TxtDescrCategory_PanelCategory.setText(rs.getString("descr"));
+            }
+            statement.close();
+            rs.close();
+        }
+        catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
+        
+    }//GEN-LAST:event_CbxCategories_FrmUserMainItemStateChanged
 
     /**
      * @param args the command line arguments
+     * @throws java.lang.Exception
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Exception{
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -544,7 +784,9 @@ public class FrmUserMain extends javax.swing.JFrame {
             public void run() {
                 new FrmUserMain().setVisible(true);
             }
-        });
+        });        
+        //Code for main
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
