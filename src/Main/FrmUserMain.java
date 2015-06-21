@@ -18,6 +18,12 @@ import java.util.logging.Logger;
  */
 public class FrmUserMain extends javax.swing.JFrame 
 {
+    //  TODO
+    // SETUP PROFILE BUTTON WITH USERTYPE FROM DATABASE, NEED LOGIN FORM AND USERTYPE VARIABLE IN THAT
+    // SETUP SAVE TO PROFILE BUTTON, UPDATE QUERY TO USERPROFILE ON DATABASE, NEED LOGIN FOR THAT?
+    // SETUP COURSES, SKILLS, OUTCOMES
+    // SETUP LOGOUT, CODE INVALID FOR JDIALOG, NEED NEW LOGIN FORM
+    
     CardLayout card; //Creates the layout the form will use - Jak
     FrmLogin frmLogin;
     
@@ -41,7 +47,6 @@ public class FrmUserMain extends javax.swing.JFrame
       initComponents();
       
       //DATABASE CONNECTION
-      //Calls the database class - Jak
        
       db.setUser("root"); //Sets the Username to log in to the database with - Jak
       db.setPassword(""); //Sets the password to log in to the database with - Jak
@@ -62,8 +67,8 @@ public class FrmUserMain extends javax.swing.JFrame
      //END DATABASE CONNECTION - Jak
         
      //METHODS
-//      fillCombo2();
-        selectIndustries(); //Runs the selectIndustries Method - Jak
+      selectIndustries(); //Runs the selectIndustries Method - Jak
+      
      //END METHODS   
         
     }//END FrmUserMain
@@ -105,30 +110,10 @@ public class FrmUserMain extends javax.swing.JFrame
 //            }                 
 //        }
 //        //</editor-fold>
+        
         CbxIndustries_FrmUserMain.setModel(new javax.swing.DefaultComboBoxModel(industries.toArray())); //Sets the Array to the Model of the Combobox - Jak
     }
 
-//    //WORKING
-//    public void fillCombo2()
-//    {
-//        String query = "select industry from industry";
-//        
-//        try
-//        {
-//        //conn = db.getConnection(); 
-//        statement = conn.prepareStatement(query); //Setup a prepared statement - Jak //convert to prepared?
-//        rs = statement.executeQuery();
-//         
-//        while (rs.next())
-//        {     
-//            //String industryName = rs.getString("industry"); //Add items from the industry column into the Array - Jak
-//            CbxIndustries_FrmUserMain.addItem(rs.getString("industry"));
-////          industries.add(industryName);
-//        }
-//         } catch (SQLException ex) {
-//            Logger.getLogger(FrmUserMain.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
     
     
     /**
@@ -726,12 +711,35 @@ public class FrmUserMain extends javax.swing.JFrame
     private void CbxCategories_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxCategories_FrmUserMainItemStateChanged
         // TODO add your handling code here:
         
-        //<editor-fold desc="Try-Catch for Description in Categories Panel">
+        CbxCourses_PanelCourses.removeAllItems(); //Removes all previous items stored in the Courses combo box - Jak
         String selectedItem = CbxCategories_FrmUserMain.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
-        String queryDesc = "SELECT descr FROM category WHERE category = '"+selectedItem+"'"; //Description box query - Jak
-
+        String selectedItemID = null;
+        
+        //<editor-fold desc="Gets the selectedItemID">
         try 
         {
+            String queryID = "SELECT codCategory FROM category WHERE category = '"+selectedItem+"'";
+            statement = conn.prepareStatement(queryID);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                selectedItemID = rs.getString("codCategory");
+            }
+            statement.close();
+            rs.close();
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
+        
+        //<editor-fold desc="Try-Catch for Description in Categories Panel">
+        try 
+        {            
+            String queryDesc = "SELECT descr FROM category WHERE category = '"+selectedItem+"'"; //Description box query - Jak
+            
             statement = conn.prepareStatement(queryDesc);
             rs = statement.executeQuery();
             
@@ -745,6 +753,30 @@ public class FrmUserMain extends javax.swing.JFrame
         catch (Exception e) 
         {
             JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
+        
+        //<editor-fold desc="Try-Catch for Courses Panel">
+        ArrayList<String> courses = new ArrayList<>();
+        
+        try 
+        {
+            String queryCourse = "SELECT course FROM courses WHERE codCategory = '"+selectedItemID+"'";
+            statement = conn.prepareStatement(queryCourse);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                String courseName = rs.getString("course");
+                courses.add(courseName);
+                CbxCourses_PanelCourses.setModel(new javax.swing.DefaultComboBoxModel(courses.toArray()));
+            }
+            statement.close();
+            rs.close();
+        }
+        catch (Exception e)
+        {
+           JOptionPane.showMessageDialog(null, e); 
         }
         //</editor-fold>
         
