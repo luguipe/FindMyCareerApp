@@ -72,7 +72,6 @@ public class FrmRegister extends javax.swing.JFrame {
         dgConfirm.setAlwaysOnTop(true);
         dgConfirm.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         dgConfirm.setMinimumSize(new java.awt.Dimension(500, 400));
-        dgConfirm.setPreferredSize(new java.awt.Dimension(500, 400));
 
         lblRegister1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblRegister1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -190,6 +189,22 @@ public class FrmRegister extends javax.swing.JFrame {
                 TxtEmailActionPerformed(evt);
             }
         });
+        TxtEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TxtEmailKeyTyped(evt);
+            }
+        });
+
+        TxtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TxtPasswordActionPerformed(evt);
+            }
+        });
+        TxtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TxtPasswordKeyTyped(evt);
+            }
+        });
 
         LblRegister.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         LblRegister.setText("Register");
@@ -205,6 +220,17 @@ public class FrmRegister extends javax.swing.JFrame {
 
         LblSurname.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LblSurname.setText("Last Name");
+
+        TxtPhone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TxtPhoneActionPerformed(evt);
+            }
+        });
+        TxtPhone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TxtPhoneKeyTyped(evt);
+            }
+        });
 
         TxtFirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,6 +276,17 @@ public class FrmRegister extends javax.swing.JFrame {
 
         LblPassword.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LblPassword.setText("Password");
+
+        TxtConfirmPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TxtConfirmPasswordActionPerformed(evt);
+            }
+        });
+        TxtConfirmPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TxtConfirmPasswordKeyTyped(evt);
+            }
+        });
 
         LblEmail.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LblEmail.setText("Email");
@@ -341,7 +378,9 @@ public class FrmRegister extends javax.swing.JFrame {
      {
       boolean makeVisible = false;
       
-      makeVisible = !(TxtFirstName.getText().equals("") || (TxtSurname.getText().equals("")) || (TxtDob.getText().equals("")));
+      makeVisible = !(TxtFirstName.getText().equals("") || (TxtSurname.getText().equals("")) || (TxtDob.getText().equals("")) || 
+              (TxtEmail.getText().equals("")) || (TxtPhone.getText().equals("")) || (TxtPassword.getText().equals(""))
+              || (TxtConfirmPassword.getText().equals("")));
       return makeVisible; 
               
      }
@@ -368,10 +407,10 @@ public class FrmRegister extends javax.swing.JFrame {
         
         String password = this.TxtPassword.getText();
         
+        String confirmPass = this.TxtConfirmPassword.getText();
+       
         
-        
-            
-        
+
     }//GEN-LAST:event_BtnSaveActionPerformed
 
     private void btnCancelRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelRegActionPerformed
@@ -404,6 +443,7 @@ public class FrmRegister extends javax.swing.JFrame {
 
     private void TxtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtEmailActionPerformed
         // TODO add your handling code here:
+        BtnSave.setEnabled(fieldsFull());
     }//GEN-LAST:event_TxtEmailActionPerformed
 
     private void TxtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtFirstNameActionPerformed
@@ -425,6 +465,40 @@ public class FrmRegister extends javax.swing.JFrame {
         // TODO add your handling code here:
         BtnSave.setEnabled(fieldsFull());
     }//GEN-LAST:event_TxtDobKeyTyped
+
+    private void TxtPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtPhoneActionPerformed
+        // TODO add your handling code here:
+        BtnSave.setEnabled(fieldsFull());
+    }//GEN-LAST:event_TxtPhoneActionPerformed
+
+    private void TxtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtPasswordActionPerformed
+        // TODO add your handling code here:
+        BtnSave.setEnabled(fieldsFull());
+    }//GEN-LAST:event_TxtPasswordActionPerformed
+
+    private void TxtConfirmPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtConfirmPasswordKeyTyped
+        // TODO add your handling code here:        
+        BtnSave.setEnabled(fieldsFull());               
+    }//GEN-LAST:event_TxtConfirmPasswordKeyTyped
+
+    private void TxtConfirmPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtConfirmPasswordActionPerformed
+        // TODO add your handling code here: 
+    }//GEN-LAST:event_TxtConfirmPasswordActionPerformed
+
+    private void TxtEmailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtEmailKeyTyped
+        // TODO add your handling code here:
+        BtnSave.setEnabled(fieldsFull()); 
+    }//GEN-LAST:event_TxtEmailKeyTyped
+
+    private void TxtPhoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtPhoneKeyTyped
+        // TODO add your handling code here:
+        BtnSave.setEnabled(fieldsFull()); 
+    }//GEN-LAST:event_TxtPhoneKeyTyped
+
+    private void TxtPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtPasswordKeyTyped
+        // TODO add your handling code here:
+        BtnSave.setEnabled(fieldsFull()); 
+    }//GEN-LAST:event_TxtPasswordKeyTyped
 
     /**
      * @param args the command line arguments
