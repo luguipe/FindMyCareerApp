@@ -150,6 +150,10 @@ public class Careers extends javax.swing.JFrame {
         
     }//GEN-LAST:event_BtnBack_CareerChoicesActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
