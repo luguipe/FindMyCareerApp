@@ -394,10 +394,12 @@ public class FrmRegister extends javax.swing.JFrame {
      private boolean fieldsFull()
      {
       boolean makeVisible = false;
+      String password = TxtPassword.getText();
+      String confPassword = TxtConfirmPassword.getText();
      
       makeVisible = !(TxtFirstName.getText().equals("") || (TxtSurname.getText().equals("")) || (TxtDob.getText().equals("")) || 
-              (TxtEmail.getText().equals("")) || (TxtPhone.getText().equals("")) || (TxtPassword.equals(""))
-              || (TxtConfirmPassword.equals("")));
+              (TxtEmail.getText().equals("")) || (TxtPhone.getText().equals("")) || (password.equals(""))
+              || (confPassword.equals("")));
       return makeVisible; 
               
      }
@@ -430,6 +432,7 @@ public class FrmRegister extends javax.swing.JFrame {
             msgbox.setTitle("Error");
             msgbox.setMsgBoxType("info");
             msgbox.popUpMsgBox();
+        
         } else {
             this.setVisible(false);
             this.dgConfirm.setVisible(true);
@@ -456,15 +459,15 @@ public class FrmRegister extends javax.swing.JFrame {
 
     private void btnConfirmRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmRegActionPerformed
         // TODO add your handling code here:
-        String firstName = this.txtFirstName.getText();       
-        String lastName = this.txtLastName.getText();     
-        String dob = this.txtDob.getText();       
-        String phone = this.txtPhone.getText();       
-        String email = this.txtEmail.getText();
-        String password = TxtPassword.getText();
-        String userType = "TYPE02";
-        String date = dateFormat.format(date);
-         
+//        String firstName = this.txtFirstName.getText();       
+//        String lastName = this.txtLastName.getText();     
+//        String dob = this.txtDob.getText();       
+//        String phone = this.txtPhone.getText();       
+//        String email = this.txtEmail.getText();
+//        String password = TxtPassword.getText();
+//        String userType = "TYPE02";
+//        String date = dateFormat.format(date);
+//         
                 
         this.dgConfirm.dispose();
         this.setVisible(false);
@@ -474,22 +477,22 @@ public class FrmRegister extends javax.swing.JFrame {
             frmLogin.setVisible(true);
         }
         
-        try {
-            String query = "INSERT INTO user (`userID`, `userName`, `password`, `firstName`, `lastName`, `dob`, `phone`, `email`, `codUserType`, `dateCreation`, `lastLogIn`)"
-                    + " VALUES ([value-1],[value-2],'"+password+"','"+firstName+"','"+lastName+"','"+dob+"','"+phone+"','"+email+"','"+userType+"','"+date+"','"+date+"')";
-            statement = con.prepareStatement(query);
-            rs = statement.executeQuery();
-            
-//            while(rs.next())
-//            {
-//                user = rs.getString("userName");
-//                System.out.println("Database has grabbed the username:" + user);
-//            }
-            statement.close();
-            rs.close();
-         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+//        try {
+//            String query = "INSERT INTO user (`userID`, `userName`, `password`, `firstName`, `lastName`, `dob`, `phone`, `email`, `codUserType`, `dateCreation`, `lastLogIn`)"
+//                    + " VALUES ([value-1],[value-2],'"+password+"','"+firstName+"','"+lastName+"','"+dob+"','"+phone+"','"+email+"','"+userType+"','"+date+"','"+date+"')";
+//            statement = con.prepareStatement(query);
+//            rs = statement.executeQuery();
+//            
+////            while(rs.next())
+////            {
+////                user = rs.getString("userName");
+////                System.out.println("Database has grabbed the username:" + user);
+////            }
+//            statement.close();
+//            rs.close();
+//         } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
         
     }//GEN-LAST:event_btnConfirmRegActionPerformed
 
