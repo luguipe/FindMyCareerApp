@@ -39,21 +39,23 @@ public class FrmUserMain extends javax.swing.JFrame
     Connection conn = null;
     PreparedStatement statement;
     ResultSet rs;
-    
+
     Database db = new Database(); //Creates a database object - Jak
+    FrmLogin login = new FrmLogin(); //Creates a login object - Jak
+   
+    String userType; //Creates a string variable - Jak
+    String id;
     
     public FrmUserMain() 
     {
       initComponents();
-      
-      //DATABASE CONNECTION
-       
+      //DATABASE CONNECTION       
       db.setUser("root"); //Sets the Username to log in to the database with - Jak
       db.setPassword(""); //Sets the password to log in to the database with - Jak
       db.setHost("localhost"); //Sets the host of the database - Jak
       db.setPort("3306"); //Sets the port that the database server will use - Jak
       db.setDatabase("findmycareer"); //Sets the Database that you will be connecting to - Jak
-      
+
       //Attempts to connect to the database - Jak
         try 
         {
@@ -65,15 +67,19 @@ public class FrmUserMain extends javax.swing.JFrame
             JOptionPane.showMessageDialog(null, e);
         }
      //END DATABASE CONNECTION - Jak
-        
+
+    //Assigns userType to the userType in FrmLogin - Jak
+    userType = login.getUserType(); //This accesses a private static field, may need to access through class reference - Jak
+    id = login.getUserID();
+    
      //METHODS
       selectIndustries(); //Runs the selectIndustries Method - Jak
-      
+      selectName();
      //END METHODS   
         
     }//END FrmUserMain
     
-    //SELECT statement for Industries combo box - Jak
+    //SELECT method for initial Industries combo box - Jak
     private void selectIndustries()
     {       
         ArrayList<String> industries = new ArrayList<>(); //Creates an array - Jak
@@ -116,9 +122,29 @@ public class FrmUserMain extends javax.swing.JFrame
         
         CbxIndustries_FrmUserMain.setModel(new javax.swing.DefaultComboBoxModel(industries.toArray())); //Sets the Array to the Model of the Combobox - Jak
     }
-
     
-    
+    private void selectName()
+    {
+        String query = "SELECT firstName FROM user WHERE userID ='"+id+"'";
+        
+        //<editor-fold desc="Try-Catch for user firstName and lastName">
+        try 
+        {
+            statement = conn.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                lblName.setText(rs.getString("firstName"));
+            }
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
+    }
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -172,7 +198,7 @@ public class FrmUserMain extends javax.swing.JFrame
         TxtJobDescr_PanelJobs = new javax.swing.JTextArea();
         BtnProfile = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        lblUserName = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(580, 530));
@@ -308,11 +334,11 @@ public class FrmUserMain extends javax.swing.JFrame
         PanelIndustryLayout.setVerticalGroup(
             PanelIndustryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelIndustryLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(25, 25, 25)
                 .addComponent(LblIndustry_PaneIndustry)
                 .addGap(18, 18, 18)
                 .addComponent(ScrlPaneIndDescr_PanelIndustry, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(116, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
 
         main.add(PanelIndustry, "industry");
@@ -354,6 +380,11 @@ public class FrmUserMain extends javax.swing.JFrame
         PanelCourses.setPreferredSize(new java.awt.Dimension(500, 300));
 
         CbxCourses_PanelCourses.setEnabled(false);
+        CbxCourses_PanelCourses.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                CbxCourses_PanelCoursesItemStateChanged(evt);
+            }
+        });
         CbxCourses_PanelCourses.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxCourses_PanelCoursesActionPerformed(evt);
@@ -516,8 +547,6 @@ public class FrmUserMain extends javax.swing.JFrame
 
         jLabel1.setText("Welcome: ");
 
-        lblUserName.setText("userName");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -535,7 +564,7 @@ public class FrmUserMain extends javax.swing.JFrame
                                 .addComponent(BtnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(76, 76, 76)
                                 .addComponent(BtnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addComponent(LblIndustry_FrmUserMain)
@@ -544,9 +573,8 @@ public class FrmUserMain extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(LblCategories_FrmUserMain)
                         .addGap(18, 18, 18)
-                        .addComponent(CbxCategories_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(CbxCategories_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 51, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -556,7 +584,7 @@ public class FrmUserMain extends javax.swing.JFrame
                         .addContainerGap()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblUserName)))
+                        .addComponent(lblName)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -565,7 +593,7 @@ public class FrmUserMain extends javax.swing.JFrame
                 .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(lblUserName))
+                    .addComponent(lblName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CbxIndustries_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -587,11 +615,10 @@ public class FrmUserMain extends javax.swing.JFrame
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-   
-    
-    
+
     private void CbxCourses_PanelCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxCourses_PanelCoursesActionPerformed
-        // TODO add your handling code here:
+
+        
     }//GEN-LAST:event_CbxCourses_PanelCoursesActionPerformed
 
     private void CbxCategories_FrmUserMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxCategories_FrmUserMainActionPerformed
@@ -637,14 +664,8 @@ public class FrmUserMain extends javax.swing.JFrame
 
     private void BtnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnProfileActionPerformed
         // TODO add your handling code here:
-        
-        //TO DO - JAK
-        //how to test if Login class isnt setup? Possible?
-        int userType = 1; //TEST UNTIL DATABASE CONNECTION - Jak
-                          //"1" EQUALS USER - Jak
-                          //"2" EQUALS ADMIN - Jak
-        
-        if (userType == 1) //If the user logged in matches this account type, then takes the user to the correct profile - Jak
+ 
+        if (userType.equals("TYPE02")) //If the user logged in matches this account type, then takes the user to the correct profile - Jak
         {
             this.setVisible(false);
             
@@ -655,7 +676,7 @@ public class FrmUserMain extends javax.swing.JFrame
                 frmUserProfile.setVisible(true);
         }
         
-        else if(userType == 2) //If the Admin is logged in, takes the Admin to his profile - Jak
+        else if(userType.equals("TYPE01")) //If the Admin is logged in, takes the Admin to his profile - Jak
         {
             this.setVisible(false);
             
@@ -760,7 +781,7 @@ public class FrmUserMain extends javax.swing.JFrame
         
         String selectedItem = CbxCategories_FrmUserMain.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
         String selectedItemID = null; //Creates a string variable - Jak
-        
+ 
         //<editor-fold desc="Gets the selectedItemID">
         try 
         {
@@ -826,8 +847,7 @@ public class FrmUserMain extends javax.swing.JFrame
         }
         //</editor-fold>
         
-        //<editor-fold desc="Try-Catch for Courses Description">
-        
+                //<editor-fold desc="Try-Catch for Courses Description">
         try
         {
             String queryDesc = "SELECT descr FROM courses WHERE codCategory = '"+selectedItemID+"'";
@@ -849,6 +869,55 @@ public class FrmUserMain extends javax.swing.JFrame
         //</editor-fold>
         
     }//GEN-LAST:event_CbxCategories_FrmUserMainItemStateChanged
+
+    private void CbxCourses_PanelCoursesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxCourses_PanelCoursesItemStateChanged
+//        Remove any text from the description box - Jak
+       // TxtCourseDescr_PanelCourse.setText("");
+        
+//        String selectedItem = CbxCourses_PanelCourses.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
+//        String selectedItemID = null; //Creates a string variable - Jak
+//        
+        //        //<editor-fold desc="Gets the selectedItemID">
+//        try 
+//        {
+//            String queryID = "SELECT codCategory FROM category WHERE category = '"+selectedItem+"'"; //Creates a query to grab the category ID based on the selected item in the combobox - Jak
+//            statement = conn.prepareStatement(queryID);
+//            rs = statement.executeQuery();
+//            
+//            while(rs.next())
+//            {
+//                selectedItemID = rs.getString("codCategory"); //Assigns the categoryID column to the selectedItemID string - Jak
+//            }
+//            statement.close(); //Close the connections - Jak
+//            rs.close();
+//        } 
+//        catch (Exception e)
+//        {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+//        //</editor-fold>
+        
+        //<editor-fold desc="Try-Catch for Courses Description">
+//        try
+//        {
+//            String queryDesc = "SELECT descr FROM courses WHERE course = '"+selectedItem+"'";
+//            statement = conn.prepareStatement(queryDesc);
+//            rs = statement.executeQuery();
+//            
+//            while(rs.next())
+//            {
+//                TxtCourseDescr_PanelCourse.setText(rs.getString("descr"));
+//            }
+//            statement.close();
+//            rs.close();
+//        } 
+//        catch (Exception e)
+//        {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+        
+        //</editor-fold>
+    }//GEN-LAST:event_CbxCourses_PanelCoursesItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -933,7 +1002,7 @@ public class FrmUserMain extends javax.swing.JFrame
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel lblUserName;
+    private javax.swing.JLabel lblName;
     private javax.swing.JPanel main;
     // End of variables declaration//GEN-END:variables
 }
