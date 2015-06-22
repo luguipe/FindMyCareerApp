@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
  *
- * @author Jak
+ * @author Jak Revai
  */
 public class FrmUserMain extends javax.swing.JFrame 
 {
@@ -91,11 +91,14 @@ public class FrmUserMain extends javax.swing.JFrame
 //                CbxIndustries_FrmUserMain.addItem(rs.getString("industry")); //This works too
                 industries.add(industryName);
             }
+            statement.close();
+            rs.close();
         }
         catch (Exception e)
         {
             JOptionPane.showMessageDialog(null, e);
         }
+        //BUGGY
 //        finally //Closes the statement when complete - Jak
 //        {
 //            try
@@ -168,6 +171,8 @@ public class FrmUserMain extends javax.swing.JFrame
         ScrlPaneJobDescr_PanelJobs = new javax.swing.JScrollPane();
         TxtJobDescr_PanelJobs = new javax.swing.JTextArea();
         BtnProfile = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lblUserName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(580, 530));
@@ -348,6 +353,7 @@ public class FrmUserMain extends javax.swing.JFrame
         PanelCourses.setName(""); // NOI18N
         PanelCourses.setPreferredSize(new java.awt.Dimension(500, 300));
 
+        CbxCourses_PanelCourses.setEnabled(false);
         CbxCourses_PanelCourses.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxCourses_PanelCoursesActionPerformed(evt);
@@ -508,42 +514,59 @@ public class FrmUserMain extends javax.swing.JFrame
             }
         });
 
+        jLabel1.setText("Welcome: ");
+
+        lblUserName.setText("userName");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(24, 24, 24)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(main, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(10, 10, 10)
-                            .addComponent(BtnSaveCareer, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(BtnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(76, 76, 76)
-                            .addComponent(BtnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap(56, Short.MAX_VALUE))
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(42, 42, 42)
-                    .addComponent(LblIndustry_FrmUserMain)
-                    .addGap(22, 22, 22)
-                    .addComponent(CbxIndustries_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(LblCategories_FrmUserMain)
-                    .addGap(18, 18, 18)
-                    .addComponent(CbxCategories_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(layout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addComponent(TlbCardsLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(main, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(BtnSaveCareer, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(BtnProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(76, 76, 76)
+                                .addComponent(BtnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(LblIndustry_FrmUserMain)
+                        .addGap(22, 22, 22)
+                        .addComponent(CbxIndustries_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(LblCategories_FrmUserMain)
+                        .addGap(18, 18, 18)
+                        .addComponent(CbxCategories_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(TlbCardsLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblUserName)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(lblUserName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CbxIndustries_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(LblIndustry_FrmUserMain)
@@ -590,22 +613,22 @@ public class FrmUserMain extends javax.swing.JFrame
 
     private void BtnCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCategoryActionPerformed
         card = (CardLayout)main.getLayout();
-        card.show(main, "category"); //Displays the panel named "category" - Jak
+        card.show(main, "category"); //Displays the panel named "category"
     }//GEN-LAST:event_BtnCategoryActionPerformed
 
     private void BtnCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCoursesActionPerformed
         card = (CardLayout)main.getLayout();
-        card.show(main, "courses"); //Displays the panel named "courses" - Jak
+        card.show(main, "courses"); //Displays the panel named "courses"
     }//GEN-LAST:event_BtnCoursesActionPerformed
 
     private void BtnSkillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSkillsActionPerformed
         card = (CardLayout)main.getLayout();
-        card.show(main, "skills"); //Displays the panel named "skills" - Jak
+        card.show(main, "skills"); //Displays the panel named "skills"
     }//GEN-LAST:event_BtnSkillsActionPerformed
 
     private void BtnJobsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnJobsActionPerformed
         card = (CardLayout)main.getLayout();
-        card.show(main, "jobs");  //Displays the panel named "jobs" - Jak
+        card.show(main, "jobs");  //Displays the panel named "jobs"
     }//GEN-LAST:event_BtnJobsActionPerformed
 
     private void CbxJobs_PanelJobsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxJobs_PanelJobsActionPerformed
@@ -655,7 +678,28 @@ public class FrmUserMain extends javax.swing.JFrame
 
     private void CbxIndustries_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxIndustries_FrmUserMainItemStateChanged
         // TODO add your handling code here:
-        CbxCategories_FrmUserMain.setEnabled(true); //Sets the categories combo box to true - Jak        
+        
+        //Changes back to default, when user picks a new item in the industry combo box - Jak
+        card = (CardLayout)main.getLayout();
+        card.show(main, "industry"); //Displays the panel named "industry"
+       
+        //Resets the Combobox - Jak
+        CbxCourses_PanelCourses.removeAllItems(); //Removes all previous items in the combobox - Jak
+        CbxCourses_PanelCourses.setEnabled(false); //Disables the Course selection combobox - Jak
+        CbxSkills_PanelSkills.setEnabled(false); //Disables the Skills selection combobox - Jak
+        CbxJobs_PanelJobs.setEnabled(false); //Disables the Jobs selection combobox - Jak
+        
+        //Resets the description boxes - Jak
+        TxtDescrCategory_PanelCategory.setText(""); //Removes any text from the description boxes - Jak
+        TxtCourseDescr_PanelCourse.setText("");
+        TxtSkillDescr_FrmUserMain.setText("");
+        TxtJobDescr_PanelJobs.setText("");
+        
+        //Resets the employability skills textfield - Jak
+        //ListSkills_PanelSkills.removeAll(); //Removes any items in the list - Jak
+
+        CbxCategories_FrmUserMain.setEnabled(true); //Sets the categories combo box to true - Jak   
+   
         String query = "SELECT category FROM `category`"; //Categories combobox query - Jak
                
         ArrayList<String> categories = new ArrayList<>(); //Creates an arraylist - Jak
@@ -711,22 +755,24 @@ public class FrmUserMain extends javax.swing.JFrame
     private void CbxCategories_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxCategories_FrmUserMainItemStateChanged
         // TODO add your handling code here:
         
-        CbxCourses_PanelCourses.removeAllItems(); //Removes all previous items stored in the Courses combo box - Jak
+        CbxCourses_PanelCourses.removeAllItems(); //Removes all previous items stored in the Courses combo box - Jak        
+        CbxCourses_PanelCourses.setEnabled(true); //Enables the combobox - Jak
+        
         String selectedItem = CbxCategories_FrmUserMain.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
-        String selectedItemID = null;
+        String selectedItemID = null; //Creates a string variable - Jak
         
         //<editor-fold desc="Gets the selectedItemID">
         try 
         {
-            String queryID = "SELECT codCategory FROM category WHERE category = '"+selectedItem+"'";
+            String queryID = "SELECT codCategory FROM category WHERE category = '"+selectedItem+"'"; //Creates a query to grab the category ID based on the selected item in the combobox - Jak
             statement = conn.prepareStatement(queryID);
             rs = statement.executeQuery();
             
             while(rs.next())
             {
-                selectedItemID = rs.getString("codCategory");
+                selectedItemID = rs.getString("codCategory"); //Assigns the categoryID column to the selectedItemID string - Jak
             }
-            statement.close();
+            statement.close(); //Close the connections - Jak
             rs.close();
         } 
         catch (Exception e)
@@ -747,7 +793,7 @@ public class FrmUserMain extends javax.swing.JFrame
             {
                 TxtDescrCategory_PanelCategory.setText(rs.getString("descr"));
             }
-            statement.close();
+            statement.close(); //Close the connections - Jak
             rs.close();
         }
         catch (Exception e) 
@@ -757,27 +803,49 @@ public class FrmUserMain extends javax.swing.JFrame
         //</editor-fold>
         
         //<editor-fold desc="Try-Catch for Courses Panel">
-        ArrayList<String> courses = new ArrayList<>();
+        ArrayList<String> courses = new ArrayList<>(); //Creates an array to store the data for the courses - Jak
         
         try 
         {
-            String queryCourse = "SELECT course FROM courses WHERE codCategory = '"+selectedItemID+"'";
+            String queryCourse = "SELECT course FROM courses WHERE codCategory = '"+selectedItemID+"'"; //Sets up a query to grab a course based on the category selected in the category combobox - Jak
             statement = conn.prepareStatement(queryCourse);
             rs = statement.executeQuery();
             
             while(rs.next())
             {
                 String courseName = rs.getString("course");
-                courses.add(courseName);
-                CbxCourses_PanelCourses.setModel(new javax.swing.DefaultComboBoxModel(courses.toArray()));
+                courses.add(courseName); //Adds it to the Array - Jak
+                CbxCourses_PanelCourses.setModel(new javax.swing.DefaultComboBoxModel(courses.toArray())); //Sets the Array to the model of the ComboBox - Jak
             }
-            statement.close();
+            statement.close(); //Close the connections - Jak
             rs.close();
         }
         catch (Exception e)
         {
            JOptionPane.showMessageDialog(null, e); 
         }
+        //</editor-fold>
+        
+        //<editor-fold desc="Try-Catch for Courses Description">
+        
+        try
+        {
+            String queryDesc = "SELECT descr FROM courses WHERE codCategory = '"+selectedItemID+"'";
+            statement = conn.prepareStatement(queryDesc);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                TxtCourseDescr_PanelCourse.setText(rs.getString("descr"));
+            }
+            statement.close();
+            rs.close();
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
         //</editor-fold>
         
     }//GEN-LAST:event_CbxCategories_FrmUserMainItemStateChanged
@@ -861,9 +929,11 @@ public class FrmUserMain extends javax.swing.JFrame
     private javax.swing.JTextArea TxtDescrIndustry_PaneIndustry;
     private javax.swing.JTextArea TxtJobDescr_PanelJobs;
     private javax.swing.JTextArea TxtSkillDescr_FrmUserMain;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel lblUserName;
     private javax.swing.JPanel main;
     // End of variables declaration//GEN-END:variables
 }
