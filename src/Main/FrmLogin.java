@@ -38,25 +38,7 @@ public class FrmLogin extends javax.swing.JFrame {
         db.setPort("3306");
         db.setUser("root");
         
-        try {
-            con = db.getConnection();
-            System.out.println("conected");
-            
-            String query = "SELECT category FROM category";
-            statement = con.prepareStatement(query);
-            rs = statement.executeQuery();
-            
-            while(rs.next())
-            {
-                String test = rs.getString("category");
-                 System.out.println(test);
-            }
-           
-            
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+        
     }
 
     /**
@@ -170,7 +152,7 @@ public class FrmLogin extends javax.swing.JFrame {
         
         try {
             con = db.getConnection();
-            System.out.println("conected");
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -184,7 +166,6 @@ public class FrmLogin extends javax.swing.JFrame {
             while(rs.next())
             {
                 user = rs.getString("userName");
-                System.out.println("Database has grabbed the username:" + user);
             }
             statement.close();
             rs.close();
@@ -201,7 +182,6 @@ public class FrmLogin extends javax.swing.JFrame {
             while(rs.next())
             {
                 id = rs.getString("userID");
-                System.out.println("Database has grabbed the username:" + id); //remove
             }
             statement.close();
             rs.close();
@@ -217,7 +197,6 @@ public class FrmLogin extends javax.swing.JFrame {
             
             while(rs.next()){
                 pass = rs.getString("password");
-                System.out.println("Database has grabbed the password:" + pass);
             }
             statement.close();
             rs.close();
@@ -233,7 +212,6 @@ public class FrmLogin extends javax.swing.JFrame {
             
             while(rs.next()){
                 userType = rs.getString("codUserType");
-                System.out.println("Database has grabbed the password:" + userType);
             }
             statement.close();
             rs.close();
@@ -249,7 +227,7 @@ public class FrmLogin extends javax.swing.JFrame {
             frmUserMain = new FrmUserMain();            
             frmUserMain.setVisible(true);
             
-        
+            
         }else {
             String message = "The username/password is incorrect.";
             msgbox.setMessage(message);

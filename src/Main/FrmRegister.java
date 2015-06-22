@@ -6,6 +6,13 @@
 
 package Main;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 
 
 
@@ -17,7 +24,12 @@ package Main;
 public class FrmRegister extends javax.swing.JFrame {
     FrmLogin frmLogin;  
     PopUpMsgBox msgbox = new PopUpMsgBox();
-    
+    Database db = new Database();
+    Connection con;
+    PreparedStatement statement;
+    ResultSet rs;
+    Date date = new Date();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     /**
      * Creates new form FrmRegister1
      */
@@ -25,7 +37,11 @@ public class FrmRegister extends javax.swing.JFrame {
         initComponents();
         this.dgConfirm.setVisible(false);
         BtnSave.setEnabled(false);
-        
+        db.setDatabase("findmycareer");
+        db.setHost("localhost");
+        db.setPassword("");
+        db.setPort("3306");
+        db.setUser("root");
     }
 
     /**
@@ -378,12 +394,10 @@ public class FrmRegister extends javax.swing.JFrame {
      private boolean fieldsFull()
      {
       boolean makeVisible = false;
-      String password1 = TxtPassword.getText();
-      String password2 = TxtConfirmPassword.getText();
-      boolean passTest = password1.equals(password2);
+     
       makeVisible = !(TxtFirstName.getText().equals("") || (TxtSurname.getText().equals("")) || (TxtDob.getText().equals("")) || 
-              (TxtEmail.getText().equals("")) || (TxtPhone.getText().equals("")) || (password1.equals(""))
-              || (password2.equals("")));
+              (TxtEmail.getText().equals("")) || (TxtPhone.getText().equals("")) || (TxtPassword.equals(""))
+              || (TxtConfirmPassword.equals("")));
       return makeVisible; 
               
      }
@@ -407,10 +421,10 @@ public class FrmRegister extends javax.swing.JFrame {
         String email = this.TxtEmail.getText();
         this.txtEmail.setText(email);
         
-        String password1 = TxtPassword.getText();
-        String password2 = TxtConfirmPassword.getText();
+        String password = TxtPassword.getText();
+        String confPassword = TxtConfirmPassword.getText();
         
-        if (!password2.equals(password1)){
+        if (!confPassword.equals(password)){
             String message = "The passwords don't match.";
             msgbox.setMessage(message);
             msgbox.setTitle("Error");
@@ -421,8 +435,6 @@ public class FrmRegister extends javax.swing.JFrame {
             this.dgConfirm.setVisible(true);
         }
       
-       
-        
 
     }//GEN-LAST:event_BtnSaveActionPerformed
 
@@ -444,12 +456,39 @@ public class FrmRegister extends javax.swing.JFrame {
 
     private void btnConfirmRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmRegActionPerformed
         // TODO add your handling code here:
+        String firstName = this.txtFirstName.getText();       
+        String lastName = this.txtLastName.getText();     
+        String dob = this.txtDob.getText();       
+        String phone = this.txtPhone.getText();       
+        String email = this.txtEmail.getText();
+        String password = TxtPassword.getText();
+        String userType = "TYPE02";
+        String date = dateFormat.format(date);
+         
+                
         this.dgConfirm.dispose();
         this.setVisible(false);
         if (frmLogin == null){
             frmLogin = new FrmLogin();
 
             frmLogin.setVisible(true);
+        }
+        
+        try {
+            String query = "INSERT INTO user (`userID`, `userName`, `password`, `firstName`, `lastName`, `dob`, `phone`, `email`, `codUserType`, `dateCreation`, `lastLogIn`)"
+                    + " VALUES ([value-1],[value-2],'"+password+"','"+firstName+"','"+lastName+"','"+dob+"','"+phone+"','"+email+"','"+userType+"','"+date+"','"+date+"')";
+            statement = con.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+//            while(rs.next())
+//            {
+//                user = rs.getString("userName");
+//                System.out.println("Database has grabbed the username:" + user);
+//            }
+            statement.close();
+            rs.close();
+         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
         }
         
     }//GEN-LAST:event_btnConfirmRegActionPerformed
