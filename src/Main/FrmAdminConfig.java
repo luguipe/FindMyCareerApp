@@ -42,7 +42,7 @@ public class FrmAdminConfig extends javax.swing.JFrame {
         LblTask = new javax.swing.JLabel();
         CbxTask = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MAIN SCREEN");
         setMinimumSize(new java.awt.Dimension(335, 285));
         setPreferredSize(new java.awt.Dimension(335, 285));
@@ -110,6 +110,7 @@ public class FrmAdminConfig extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnExitApp_FrmAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExitApp_FrmAdminActionPerformed
@@ -128,25 +129,18 @@ public class FrmAdminConfig extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnExitApp_FrmAdminActionPerformed
 
     private void BtnConfigureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnConfigureActionPerformed
-        String item = this.CbxTask.getSelectedItem().toString();
-        switch(item)
-        {
-//            case "Update Database":
-//            card = (CardLayout)admin.PanelMainCards_FrmAdmin.getLayout();
-//            card.show(admin.PanelMainCards_FrmAdmin, "PanelDbUpdate");
-//            this.setVisible(true);
-//            break;
-//            case "Search Users Infos":
-//            card = (CardLayout)admin.PanelMainCards_FrmAdmin.getLayout();
-//            card.show(admin.PanelMainCards_FrmAdmin, "PanelUserParameters");
-//            admin.setVisible(true);
-//            break;
-            case "Edit Profile":
+        String txt = this.CbxTask.getSelectedItem().toString();
+        admin.pane(txt);
+        
+            if(txt == "Edit Profile")
+            {    
             FrmEditProfile edit = new FrmEditProfile();
             edit.setVisible(true);
-            break;
-        }
-        this.dispose();
+            
+            }
+            this.dispose();
+        
+        
 
     }//GEN-LAST:event_BtnConfigureActionPerformed
 

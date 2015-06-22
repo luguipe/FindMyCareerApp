@@ -520,7 +520,7 @@ CardLayout card;
         
     try {
         
-        Queries query = new Queries();
+        QueriesStefano query = new QueriesStefano();
         //db = new Database();
         query.setUser("root");
         query.setPassword("");

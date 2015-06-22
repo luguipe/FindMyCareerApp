@@ -171,7 +171,7 @@ public class Database {
             msgbox.setMessage(message);
             msgbox.setTitle("Connection Successfull");
             msgbox.setMsgBoxType("info");
-            msgbox.popUpMsgBox();
+            //msgbox.popUpMsgBox();
             //Return the connection ready to be used for queries
             return this.conn;
         }

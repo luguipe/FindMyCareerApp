@@ -10,15 +10,19 @@ package Main;
  *
  * @author 1100422815
  */
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.font.*;
+//import java.awt.*;
+import java.awt.CardLayout;
+
+import javax.swing.*;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
- 
-import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
+ 
 public class FrmAdmin extends javax.swing.JFrame {
 
     //Create an instance of the class Queries
@@ -26,10 +30,19 @@ public class FrmAdmin extends javax.swing.JFrame {
     //New instance of CardLayout
     CardLayout card = new CardLayout();
     PopUpMsgBox msgbox = new PopUpMsgBox();
-    Queries query = new Queries();
+    QueriesStefano query = new QueriesStefano();
     ResultSet rs;
-    FrmAdmin admin;
+    //Define a var DefaultListModel to can add/remove items from the list for the user param panel
+    DefaultListModel listModel = new DefaultListModel();
     FrmAdminConfig config;
+    String descr = null;
+    String[][] params = null;
+    
+    int capacity =0;
+       Map<String, String> section = new HashMap<String, String>(capacity, 1);
+        //Here i declare two arraylists where i'm gonna import the maps and then use for the calculations
+        List<HashMap<String, String>> sectionList = new ArrayList<HashMap<String, String>>();
+    
     /**
      * Creates new form form
      */
@@ -43,19 +56,44 @@ public class FrmAdmin extends javax.swing.JFrame {
         query.setHost("localhost");
         query.setPort("3306");
         query.setDatabase("findmycareer");
-        //SET THE OPTION DIALOG BOX
+        this.ScrlBarOption.setVisible(false);
+        
+        int totComp = this.PanelAge.getComponentCount();
+        for(int i=0; i<totComp; i++)
+        {
+            this.PanelAge.getComponent(i).setEnabled(false);
+        }    
+        this.CkbAge.setEnabled(true);
+        this.RBtnDefine.setSelected(true);
+    //SET THE OPTION DIALOG BOX
         //
         //Sets the JFrame invisible so the JDialogbox can appear without having the form visible underneath
-        this.setVisible(false);
-        this.CbxSections.addItem(null);
-        this.CbxSections.setSelectedItem(null);
-        //SET THE JFRAME
-        //
-        this.BtnExit_FrmAdmin.requestFocusInWindow();
         
-             
+        
+        this.setVisible(false);
+        
+                
     }
 
+    public void pane(String pane)
+    {
+        
+        switch(pane)
+        {
+            case "Update Database":
+            card = (CardLayout)this.PanelMainCards_FrmAdmin.getLayout();
+            card.show(this.PanelMainCards_FrmAdmin, "PanelDbUpdate");
+            
+            break;
+            case "Search Users Infos":
+            card = (CardLayout)this.PanelMainCards_FrmAdmin.getLayout();
+            card.show(this.PanelMainCards_FrmAdmin, "PanelUserParameters");
+            int width = this.PanelUserParameters.getSize().width;
+            this.setSize(630, this.getSize().height);
+            break;
+        }
+        this.setVisible(true);
+    }        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -66,21 +104,10 @@ public class FrmAdmin extends javax.swing.JFrame {
     private void initComponents() {
 
         BtnGroupSetOption = new javax.swing.ButtonGroup();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         BtnExit_FrmAdmin = new javax.swing.JButton();
         PanelMainCards_FrmAdmin = new javax.swing.JPanel();
-        PanelDbUpdate = new javax.swing.JPanel();
-        CbxOption = new javax.swing.JComboBox();
-        LblOptions = new javax.swing.JLabel();
-        CbxSections = new javax.swing.JComboBox();
-        LblSections = new javax.swing.JLabel();
-        LblOptionName = new javax.swing.JLabel();
-        TxtOption = new javax.swing.JTextField();
-        LblOptionDescr = new javax.swing.JLabel();
-        ScrlPaneCatDescr_PanelCategory = new javax.swing.JScrollPane();
-        TxtOptionDescr = new javax.swing.JTextArea();
-        BtnAction = new javax.swing.JButton();
-        LblAction = new javax.swing.JLabel();
-        CbxAction = new javax.swing.JComboBox();
         PanelUserParameters = new javax.swing.JPanel();
         LblSelectedParams = new javax.swing.JLabel();
         PanelAge = new javax.swing.JPanel();
@@ -90,27 +117,43 @@ public class FrmAdmin extends javax.swing.JFrame {
         LblAgeEqualTo = new javax.swing.JLabel();
         TxtAgeEqualTo = new javax.swing.JTextField();
         LblAgeGreaterThan = new javax.swing.JLabel();
-        LblAgeLesserTlhan = new javax.swing.JLabel();
+        LblAgeLesserThan = new javax.swing.JLabel();
         TxtAgeLesserThan = new javax.swing.JTextField();
         CbxAgeOptions = new javax.swing.JComboBox();
-        CkbActivateAge = new javax.swing.JCheckBox();
         TxtAgeValue1 = new javax.swing.JTextField();
+        CkbAge = new javax.swing.JCheckBox();
         BtnSeeResults = new javax.swing.JButton();
         BtnInsParam = new javax.swing.JButton();
         BtnRemoveParam = new javax.swing.JButton();
         ScrlPaneListParams = new javax.swing.JScrollPane();
         ListParams = new javax.swing.JList();
         PanelSetParameters = new javax.swing.JPanel();
-        CbxIndustries_FrmUserMain1 = new javax.swing.JComboBox();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        CbxFields = new javax.swing.JComboBox();
+        RBtnManual = new javax.swing.JRadioButton();
+        RBtnDefine = new javax.swing.JRadioButton();
         PanelSetParameterOptions = new javax.swing.JPanel();
         PanelDefineParam = new javax.swing.JPanel();
         TxtSearchParamOptions = new javax.swing.JTextField();
         CbxSearchParamsOptions = new javax.swing.JComboBox();
+        ScrlBarSearch = new javax.swing.JScrollBar();
         PanelManualInsParam = new javax.swing.JPanel();
-        TxtParamValue = new javax.swing.JTextField();
         LblParamValue = new javax.swing.JLabel();
+        TxtParamValue = new javax.swing.JTextField();
+        ScrlBarManual = new javax.swing.JScrollBar();
+        PanelDbUpdate = new javax.swing.JPanel();
+        CbxOption = new javax.swing.JComboBox();
+        CbxSections = new javax.swing.JComboBox();
+        LblOptions = new javax.swing.JLabel();
+        LblSections = new javax.swing.JLabel();
+        LblOptionName = new javax.swing.JLabel();
+        LblOptionDescr = new javax.swing.JLabel();
+        ScrlPaneOptionDescr = new javax.swing.JScrollPane();
+        TxtOptionDescr = new javax.swing.JTextArea();
+        LblAction = new javax.swing.JLabel();
+        CbxAction = new javax.swing.JComboBox();
+        TxtOption = new javax.swing.JTextField();
+        ScrlBarOption = new javax.swing.JScrollBar();
+        BtnAction = new javax.swing.JButton();
         PanelUserStats = new javax.swing.JPanel();
         BtnPrev_FrmAdmin = new javax.swing.JButton();
         BtnView_FrmAdmin = new javax.swing.JButton();
@@ -118,9 +161,18 @@ public class FrmAdmin extends javax.swing.JFrame {
         ScrlPaneTbUsers = new javax.swing.JScrollPane();
         TbUsers = new javax.swing.JTable();
 
+        jMenuItem1.setText("jMenuItem1");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FIND MY CAREER");
         setLocationByPlatform(true);
+        setMinimumSize(new java.awt.Dimension(595, 485));
         setResizable(false);
 
         BtnExit_FrmAdmin.setText("Exit");
@@ -134,188 +186,79 @@ public class FrmAdmin extends javax.swing.JFrame {
         PanelMainCards_FrmAdmin.setPreferredSize(new java.awt.Dimension(595, 410));
         PanelMainCards_FrmAdmin.setLayout(new java.awt.CardLayout());
 
-        CbxOption.setEnabled(false);
-        CbxOption.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CbxOptionMouseClicked(evt);
-            }
-        });
-        CbxOption.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CbxOptionActionPerformed(evt);
-            }
-        });
-
-        LblOptions.setText("Options");
-
-        CbxSections.setMaximumRowCount(5);
-        CbxSections.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Industry", "Category", "Jobs", "Skills", "Courses" }));
-        CbxSections.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                CbxSectionsItemStateChanged(evt);
-            }
-        });
-        CbxSections.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                CbxSectionsFocusGained(evt);
-            }
-        });
-        CbxSections.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CbxSectionsMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                CbxSectionsMousePressed(evt);
-            }
-        });
-        CbxSections.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CbxSectionsActionPerformed(evt);
-            }
-        });
-
-        LblSections.setText("Sections");
-
-        LblOptionName.setText("Name");
-
-        TxtOption.setEditable(false);
-        TxtOption.setAutoscrolls(false);
-
-        LblOptionDescr.setText("Description");
-
-        TxtOptionDescr.setEditable(false);
-        TxtOptionDescr.setColumns(20);
-        TxtOptionDescr.setLineWrap(true);
-        TxtOptionDescr.setRows(5);
-        ScrlPaneCatDescr_PanelCategory.setViewportView(TxtOptionDescr);
-
-        BtnAction.setText("Action");
-        BtnAction.setName(""); // NOI18N
-        BtnAction.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnActionActionPerformed(evt);
-            }
-        });
-
-        LblAction.setText("Action");
-
-        CbxAction.setEnabled(false);
-        CbxAction.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CbxActionMouseClicked(evt);
-            }
-        });
-        CbxAction.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CbxActionActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout PanelDbUpdateLayout = new javax.swing.GroupLayout(PanelDbUpdate);
-        PanelDbUpdate.setLayout(PanelDbUpdateLayout);
-        PanelDbUpdateLayout.setHorizontalGroup(
-            PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelDbUpdateLayout.createSequentialGroup()
-                .addContainerGap(81, Short.MAX_VALUE)
-                .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ScrlPaneCatDescr_PanelCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblOptionDescr)
-                    .addGroup(PanelDbUpdateLayout.createSequentialGroup()
-                        .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelDbUpdateLayout.createSequentialGroup()
-                                .addComponent(LblSections)
-                                .addGap(18, 18, 18)
-                                .addComponent(CbxSections, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(PanelDbUpdateLayout.createSequentialGroup()
-                                .addComponent(LblOptionName)
-                                .addGap(22, 22, 22)
-                                .addComponent(TxtOption, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PanelDbUpdateLayout.createSequentialGroup()
-                                .addGap(18, 18, Short.MAX_VALUE)
-                                .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(CbxAction, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelDbUpdateLayout.createSequentialGroup()
-                                        .addComponent(LblAction)
-                                        .addGap(171, 171, 171))))
-                            .addGroup(PanelDbUpdateLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(LblOptions)
-                                .addGap(18, 18, 18)
-                                .addComponent(CbxOption, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addGap(76, 76, 76))
-            .addGroup(PanelDbUpdateLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(BtnAction, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        PanelDbUpdateLayout.setVerticalGroup(
-            PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelDbUpdateLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CbxSections, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblSections)
-                    .addComponent(CbxOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblOptions))
-                .addGap(46, 46, 46)
-                .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LblOptionName)
-                    .addComponent(TxtOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CbxAction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblAction))
-                .addGap(35, 35, 35)
-                .addComponent(LblOptionDescr)
-                .addGap(18, 18, 18)
-                .addComponent(ScrlPaneCatDescr_PanelCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                .addComponent(BtnAction)
-                .addGap(22, 22, 22))
-        );
-
-        PanelMainCards_FrmAdmin.add(PanelDbUpdate, "PanelDbUpdate");
-
         PanelUserParameters.setMinimumSize(new java.awt.Dimension(595, 410));
         PanelUserParameters.setPreferredSize(new java.awt.Dimension(595, 410));
 
+        LblSelectedParams.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LblSelectedParams.setText("Selected Fields");
 
         PanelAge.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Set Age", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        TxtAgeGreaterThan.setPreferredSize(new java.awt.Dimension(50, 20));
+        TxtAgeGreaterThan.setPreferredSize(new java.awt.Dimension(50, 25));
+        TxtAgeGreaterThan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TxtAgeGreaterThanKeyReleased(evt);
+            }
+        });
 
         LblAgeRange.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LblAgeRange.setText("<>");
         LblAgeRange.setToolTipText("A range between the first value and the second value");
 
-        TxtAgeValue2.setPreferredSize(new java.awt.Dimension(50, 20));
+        TxtAgeValue2.setPreferredSize(new java.awt.Dimension(50, 25));
         TxtAgeValue2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TxtAgeValue2ActionPerformed(evt);
             }
         });
+        TxtAgeValue2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TxtAgeValue2KeyReleased(evt);
+            }
+        });
 
         LblAgeEqualTo.setText("Equal to: ");
 
-        TxtAgeEqualTo.setPreferredSize(new java.awt.Dimension(50, 20));
+        TxtAgeEqualTo.setPreferredSize(new java.awt.Dimension(50, 25));
+        TxtAgeEqualTo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TxtAgeEqualToKeyReleased(evt);
+            }
+        });
 
         LblAgeGreaterThan.setText("Greater than:");
 
-        LblAgeLesserTlhan.setText("Lesser than:");
+        LblAgeLesserThan.setText("Lesser than:");
 
-        TxtAgeLesserThan.setPreferredSize(new java.awt.Dimension(50, 20));
+        TxtAgeLesserThan.setPreferredSize(new java.awt.Dimension(50, 25));
+        TxtAgeLesserThan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TxtAgeLesserThanKeyReleased(evt);
+            }
+        });
 
-        CbxAgeOptions.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Option ", "Equal to", "Greater than", "Lesser than", "Range" }));
+        CbxAgeOptions.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Equal to", "Greater than", "Lesser than", "Range" }));
         CbxAgeOptions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxAgeOptionsActionPerformed(evt);
             }
         });
 
-        TxtAgeValue1.setPreferredSize(new java.awt.Dimension(59, 20));
+        TxtAgeValue1.setPreferredSize(new java.awt.Dimension(50, 25));
         TxtAgeValue1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TxtAgeValue1ActionPerformed(evt);
+            }
+        });
+        TxtAgeValue1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TxtAgeValue1KeyReleased(evt);
+            }
+        });
+
+        CkbAge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CkbAgeActionPerformed(evt);
             }
         });
 
@@ -325,42 +268,42 @@ public class FrmAdmin extends javax.swing.JFrame {
             PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgeLayout.createSequentialGroup()
                 .addGap(20, 26, Short.MAX_VALUE)
-                .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(LblAgeLesserTlhan)
+                        .addGroup(PanelAgeLayout.createSequentialGroup()
+                            .addGap(1, 1, 1)
+                            .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(LblAgeGreaterThan)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgeLayout.createSequentialGroup()
+                                    .addComponent(LblAgeEqualTo)
+                                    .addGap(41, 41, 41)
+                                    .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(TxtAgeEqualTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(TxtAgeGreaterThan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgeLayout.createSequentialGroup()
+                                    .addComponent(CkbAge)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(CbxAgeOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgeLayout.createSequentialGroup()
-                            .addGap(87, 87, 87)
-                            .addComponent(TxtAgeLesserThan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(TxtAgeValue1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(LblAgeRange)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(TxtAgeValue2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(PanelAgeLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(LblAgeGreaterThan)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgeLayout.createSequentialGroup()
-                                .addComponent(LblAgeEqualTo)
-                                .addGap(41, 41, 41)
-                                .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(TxtAgeEqualTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(TxtAgeGreaterThan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgeLayout.createSequentialGroup()
-                                .addComponent(CkbActivateAge)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(CbxAgeOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgeLayout.createSequentialGroup()
-                        .addComponent(TxtAgeValue1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(LblAgeRange)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(TxtAgeValue2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(LblAgeLesserThan)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(TxtAgeLesserThan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18))
         );
         PanelAgeLayout.setVerticalGroup(
             PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(11, 11, 11)
+                .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(CbxAgeOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CkbActivateAge))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                    .addComponent(CkbAge))
+                .addGap(18, 18, 18)
                 .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtAgeEqualTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(LblAgeEqualTo))
@@ -371,21 +314,28 @@ public class FrmAdmin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtAgeLesserThan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblAgeLesserTlhan))
+                    .addComponent(LblAgeLesserThan))
                 .addGap(21, 21, 21)
                 .addGroup(PanelAgeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtAgeValue2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(LblAgeRange)
                     .addComponent(TxtAgeValue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         BtnSeeResults.setText("See Results");
         BtnSeeResults.setToolTipText("Set the search parameters for the user's details manually");
+        BtnSeeResults.setEnabled(false);
         BtnSeeResults.setOpaque(false);
+        BtnSeeResults.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSeeResultsActionPerformed(evt);
+            }
+        });
 
         BtnInsParam.setText("Parameter Set");
         BtnInsParam.setToolTipText("Set the search parameters for the user's details manually");
+        BtnInsParam.setEnabled(false);
         BtnInsParam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnInsParamActionPerformed(evt);
@@ -394,6 +344,11 @@ public class FrmAdmin extends javax.swing.JFrame {
 
         BtnRemoveParam.setText("Remove");
         BtnRemoveParam.setToolTipText("Set the search parameters for the user's details manually");
+        BtnRemoveParam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRemoveParamActionPerformed(evt);
+            }
+        });
 
         ListParams.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "First Name", "Second Name", "..." };
@@ -404,28 +359,45 @@ public class FrmAdmin extends javax.swing.JFrame {
 
         PanelSetParameters.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Set Parameters", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        CbxIndustries_FrmUserMain1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Field", "First Name", "Last Name", "Date of Birth", "Phone", "E-mail" }));
-        CbxIndustries_FrmUserMain1.addActionListener(new java.awt.event.ActionListener() {
+        CbxFields.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "First Name", "Last Name", "Date of Birth", "Phone", "E-mail" }));
+        CbxFields.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CbxIndustries_FrmUserMain1ActionPerformed(evt);
+                CbxFieldsActionPerformed(evt);
             }
         });
 
-        BtnGroupSetOption.add(jRadioButton1);
-        jRadioButton1.setText("Manual Set");
+        BtnGroupSetOption.add(RBtnManual);
+        RBtnManual.setText("Manual Set");
+        RBtnManual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RBtnManualActionPerformed(evt);
+            }
+        });
 
-        BtnGroupSetOption.add(jRadioButton2);
-        jRadioButton2.setText("Search Set");
+        BtnGroupSetOption.add(RBtnDefine);
+        RBtnDefine.setText("Search Set");
+        RBtnDefine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RBtnDefineActionPerformed(evt);
+            }
+        });
 
         PanelSetParameterOptions.setLayout(new java.awt.CardLayout());
 
         PanelDefineParam.setMinimumSize(new java.awt.Dimension(173, 121));
         PanelDefineParam.setPreferredSize(new java.awt.Dimension(173, 121));
 
-        TxtSearchParamOptions.setPreferredSize(new java.awt.Dimension(59, 20));
+        TxtSearchParamOptions.setEnabled(false);
+        TxtSearchParamOptions.setMinimumSize(new java.awt.Dimension(117, 25));
+        TxtSearchParamOptions.setPreferredSize(new java.awt.Dimension(117, 25));
         TxtSearchParamOptions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TxtSearchParamOptionsActionPerformed(evt);
+            }
+        });
+        TxtSearchParamOptions.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TxtSearchParamOptionsKeyReleased(evt);
             }
         });
 
@@ -436,68 +408,76 @@ public class FrmAdmin extends javax.swing.JFrame {
             }
         });
 
+        ScrlBarSearch.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        ScrlBarSearch.setModel(TxtSearchParamOptions.getHorizontalVisibility());
+
         javax.swing.GroupLayout PanelDefineParamLayout = new javax.swing.GroupLayout(PanelDefineParam);
         PanelDefineParam.setLayout(PanelDefineParamLayout);
         PanelDefineParamLayout.setHorizontalGroup(
             PanelDefineParamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelDefineParamLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(CbxSearchParamsOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
-            .addGroup(PanelDefineParamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(PanelDefineParamLayout.createSequentialGroup()
-                    .addGap(26, 26, 26)
-                    .addComponent(TxtSearchParamOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(27, Short.MAX_VALUE)))
+                .addGroup(PanelDefineParamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(CbxSearchParamsOptions, 0, 120, Short.MAX_VALUE)
+                    .addComponent(ScrlBarSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TxtSearchParamOptions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         PanelDefineParamLayout.setVerticalGroup(
             PanelDefineParamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelDefineParamLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(CbxSearchParamsOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
-            .addGroup(PanelDefineParamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(PanelDefineParamLayout.createSequentialGroup()
-                    .addGap(70, 70, 70)
-                    .addComponent(TxtSearchParamOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(31, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(TxtSearchParamOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ScrlBarSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
-        PanelSetParameterOptions.add(PanelDefineParam, "card2");
+        PanelSetParameterOptions.add(PanelDefineParam, "PanelDefineParam");
 
         PanelManualInsParam.setMinimumSize(new java.awt.Dimension(173, 121));
 
-        TxtParamValue.setPreferredSize(new java.awt.Dimension(59, 20));
-        TxtParamValue.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TxtParamValueActionPerformed(evt);
+        LblParamValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LblParamValue.setText("Inset Value");
+
+        TxtParamValue.setMinimumSize(new java.awt.Dimension(6, 25));
+        TxtParamValue.setPreferredSize(new java.awt.Dimension(117, 25));
+        TxtParamValue.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TxtParamValueKeyReleased(evt);
             }
         });
 
-        LblParamValue.setText("Inset Paramenter Value");
+        ScrlBarManual.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        ScrlBarManual.setModel(TxtParamValue.getHorizontalVisibility());
 
         javax.swing.GroupLayout PanelManualInsParamLayout = new javax.swing.GroupLayout(PanelManualInsParam);
         PanelManualInsParam.setLayout(PanelManualInsParamLayout);
         PanelManualInsParamLayout.setHorizontalGroup(
             PanelManualInsParamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelManualInsParamLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(PanelManualInsParamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LblParamValue)
-                    .addComponent(TxtParamValue, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(25, 25, 25)
+                .addGroup(PanelManualInsParamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(LblParamValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TxtParamValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ScrlBarManual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         PanelManualInsParamLayout.setVerticalGroup(
             PanelManualInsParamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelManualInsParamLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(LblParamValue)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(TxtParamValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ScrlBarManual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
-        PanelSetParameterOptions.add(PanelManualInsParam, "card3");
+        PanelSetParameterOptions.add(PanelManualInsParam, "PanelManualParam");
 
         javax.swing.GroupLayout PanelSetParametersLayout = new javax.swing.GroupLayout(PanelSetParameters);
         PanelSetParameters.setLayout(PanelSetParametersLayout);
@@ -509,23 +489,23 @@ public class FrmAdmin extends javax.swing.JFrame {
             .addGroup(PanelSetParametersLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(PanelSetParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
-                    .addComponent(CbxIndustries_FrmUserMain1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(RBtnManual)
+                    .addComponent(RBtnDefine)
+                    .addComponent(CbxFields, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelSetParametersLayout.setVerticalGroup(
             PanelSetParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelSetParametersLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(CbxIndustries_FrmUserMain1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(CbxFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton1)
+                .addComponent(RBtnManual)
                 .addGap(5, 5, 5)
-                .addComponent(jRadioButton2)
+                .addComponent(RBtnDefine)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelSetParameterOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout PanelUserParametersLayout = new javax.swing.GroupLayout(PanelUserParameters);
@@ -535,26 +515,25 @@ public class FrmAdmin extends javax.swing.JFrame {
             .addGroup(PanelUserParametersLayout.createSequentialGroup()
                 .addGroup(PanelUserParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelUserParametersLayout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(BtnInsParam))
+                    .addGroup(PanelUserParametersLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(PanelSetParameters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
-                        .addComponent(PanelAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PanelUserParametersLayout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(BtnInsParam)))
+                        .addComponent(PanelAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(PanelUserParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelUserParametersLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(PanelUserParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ScrlPaneListParams, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24)
+                        .addGroup(PanelUserParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(BtnSeeResults)
-                            .addGroup(PanelUserParametersLayout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(LblSelectedParams))))
+                            .addComponent(BtnRemoveParam)))
                     .addGroup(PanelUserParametersLayout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(BtnRemoveParam)))
-                .addContainerGap(42, Short.MAX_VALUE))
+                        .addGap(31, 31, 31)
+                        .addGroup(PanelUserParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ScrlPaneListParams, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                            .addComponent(LblSelectedParams, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         PanelUserParametersLayout.setVerticalGroup(
             PanelUserParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -572,7 +551,7 @@ public class FrmAdmin extends javax.swing.JFrame {
                         .addGroup(PanelUserParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(PanelAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(PanelSetParameters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(PanelUserParametersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnSeeResults)
                     .addComponent(BtnInsParam))
@@ -580,6 +559,172 @@ public class FrmAdmin extends javax.swing.JFrame {
         );
 
         PanelMainCards_FrmAdmin.add(PanelUserParameters, "PanelUserParameters");
+
+        PanelDbUpdate.setMaximumSize(new java.awt.Dimension(595, 410));
+        PanelDbUpdate.setMinimumSize(new java.awt.Dimension(595, 410));
+
+        CbxOption.setAutoscrolls(true);
+        CbxOption.setEnabled(false);
+        CbxOption.setMaximumSize(new java.awt.Dimension(169, 20));
+        CbxOption.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                CbxOptionPopupMenuWillBecomeVisible(evt);
+            }
+        });
+        CbxOption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CbxOptionActionPerformed(evt);
+            }
+        });
+
+        CbxSections.setMaximumRowCount(6);
+        CbxSections.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Category", "Courses", "Industry", "Jobs", "Skills" }));
+        CbxSections.setMaximumSize(new java.awt.Dimension(130, 20));
+        CbxSections.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CbxSectionsActionPerformed(evt);
+            }
+        });
+
+        LblOptions.setText("Options");
+
+        LblSections.setText("Sections");
+
+        LblOptionName.setText("Name");
+
+        LblOptionDescr.setText("Description");
+
+        TxtOptionDescr.setEditable(false);
+        TxtOptionDescr.setColumns(20);
+        TxtOptionDescr.setLineWrap(true);
+        TxtOptionDescr.setRows(5);
+        TxtOptionDescr.setWrapStyleWord(true);
+        ScrlPaneOptionDescr.setViewportView(TxtOptionDescr);
+
+        LblAction.setText("Action");
+
+        CbxAction.setEnabled(false);
+        CbxAction.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                CbxActionPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        CbxAction.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CbxActionMouseClicked(evt);
+            }
+        });
+        CbxAction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CbxActionActionPerformed(evt);
+            }
+        });
+
+        TxtOption.setEditable(false);
+        TxtOption.setMaximumSize(new java.awt.Dimension(143, 23));
+        TxtOption.setMinimumSize(new java.awt.Dimension(143, 23));
+        TxtOption.setPreferredSize(new java.awt.Dimension(143, 23));
+        TxtOption.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                TxtOptionPropertyChange(evt);
+            }
+        });
+        TxtOption.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TxtOptionKeyReleased(evt);
+            }
+        });
+
+        ScrlBarOption.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        ScrlBarOption.setModel(TxtOption.getHorizontalVisibility());
+
+        BtnAction.setText("Get Data");
+        BtnAction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnActionActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PanelDbUpdateLayout = new javax.swing.GroupLayout(PanelDbUpdate);
+        PanelDbUpdate.setLayout(PanelDbUpdateLayout);
+        PanelDbUpdateLayout.setHorizontalGroup(
+            PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ScrlPaneOptionDescr, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                                .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                                        .addComponent(LblSections)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(CbxSections, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                                        .addComponent(LblOptionName)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(TxtOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(ScrlBarOption, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                                        .addComponent(LblOptions)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(CbxOption, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                                        .addComponent(LblAction)
+                                        .addGap(25, 25, 25)
+                                        .addComponent(CbxAction, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                                .addComponent(LblOptionDescr)
+                                .addGap(109, 109, 109))))
+                    .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(BtnAction, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(76, Short.MAX_VALUE))
+        );
+        PanelDbUpdateLayout.setVerticalGroup(
+            PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CbxSections, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblSections)
+                    .addComponent(CbxOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblOptions))
+                .addGap(39, 39, 39)
+                .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                        .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(LblOptionName)
+                                .addComponent(TxtOption, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addComponent(ScrlBarOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(PanelDbUpdateLayout.createSequentialGroup()
+                        .addGroup(PanelDbUpdateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(CbxAction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LblAction))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                        .addComponent(LblOptionDescr)))
+                .addComponent(ScrlPaneOptionDescr, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(BtnAction)
+                .addGap(28, 28, 28))
+        );
+
+        PanelMainCards_FrmAdmin.add(PanelDbUpdate, "PanelDbUpdate");
 
         PanelUserStats.setMinimumSize(new java.awt.Dimension(595, 410));
         PanelUserStats.setPreferredSize(new java.awt.Dimension(595, 410));
@@ -667,7 +812,7 @@ public class FrmAdmin extends javax.swing.JFrame {
                 .addComponent(PanelMainCards_FrmAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(BtnExit_FrmAdmin)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -687,122 +832,403 @@ public class FrmAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnExit_FrmAdminActionPerformed
 
     private void CbxSearchParamsOptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxSearchParamsOptionsActionPerformed
-        // TODO add your handling code here:
+        this.TxtSearchParamOptions.setEnabled(true);
     }//GEN-LAST:event_CbxSearchParamsOptionsActionPerformed
 
-    private void CbxIndustries_FrmUserMain1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxIndustries_FrmUserMain1ActionPerformed
-               
-    }//GEN-LAST:event_CbxIndustries_FrmUserMain1ActionPerformed
+    private void CbxFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxFieldsActionPerformed
+        
+        String item = this.CbxFields.getSelectedItem().toString();
+        switch(item)
+        {
+            case "Age":
+                
+                break;
+                    
+        
+        
+        }    
+    }//GEN-LAST:event_CbxFieldsActionPerformed
 
     private void TxtAgeValue2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtAgeValue2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtAgeValue2ActionPerformed
 
     private void CbxAgeOptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxAgeOptionsActionPerformed
-        // TODO add your handling code here:
+        
+
+
+        
+        
+        String text = this.CbxAgeOptions.getSelectedItem().toString();
+        switch (text)
+        {
+            case "Equal to":
+                this.TxtAgeEqualTo.setEnabled(true);
+                
+                this.LblAgeEqualTo.setEnabled(true);
+                this.LblAgeGreaterThan.setEnabled(false);
+                 this.LblAgeLesserThan.setEnabled(false);
+                 this.LblAgeRange.setEnabled(false);
+                
+                
+                this.TxtAgeGreaterThan.setEnabled(false);
+                this.TxtAgeLesserThan.setEnabled(false);
+                this.TxtAgeValue1.setEnabled(false);
+                this.TxtAgeValue2.setEnabled(false);
+                break;
+            case "Greater than":
+                this.TxtAgeGreaterThan.setEnabled(true);
+                this.LblAgeGreaterThan.setEnabled(true);
+                
+                this.LblAgeLesserThan.setEnabled(false);
+                 this.LblAgeRange.setEnabled(false);
+                this.LblAgeRange.setEnabled(false);
+                 
+                this.TxtAgeEqualTo.setEnabled(false);
+                this.TxtAgeLesserThan.setEnabled(false);
+                this.TxtAgeValue1.setEnabled(false);
+                this.TxtAgeValue2.setEnabled(false);
+                break;
+            case "Lesser than":
+                this.TxtAgeLesserThan.setEnabled(true);
+                this.LblAgeLesserThan.setEnabled(true);
+        
+                this.LblAgeEqualTo.setEnabled(false);
+                this.LblAgeGreaterThan.setEnabled(false);
+                this.LblAgeRange.setEnabled(false);
+                
+                this.TxtAgeEqualTo.setEnabled(false);
+                this.TxtAgeGreaterThan.setEnabled(false);
+                this.TxtAgeValue1.setEnabled(false);
+                this.TxtAgeValue2.setEnabled(false);
+                break;
+            case "Range":
+                this.TxtAgeValue1.setEnabled(true);
+                this.TxtAgeValue2.setEnabled(true);
+                this.LblAgeRange.setEnabled(true);
+
+                 this.LblAgeEqualTo.setEnabled(false);
+                this.LblAgeGreaterThan.setEnabled(false);
+                 this.LblAgeLesserThan.setEnabled(false);
+                
+                this.TxtAgeEqualTo.setEnabled(false);
+                this.TxtAgeGreaterThan.setEnabled(false);
+                this.TxtAgeLesserThan.setEnabled(false);
+                break;
+        }
     }//GEN-LAST:event_CbxAgeOptionsActionPerformed
 
     private void TxtSearchParamOptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtSearchParamOptionsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtSearchParamOptionsActionPerformed
 
+    
+    
     private void BtnInsParamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInsParamActionPerformed
-        // TODO add your handling code here:
+        String field, search, text;
+        
+        field = this.CbxFields.getSelectedItem().toString();
+        
+        
+        this.ListParams.setModel(listModel);
+        listModel.addElement(field);
+        if(RBtnDefine.isSelected() == true)
+        {    
+            search = this.CbxSearchParamsOptions.getSelectedItem().toString();
+            text = this.TxtSearchParamOptions.getText();
+            switch (search)
+            {
+                case "Begin with":
+                    params = text + "%";
+                    break;
+                case "Contain":
+                    params = "%" + text + "%";
+                    break;
+                case "End with":
+                    params = "%" + text;
+                    break;
+            }
+        }
+        else if(RBtnManual.isSelected() == true)
+        {
+            
+            params = this.TxtParamValue.getText();
+        }
+        
+        
+        this.BtnInsParam.setEnabled(false);
     }//GEN-LAST:event_BtnInsParamActionPerformed
 
     private void TxtAgeValue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtAgeValue1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtAgeValue1ActionPerformed
 
-    private void TxtParamValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtParamValueActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TxtParamValueActionPerformed
-
     private void BtnView_FrmAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnView_FrmAdminActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnView_FrmAdminActionPerformed
 
    
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     //COMBOBOX AZIONE
     //
     private void CbxActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxActionActionPerformed
-        
+        if(this.CbxAction.isPopupVisible() == true)
+        {
+            String caption = this.CbxAction.getSelectedItem().toString();
+            this.BtnAction.setText(caption);
+            this.BtnAction.setEnabled(true);
+        }
     }//GEN-LAST:event_CbxActionActionPerformed
 
-    private void BtnActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnActionActionPerformed
-        try {
-            String table = this.CbxSections.getSelectedItem().toString();
-            this.CbxOption.removeAllItems();
-            PreparedStatement a = query.selectAll(table);
-            rs = query.execute(a);
-//            
-            while(rs.next())
-            {
-                String option = rs.getString(2);
-                System.out.println(option);
-                this.CbxOption.addItem(option);
-            }
-            rs.close();
-        } catch (SQLException ex) {
-            //Logger.getLogger(FrmAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_BtnActionActionPerformed
+    private void CbxActionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CbxActionMouseClicked
+
+    }//GEN-LAST:event_CbxActionMouseClicked
+
+    private void CbxActionPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_CbxActionPopupMenuWillBecomeInvisible
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CbxActionPopupMenuWillBecomeInvisible
+
+    private void CbxSectionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxSectionsActionPerformed
+        this.CbxOption.removeAllItems();
+        this.CbxOption.setEnabled(false);
+        this.CbxAction.removeAllItems();
+        this.CbxAction.setEnabled(false);
+        this.BtnAction.setText("Get Data");
+        this.TxtOption.setText(null);
+        this.BtnAction.setEnabled(true);
+        this.TxtOptionDescr.setText(null);
+        if(this.ScrlBarOption.isVisible() == true){this.ScrlBarOption.setVisible(false);}
+    }//GEN-LAST:event_CbxSectionsActionPerformed
 
     //COMBOBOX OPTIONS
     //
     private void CbxOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxOptionActionPerformed
-        
+        if(this.CbxOption.isPopupVisible() == true)
+        {
+            this.BtnAction.setEnabled(false);
+            this.BtnAction.setText("Action");
+            this.TxtOption.setText(this.CbxOption.getSelectedItem().toString());
+            
+           
+            
+            int vista = 22;
+        int count = this.TxtOption.getText().length();
+       if (count>vista){this.ScrlBarOption.setVisible(true);}
+        else { if (count<vista){this.ScrlBarOption.setVisible(false);}}
+            this.CbxAction.setEnabled(true);
+            //Sets the combobox with the list of the possible actions
+            this.CbxAction.removeAllItems();
+            this.CbxAction.addItem("Delete");
+            this.CbxAction.addItem("Insert");
+            this.CbxAction.addItem("Update");
+
+            
+            
+            descr = sectionList.get(0).get(this.CbxOption.getSelectedItem().toString());
+            this.TxtOptionDescr.setText(descr);
+        }
     }//GEN-LAST:event_CbxOptionActionPerformed
 
-    //COMBOBOX OPTION
-    //
-    private void CbxOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CbxOptionMouseClicked
-        
-    }//GEN-LAST:event_CbxOptionMouseClicked
+    private void CbxOptionPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_CbxOptionPopupMenuWillBecomeVisible
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CbxOptionPopupMenuWillBecomeVisible
 
-    private void CbxActionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CbxActionMouseClicked
-        //Sets the combobox with the list of the possible actions
-        this.CbxAction.removeAllItems();
-        this.CbxAction.addItem("Delete");
-        this.CbxAction.addItem("Insert");
-        this.CbxAction.addItem("Update");
-        //According to the action choosen the button caption is changed by consequence
-        String text = this.CbxAction.getSelectedItem().toString();
-        this.BtnAction.setText(text);
-        
-    }//GEN-LAST:event_CbxActionMouseClicked
+    private void TxtOptionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtOptionKeyReleased
+         
+    }//GEN-LAST:event_TxtOptionKeyReleased
 
-    //CBX SECTIONS
-    //
-    private void CbxSectionsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxSectionsItemStateChanged
-        
+    private void TxtOptionPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_TxtOptionPropertyChange
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_CbxSectionsItemStateChanged
+    }//GEN-LAST:event_TxtOptionPropertyChange
 
-    private void CbxSectionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxSectionsActionPerformed
-        // TODO add your han
-        //this.CbxOption.setEnabled(true);
-    }//GEN-LAST:event_CbxSectionsActionPerformed
+    private void BtnActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnActionActionPerformed
+        try
+        {
+            String text = this.BtnAction.getText();
+            switch (text)
+            {
+                case "Get Data":
+                    String table = this.CbxSections.getSelectedItem().toString();
+                    this.CbxOption.removeAllItems();
+                    PreparedStatement a = query.selectAll(table);
+                    rs = query.execute(a);
+                    //          this.CbxOption.setEnabled(true);
+                    while(rs.next())
+                    {
 
-    private void CbxSectionsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CbxSectionsFocusGained
-        // TODO add your handling code here:
-        if (this.CbxSections.getSelectedItem() == null)
-        {this.CbxSections.removeItem(null);}
-        this.CbxSections.repaint();
+                        String option = rs.getString(2);
+                        this.descr = rs.getString("descr");
+                        section.put(option, descr);
+                        System.out.println(option + "    " + descr);
+                        this.CbxOption.addItem(option);
+
+                    }
+                    rs.close();
+                    this.CbxOption.setEnabled(true);
+                    sectionList.add(0, (HashMap<String, String>) section);
+                    System.out.println();
+                    System.out.println();
+                    for(int i=0; i<sectionList.size(); i++)
+                    {//sectionList.get(i);//.get(this.CbxOption.getSelectedItem().toString());
+                        }
+        System.out.println();
+                    break;
+                
+                case "Delete":
+                    String asdf = "SELECT * FROM category;";
+                    //PreparedStatement a = query.selectAll(table);
+                    rs = query.wtfQuery(asdf);
+                    while(rs.next())
+                    {
+                        System.out.println(rs.getString(1));
+                    
+                    }
+                    break;
+                
+                case "Insert":
+                    String[] prova;
+                    try
+            {
+                prova = query.colTable("user", "findmycareer");
+           
+//                for(int k =0; k<prova.length; k++)
+//                {
+//                System.out.println(prova[k]);
+//                }
+            
+            }
+            catch(SQLException e){System.out.println("ERRORE!!!!!!!!!!!!!!!!!!!!!!!");}
+                    
+            
+                    break;
+                
+                case "Update":
+                    
+                    break;
+                
+            
+            
+            }
+            
         
-    }//GEN-LAST:event_CbxSectionsFocusGained
-
-    private void CbxSectionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CbxSectionsMouseClicked
-        // TODO add your handling code here:
-        this.CbxOption.setEnabled(true);
-    }//GEN-LAST:event_CbxSectionsMouseClicked
-
-    private void CbxSectionsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CbxSectionsMousePressed
-        // TODO add your handling code here:
         
+            
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(FrmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }//GEN-LAST:event_BtnActionActionPerformed
+
+    private void RBtnManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RBtnManualActionPerformed
+        card = (CardLayout)this.PanelSetParameterOptions.getLayout();
+        card.show(this.PanelSetParameterOptions, "PanelManualParam");
+        this.TxtSearchParamOptions.setText(null);
+    }//GEN-LAST:event_RBtnManualActionPerformed
+
+    private void RBtnDefineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RBtnDefineActionPerformed
+        card = (CardLayout)this.PanelSetParameterOptions.getLayout();
+        card.show(this.PanelSetParameterOptions, "PanelDefineParam");
+        this.TxtParamValue.setText(null);
+    }//GEN-LAST:event_RBtnDefineActionPerformed
+
+    private void BtnRemoveParamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRemoveParamActionPerformed
         
-    }//GEN-LAST:event_CbxSectionsMousePressed
+        int index = this.ListParams.getSelectedIndex();
+        System.out.println(this.ListParams.getModel().getElementAt(index));
+        this.ListParams.remove(index);
+                //remove(this.listParams.getModel().getElementAt(index).);
+        //
+    }//GEN-LAST:event_BtnRemoveParamActionPerformed
+
+    private void BtnSeeResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeeResultsActionPerformed
+        card = (CardLayout)this.PanelMainCards_FrmAdmin.getLayout();
+            card.show(this.PanelMainCards_FrmAdmin, "PanelUserStats");
+    }//GEN-LAST:event_BtnSeeResultsActionPerformed
+
+    private void CkbAgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CkbAgeActionPerformed
+        if(this.CkbAge.isSelected() == true)
+        {this.CbxAgeOptions.setEnabled(true);}
+        else if(this.CkbAge.isSelected() == false)
+        {
+            this.CbxAgeOptions.setEnabled(false);
+            
+            this.TxtAgeEqualTo.setEnabled(false);
+                
+                this.LblAgeEqualTo.setEnabled(false);
+                this.LblAgeGreaterThan.setEnabled(false);
+                 this.LblAgeLesserThan.setEnabled(false);
+                 this.LblAgeRange.setEnabled(false);
+                
+                
+                this.TxtAgeGreaterThan.setEnabled(false);
+                this.TxtAgeLesserThan.setEnabled(false);
+                this.TxtAgeValue1.setEnabled(false);
+                this.TxtAgeValue2.setEnabled(false);
+                
+                this.TxtAgeGreaterThan.setText(null);
+                this.TxtAgeLesserThan.setText(null);
+                this.TxtAgeValue1.setText(null);
+                this.TxtAgeValue2.setText(null);
+            this.TxtAgeEqualTo.setText(null);
+            
+        }
+    }//GEN-LAST:event_CkbAgeActionPerformed
+
+    private void TxtParamValueKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtParamValueKeyReleased
+        if(this.TxtParamValue.getText().length()>0)
+        {this.BtnInsParam.setEnabled(true);}
+        else if(this.TxtParamValue.getText().length()==0)
+        {this.BtnInsParam.setEnabled(false);}
+    }//GEN-LAST:event_TxtParamValueKeyReleased
+
+    private void TxtSearchParamOptionsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtSearchParamOptionsKeyReleased
+        if(this.TxtSearchParamOptions.getText().length()>0)
+        {this.BtnInsParam.setEnabled(true);}
+        else if(this.TxtSearchParamOptions.getText().length()== 0)
+        {this.BtnInsParam.setEnabled(false);}
+    }//GEN-LAST:event_TxtSearchParamOptionsKeyReleased
+
+    private void TxtAgeEqualToKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtAgeEqualToKeyReleased
+        if(this.TxtAgeEqualTo.getText().length()>0)
+        {this.BtnInsParam.setEnabled(true);}
+        else if(this.TxtAgeEqualTo.getText().length()== 0)
+        {this.BtnInsParam.setEnabled(false);}
+    }//GEN-LAST:event_TxtAgeEqualToKeyReleased
+
+    private void TxtAgeGreaterThanKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtAgeGreaterThanKeyReleased
+        if(this.TxtAgeGreaterThan.getText().length()>0)
+        {this.BtnInsParam.setEnabled(true);}
+        else if(this.TxtAgeGreaterThan.getText().length()== 0)
+        {this.BtnInsParam.setEnabled(false);}
+    }//GEN-LAST:event_TxtAgeGreaterThanKeyReleased
+
+    private void TxtAgeLesserThanKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtAgeLesserThanKeyReleased
+        if(this.TxtAgeLesserThan.getText().length()>0)
+        {this.BtnInsParam.setEnabled(true);}
+        else if(this.TxtAgeLesserThan.getText().length()== 0)
+        {this.BtnInsParam.setEnabled(false);}
+    }//GEN-LAST:event_TxtAgeLesserThanKeyReleased
+
+    private void TxtAgeValue1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtAgeValue1KeyReleased
+        if(this.TxtAgeValue1.getText().length()>0 && this.TxtAgeValue2.getText().length()>0)
+        {this.BtnInsParam.setEnabled(true);}
+        else if(this.TxtAgeValue1.getText().length()== 0 && 
+                this.TxtAgeValue2.getText().length()== 0) 
+        {this.BtnInsParam.setEnabled(false);}
+    }//GEN-LAST:event_TxtAgeValue1KeyReleased
+
+    private void TxtAgeValue2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtAgeValue2KeyReleased
+        if(this.TxtAgeValue1.getText().length()>0 && this.TxtAgeValue2.getText().length()>0)
+        {this.BtnInsParam.setEnabled(true);}
+        else if(this.TxtAgeValue1.getText().length()== 0 && 
+                this.TxtAgeValue2.getText().length()== 0)
+        {this.BtnInsParam.setEnabled(false);}
+    }//GEN-LAST:event_TxtAgeValue2KeyReleased
 
     /**
      * @param args the command line arguments
@@ -851,15 +1277,15 @@ public class FrmAdmin extends javax.swing.JFrame {
     private javax.swing.JButton BtnView_FrmAdmin;
     private javax.swing.JComboBox CbxAction;
     private javax.swing.JComboBox CbxAgeOptions;
-    private javax.swing.JComboBox CbxIndustries_FrmUserMain1;
+    private javax.swing.JComboBox CbxFields;
     private javax.swing.JComboBox CbxOption;
     private javax.swing.JComboBox CbxSearchParamsOptions;
     private javax.swing.JComboBox CbxSections;
-    private javax.swing.JCheckBox CkbActivateAge;
+    private javax.swing.JCheckBox CkbAge;
     private javax.swing.JLabel LblAction;
     private javax.swing.JLabel LblAgeEqualTo;
     private javax.swing.JLabel LblAgeGreaterThan;
-    private javax.swing.JLabel LblAgeLesserTlhan;
+    private javax.swing.JLabel LblAgeLesserThan;
     private javax.swing.JLabel LblAgeRange;
     private javax.swing.JLabel LblOptionDescr;
     private javax.swing.JLabel LblOptionName;
@@ -877,8 +1303,13 @@ public class FrmAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel PanelSetParameters;
     private javax.swing.JPanel PanelUserParameters;
     private javax.swing.JPanel PanelUserStats;
-    private javax.swing.JScrollPane ScrlPaneCatDescr_PanelCategory;
+    private javax.swing.JRadioButton RBtnDefine;
+    private javax.swing.JRadioButton RBtnManual;
+    private javax.swing.JScrollBar ScrlBarManual;
+    private javax.swing.JScrollBar ScrlBarOption;
+    private javax.swing.JScrollBar ScrlBarSearch;
     private javax.swing.JScrollPane ScrlPaneListParams;
+    private javax.swing.JScrollPane ScrlPaneOptionDescr;
     private javax.swing.JScrollPane ScrlPaneTbUsers;
     private javax.swing.JTable TbUsers;
     private javax.swing.JTextField TxtAgeEqualTo;
@@ -890,7 +1321,7 @@ public class FrmAdmin extends javax.swing.JFrame {
     private javax.swing.JTextArea TxtOptionDescr;
     private javax.swing.JTextField TxtParamValue;
     private javax.swing.JTextField TxtSearchParamOptions;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     // End of variables declaration//GEN-END:variables
 }
