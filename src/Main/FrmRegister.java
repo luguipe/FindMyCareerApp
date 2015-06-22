@@ -16,6 +16,7 @@ package Main;
  */
 public class FrmRegister extends javax.swing.JFrame {
     FrmLogin frmLogin;  
+    PopUpMsgBox msgbox = new PopUpMsgBox();
     
     /**
      * Creates new form FrmRegister1
@@ -377,18 +378,19 @@ public class FrmRegister extends javax.swing.JFrame {
      private boolean fieldsFull()
      {
       boolean makeVisible = false;
-      
+      String password1 = TxtPassword.getText();
+      String password2 = TxtConfirmPassword.getText();
+      boolean passTest = password1.equals(password2);
       makeVisible = !(TxtFirstName.getText().equals("") || (TxtSurname.getText().equals("")) || (TxtDob.getText().equals("")) || 
-              (TxtEmail.getText().equals("")) || (TxtPhone.getText().equals("")) || (TxtPassword.getText().equals(""))
-              || (TxtConfirmPassword.getText().equals("")));
+              (TxtEmail.getText().equals("")) || (TxtPhone.getText().equals("")) || (password1.equals(""))
+              || (password2.equals("")));
       return makeVisible; 
               
      }
      
     private void BtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSaveActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-        this.dgConfirm.setVisible(true);
+        
         
         String firstName = this.TxtFirstName.getText();
         this.txtFirstName.setText(firstName);
@@ -405,9 +407,20 @@ public class FrmRegister extends javax.swing.JFrame {
         String email = this.TxtEmail.getText();
         this.txtEmail.setText(email);
         
-        String password = this.TxtPassword.getText();
+        String password1 = TxtPassword.getText();
+        String password2 = TxtConfirmPassword.getText();
         
-        String confirmPass = this.TxtConfirmPassword.getText();
+        if (!password2.equals(password1)){
+            String message = "The passwords don't match.";
+            msgbox.setMessage(message);
+            msgbox.setTitle("Error");
+            msgbox.setMsgBoxType("info");
+            msgbox.popUpMsgBox();
+        } else {
+            this.setVisible(false);
+            this.dgConfirm.setVisible(true);
+        }
+      
        
         
 
