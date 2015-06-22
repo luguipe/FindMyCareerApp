@@ -1,23 +1,62 @@
-package Main;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
+package Main;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
- * @author 2104689414
+ * @author 1105642614
  */
-public class FrmLogin extends javax.swing.JDialog {
-
+public class FrmLogin extends javax.swing.JFrame {
+    FrmRegister frmRegister;
+    FrmUserMain frmUserMain;
+    String userName = null;
+    String password = null;
+    public String id = null; //Access for GUI
+    public String userType = null;
+    Database db = new Database();
+    Connection con;
+    PreparedStatement statement;
+    ResultSet rs;
+    PopUpMsgBox msgbox = new PopUpMsgBox();
     /**
-     * Creates new form login
+     * Creates new form FrmLogin1
      */
-    public FrmLogin(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public FrmLogin() {
         initComponents();
+        db.setDatabase("findmycareer");
+        db.setHost("localhost");
+        db.setPassword("");
+        db.setPort("3306");
+        db.setUser("root");
+        
+        try {
+            con = db.getConnection();
+            System.out.println("conected");
+            
+            String query = "SELECT category FROM category";
+            statement = con.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                String test = rs.getString("category");
+                 System.out.println(test);
+            }
+           
+            
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     /**
@@ -31,16 +70,24 @@ public class FrmLogin extends javax.swing.JDialog {
 
         TxtUserId = new javax.swing.JTextField();
         LblLogin = new javax.swing.JLabel();
-        LblUserId = new javax.swing.JLabel();
-        LblPassword = new javax.swing.JLabel();
         TxtPassword = new javax.swing.JPasswordField();
         BtnRegister = new javax.swing.JButton();
+        LblUserId = new javax.swing.JLabel();
+        LblPassword = new javax.swing.JLabel();
         BtnLogin = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         LblLogin.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         LblLogin.setText("Login");
+
+        BtnRegister.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        BtnRegister.setText("Register");
+        BtnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRegisterActionPerformed(evt);
+            }
+        });
 
         LblUserId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LblUserId.setText("User Identification");
@@ -48,11 +95,13 @@ public class FrmLogin extends javax.swing.JDialog {
         LblPassword.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LblPassword.setText("Password");
 
-        BtnRegister.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        BtnRegister.setText("Register");
-
         BtnLogin.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnLogin.setText("Login");
+        BtnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLoginActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,8 +147,118 @@ public class FrmLogin extends javax.swing.JDialog {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegisterActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        if (frmRegister == null){
+            frmRegister = new FrmRegister();
+            
+            frmRegister.setVisible(true);
+        }
+    }//GEN-LAST:event_BtnRegisterActionPerformed
+
+    private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
+        // TODO add your handling code here:
+        userName = this.TxtUserId.getText();
+        password = this.TxtPassword.getText(); 
+        
+        String user = null;
+        String pass = null;
+        
+        
+        try {
+            con = db.getConnection();
+            System.out.println("conected");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+        //Gets username
+        try {
+            String query = "SELECT userName FROM user WHERE userName='"+userName+"'";
+            statement = con.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                user = rs.getString("userName");
+                System.out.println("Database has grabbed the username:" + user);
+            }
+            statement.close();
+            rs.close();
+         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        //Get UserID
+        try {
+            String query = "SELECT userID FROM user WHERE userName='"+userName+"'";
+            statement = con.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                id = rs.getString("userID");
+                System.out.println("Database has grabbed the username:" + id); //remove
+            }
+            statement.close();
+            rs.close();
+         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        //Gets password
+        try {
+            String query = "SELECT password FROM user WHERE userID='"+id+"'";
+            statement = con.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next()){
+                pass = rs.getString("password");
+                System.out.println("Database has grabbed the password:" + pass);
+            }
+            statement.close();
+            rs.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        //Gets userType
+       try {
+            String query = "SELECT codUserType FROM user WHERE userID='"+id+"'";
+            statement = con.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next()){
+                userType = rs.getString("codUserType");
+                System.out.println("Database has grabbed the password:" + userType);
+            }
+            statement.close();
+            rs.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+       
+       
+        
+        if(userName.equals(user) && password.equals(pass) && id.equals(id)){
+            this.setVisible(false);
+            
+            frmUserMain = new FrmUserMain();            
+            frmUserMain.setVisible(true);
+            
+        
+        }else {
+            String message = "The username/password is incorrect.";
+            msgbox.setMessage(message);
+            msgbox.setTitle("Error");
+            msgbox.setMsgBoxType("info");
+            msgbox.popUpMsgBox();      
+        }
+        
+    }//GEN-LAST:event_BtnLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,19 +286,11 @@ public class FrmLogin extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the dialog */
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FrmLogin dialog = new FrmLogin(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                new FrmLogin().setVisible(true);
             }
         });
     }
