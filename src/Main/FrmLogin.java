@@ -151,6 +151,6 @@ public class FrmLogin extends javax.swing.JDialog {
     private javax.swing.JLabel LblPassword;
     private javax.swing.JLabel LblUserId;
     private javax.swing.JPasswordField TxtPassword;
-    private javax.swing.JTextField TxtUserId;
+    public static javax.swing.JTextField TxtUserId;
     // End of variables declaration//GEN-END:variables
 }

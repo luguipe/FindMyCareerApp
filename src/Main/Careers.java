@@ -140,7 +140,7 @@ public class Careers extends javax.swing.JFrame {
              // TODO add your handling code here:
 
              editProfile = new FrmEditProfile();
-         } catch (SQLException ex) {
+         } catch (Exception ex) {
              Logger.getLogger(Careers.class.getName()).log(Level.SEVERE, null, ex);
          }
         editProfile.setVisible(true);

@@ -5,6 +5,7 @@
  */
 package Main;
 
+import static Main.FrmLogin.TxtUserId;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -48,6 +49,11 @@ public class FrmUserMain extends javax.swing.JFrame
       db.setHost("localhost"); //Sets the host of the database - Jak
       db.setPort("3306"); //Sets the port that the database server will use - Jak
       db.setDatabase("findmycareer"); //Sets the Database that you will be connecting to - Jak
+      
+      jLabel1.setText(FrmLogin.TxtUserId.getText());
+      
+      
+      
       
       //Attempts to connect to the database - Jak
         try 
@@ -183,6 +189,7 @@ public class FrmUserMain extends javax.swing.JFrame
         ScrlPaneJobDescr_PanelJobs = new javax.swing.JScrollPane();
         TxtJobDescr_PanelJobs = new javax.swing.JTextArea();
         BtnProfile = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(580, 530));
@@ -523,6 +530,8 @@ public class FrmUserMain extends javax.swing.JFrame
             }
         });
 
+        jLabel1.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -540,16 +549,20 @@ public class FrmUserMain extends javax.swing.JFrame
                             .addGap(76, 76, 76)
                             .addComponent(BtnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addContainerGap(56, Short.MAX_VALUE))
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createSequentialGroup()
                     .addGap(42, 42, 42)
-                    .addComponent(LblIndustry_FrmUserMain)
-                    .addGap(22, 22, 22)
-                    .addComponent(CbxIndustries_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(LblCategories_FrmUserMain)
-                    .addGap(18, 18, 18)
-                    .addComponent(CbxCategories_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(LblIndustry_FrmUserMain)
+                            .addGap(22, 22, 22)
+                            .addComponent(CbxIndustries_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LblCategories_FrmUserMain)
+                            .addGap(18, 18, 18)
+                            .addComponent(CbxCategories_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE)))
             .addGroup(layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addComponent(TlbCardsLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -558,7 +571,9 @@ public class FrmUserMain extends javax.swing.JFrame
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(9, 9, 9)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CbxIndustries_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(LblIndustry_FrmUserMain)
@@ -829,6 +844,7 @@ public class FrmUserMain extends javax.swing.JFrame
     private javax.swing.JTextArea TxtDescrIndustry_PaneIndustry;
     private javax.swing.JTextArea TxtJobDescr_PanelJobs;
     private javax.swing.JTextArea TxtSkillDescr_FrmUserMain;
+    public static javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -106,7 +106,7 @@ public class Queries extends Database
         return null;
     }
     
-//    public PreparedStatement updateProfile (String edtprofile) throw SQLException
+//    public PreparedStatement updateProfile() throw SQLException
 //    {
 //    
 //        Connection c = null;
@@ -116,31 +116,19 @@ public class Queries extends Database
 //        c = getConnection();
 //        
 //        PreparedStatement updateProfile;
-//        sql = "UPDATE user SET 'userID' = '', 'firstName' = TxtFirstName, 'lastName' = TxtLastName, 'dob' = TxtDob, 'phone'= TxtPhone, 'email'= TxtEmail"; 
+//        sql = "UPDATE `user` SET `firstName`='Anne',`lastName`='Braydon',`dob`='1979-06-30',`phone`='88888888',`email`='anne@gmail.com',`password`='sesame30' WHERE userId = 30"; 
 //        updateProfile = c.prepareStatement(sql);
 //        
 //        return updateProfile;
 //        }
 //        catch (SQLException e)
 //        {
-//            //Make appear a popup msgbox with the exception error
-//            String message = "Prepared Statement creation failed"
-//                           + "\n\n"
-//                           + e.getMessage();
-//            msgbox.setMessage(message);
-//            msgbox.setTitle("Prepared Statement Error");
-//            msgbox.setMsgBoxType("error");
-//            msgbox.popUpMsgBox();
-//            //If the connection fails closes it
-//            if (c != null) { c.close(); }
+//    
+//          System.out.println("Error: " + e.getMessage());
 //        }
 //        return null;
 //    
 //    
 //    }
-    
-    
-    
-    
     
 }
