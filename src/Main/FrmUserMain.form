@@ -650,6 +650,7 @@
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="CbxJobs_PanelJobsItemStateChanged"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CbxJobs_PanelJobsActionPerformed"/>
               </Events>
             </Component>
@@ -701,9 +702,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblLastName">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Hunt!"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

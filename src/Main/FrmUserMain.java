@@ -45,6 +45,9 @@ public class FrmUserMain extends javax.swing.JFrame
     String userType; //Creates a string variable - Jak
     String id;
     
+    String finalJob;
+    String finalCourse;
+    
     boolean isClicked = false; //Creates a boolean to check if the courses combobox has been clicked before it changes itemState - Jak
     
     public FrmUserMain() 
@@ -126,17 +129,33 @@ public class FrmUserMain extends javax.swing.JFrame
     
     private void selectName() //NEEDS WORK
     {
-        String query = "SELECT firstName FROM user WHERE userID ='"+id+"'";
-        
+       
         //<editor-fold desc="Try-Catch for user firstName and lastName">
         try 
         {
+            String query = "SELECT firstName FROM user WHERE userID ='"+id+"'";
             statement = conn.prepareStatement(query);
             rs = statement.executeQuery();
             
             while(rs.next())
             {
                 lblName.setText(rs.getString("firstName"));
+            }
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        try 
+        {
+            String query = "SELECT lastName FROM user WHERE userID ='"+id+"'";
+            statement = conn.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                lblLastName.setText(rs.getString("lastName"));
             }
         } 
         catch (Exception e)
@@ -495,6 +514,11 @@ public class FrmUserMain extends javax.swing.JFrame
         PanelJobs.setPreferredSize(new java.awt.Dimension(500, 300));
 
         CbxJobs_PanelJobs.setEnabled(false);
+        CbxJobs_PanelJobs.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                CbxJobs_PanelJobsItemStateChanged(evt);
+            }
+        });
         CbxJobs_PanelJobs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxJobs_PanelJobsActionPerformed(evt);
@@ -552,8 +576,6 @@ public class FrmUserMain extends javax.swing.JFrame
         jLabel1.setText("Welcome: ");
 
         lblName.setText("Dave");
-
-        lblLastName.setText("Hunt!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -629,7 +651,7 @@ public class FrmUserMain extends javax.swing.JFrame
 
     private void CbxCourses_PanelCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxCourses_PanelCoursesActionPerformed
     
-        isClicked = true;
+        //isClicked = true;
         
     }//GEN-LAST:event_CbxCourses_PanelCoursesActionPerformed
 
@@ -644,6 +666,13 @@ public class FrmUserMain extends javax.swing.JFrame
 
     private void BtnSaveCareerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSaveCareerActionPerformed
         
+        //RAN OUT OF TIME
+        //ID MUST BE INT IN DATABASE
+        
+        try {
+            String query = "INSERT INTO `findmycareer`.`career` (`codJob`, `codCourse`, `userID`) VALUES ('"+finalJob+"', '"+finalCourse+"', '"+id+"')";
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_BtnSaveCareerActionPerformed
 
     private void CbxSkills_PanelSkillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxSkills_PanelSkillsActionPerformed
@@ -702,11 +731,15 @@ public class FrmUserMain extends javax.swing.JFrame
 
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
         System.exit(0); //TO DO - Jak
-        //takes the user back to the login screen, Makes sure logged out?
-
-        //this.setVisible(false);
+            this.setVisible(false);
+            
+            if(frmLogin == null)
+            {
+                frmLogin = new FrmLogin();
+            }     
+                frmLogin.setVisible(true);
         
-        //frmLogin.setVisible(true);
+        
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void CbxIndustries_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxIndustries_FrmUserMainItemStateChanged
@@ -881,9 +914,7 @@ public class FrmUserMain extends javax.swing.JFrame
             JOptionPane.showMessageDialog(null, e);
         }
         //</editor-fold>
-        
-        
-        
+
         //<editor-fold desc="Try-Catch for Courses Panel">
         ArrayList<String> courses = new ArrayList<>(); //Creates an array to store the data for the courses - Jak
         
@@ -938,6 +969,11 @@ public class FrmUserMain extends javax.swing.JFrame
         CbxJobs_PanelJobs.setEnabled(true);
         
         String selectedItem = CbxCourses_PanelCourses.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
+        
+        
+        //BUG: DOUBLES UP OUTPUT?
+       // System.out.println("FinalCourseChoice: " + finalCourse);
+
         String selectedItemID = null; //Creates a string variable - Jak
         
         //Working
@@ -1013,9 +1049,10 @@ public class FrmUserMain extends javax.swing.JFrame
         
 //        //</editor-fold>
         
-//        //<editor-fold desc="Initial Jobs">
-//        String selectedItemJob = CbxJobs_PanelJobs.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
+        //<editor-fold desc="Initial Jobs">
+//      String selectedItemJob = CbxJobs_PanelJobs.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
         String selectedCourseName = CbxCourses_PanelCourses.getSelectedItem().toString();
+        
         String selectedJobID = null;
         String jobIDCourse = null;
                 
@@ -1027,9 +1064,12 @@ public class FrmUserMain extends javax.swing.JFrame
             statement = conn.prepareStatement(query);
             rs = statement.executeQuery();
             
+            ArrayList<String> courses = new ArrayList();
+            
             while(rs.next())
             {
                 selectedJobID = rs.getString("codCourse");
+                courses.add(selectedJobID);
                 //System.out.println(selectedJobID);
             }
             statement.close(); //Close the connections - Jak
@@ -1041,57 +1081,146 @@ public class FrmUserMain extends javax.swing.JFrame
         }
         //</editor-fold>
         
-        //Works?
-        //<editor-fold desc="Gets bridged JobID">
-        try 
-        {
-            String query = "SELECT codJob FROM jobs_courses WHERE codCourse = '"+selectedJobID+"'";
-            statement = conn.prepareStatement(query);
-            rs = statement.executeQuery();
-            
-            //ArrayList<String> jobsid = new ArrayList<>();
-            
-            while(rs.next())
-            {
-                jobIDCourse = rs.getString("codJob");
-                //jobsid.add(jobIDCourse);
-               // System.out.println("Bridge table: " + jobsid);
-                System.out.println("Bridge table: " + jobIDCourse);
-            }
-            statement.close(); //Close the connections - Jak
-            rs.close();
-        } 
-        catch (Exception e)
-        {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        //</editor-fold>
+        //BUGGY - Jak
+        //        //<editor-fold desc="Gets bridged JobID">
+//        try 
+//        {
+//            String query = "SELECT codJob FROM jobs_courses WHERE codCourse = '"+selectedJobID+"'";
+//            statement = conn.prepareStatement(query);
+//            rs = statement.executeQuery();
+//            
+//            ArrayList<String> jobsid = new ArrayList<>();
+//            
+//            while(rs.next())
+//            {
+//                jobIDCourse = rs.getString("codJob");
+//                jobsid.add(jobIDCourse);
+//                System.out.println("Bridge table: " + jobsid);
+//                
+//                //System.out.println("Bridge table: " + jobIDCourse);
+//                //CbxJobs_PanelJobs.addItem(jobIDCourse);
+//            }
+//            statement.close(); //Close the connections - Jak
+//            rs.close();
+//        } 
+//        catch (Exception e)
+//        {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+//        //</editor-fold>
         
         //Buggy, can pull all jobs, cant pull jobs according to jobID, if it does, it only pulls last in list
         //<editor-fold desc="Try-Catch for Jobs Panel">
         try 
         {
-            ArrayList<String> jobs = new ArrayList<>();
+            ArrayList<String> cert4 = new ArrayList<>();
+            ArrayList<String> dipSoft = new ArrayList<>();
             
-            String query = "SELECT job FROM jobs WHERE codJob = '"+jobIDCourse+"'";
+            //String query = "SELECT job FROM jobs WHERE codJob = '"+jobIDCourse+"'";
+            //String query = "SELECT codJob FROM jobs_courses";
+           // String query = "SELECT job FROM jobs WHERE codJob =";
+
+            //MANUAL, CANT FIX BUG
+            if(CbxCourses_PanelCourses.getSelectedIndex() == 0)
+            {
+                String query = "SELECT job FROM `jobs` WHERE codJob in ('JOB01', 'JOB02', 'JOB03')";
+                statement = conn.prepareStatement(query);
+                rs = statement.executeQuery();
+                
+                while(rs.next())
+                {
+                String jobName = rs.getString("job");
+                cert4.add(jobName);
+                CbxJobs_PanelJobs.setModel(new javax.swing.DefaultComboBoxModel(cert4.toArray()));
+                }
+            }
+            else if(CbxCourses_PanelCourses.getSelectedIndex() == 1)
+            {
+                String query = "SELECT job FROM `jobs` WHERE codJob in ('JOB04', 'JOB05', 'JOB06', 'JOB07', 'JOB08', 'JOB09', 'JOB10')";
+                statement = conn.prepareStatement(query);
+                rs = statement.executeQuery();
+                
+                while(rs.next())
+                {
+                String jobName = rs.getString("job");
+                dipSoft.add(jobName);
+                CbxJobs_PanelJobs.setModel(new javax.swing.DefaultComboBoxModel(dipSoft.toArray()));
+                }
+            }
+        }
             
-//            String query = "SELECT job FROM `jobs` WHERE codJob in ('JOB01', 'JOB02', 'JOB03')";
-            
-//String query = "SELECT job FROM jobs";
-            statement = conn.prepareStatement(query);
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+//
+//            //String query = "SELECT job FROM jobs";
+//            statement = conn.prepareStatement(query);
+//            rs = statement.executeQuery();
+//            
+//            while(rs.next())
+//            {
+//                String jobName = rs.getString("codJob");
+//                jobs.add(jobName);
+//                CbxJobs_PanelJobs.setModel(new javax.swing.DefaultComboBoxModel(jobs.toArray()));
+//                //CbxJobs_PanelJobs.addItem(jobName);
+//                
+//                
+//                System.out.println(jobs);
+//               
+//            }
+//            statement.close(); //Close the connections - Jak
+//            rs.close();
+//        } 
+//        catch (Exception e)
+//        {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+        //</editor-fold>
+        
+       
+        
+//        //</editor-fold>
+        
+    }//GEN-LAST:event_CbxCourses_PanelCoursesItemStateChanged
+
+    private void CbxJobs_PanelJobsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxJobs_PanelJobsItemStateChanged
+        // TODO add your handling code here:
+        
+         //<editor-fold desc="Try-Catch for Jobs Description">
+        
+        String selectedItem = CbxJobs_PanelJobs.getSelectedItem().toString();
+        finalJob = selectedItem;
+        
+        //BUG: DOUBLES UP SELECTION
+        //System.out.println("FinalCareerChoice: " + finalJob);
+        
+//        try {
+//            String query = "SELECT codJob FROM jobs WHERE job = '"+selectedItem+"'";
+//            statement = conn.prepareStatement(query);
+//            rs = statement.executeQuery();
+//            
+//            while(rs.next())
+//            {
+//                TxtJobDescr_PanelJobs.setText(rs.getString("descr"));
+//            }
+//            statement.close();
+//            rs.close();
+//            
+//        } catch (Exception e) {
+//        }
+        
+        try
+        {
+            String queryDesc = "SELECT descr FROM jobs WHERE job = '"+selectedItem+"'";
+            statement = conn.prepareStatement(queryDesc);
             rs = statement.executeQuery();
             
             while(rs.next())
             {
-                String jobName = rs.getString("job");
-                jobs.add(jobName);
-                CbxJobs_PanelJobs.setModel(new javax.swing.DefaultComboBoxModel(jobs.toArray()));
-                //CbxJobs_PanelJobs.addItem(jobName);
-                
-                System.out.println(jobs);
-               
+                TxtJobDescr_PanelJobs.setText(rs.getString("descr"));
             }
-            statement.close(); //Close the connections - Jak
+            statement.close();
             rs.close();
         } 
         catch (Exception e)
@@ -1099,14 +1228,8 @@ public class FrmUserMain extends javax.swing.JFrame
             JOptionPane.showMessageDialog(null, e);
         }
         //</editor-fold>
-//        
-        //        //<editor-fold desc="Try-Catch for Jobs Description">
-//        
-//        //</editor-fold>
-//        
-//        //</editor-fold>
         
-    }//GEN-LAST:event_CbxCourses_PanelCoursesItemStateChanged
+    }//GEN-LAST:event_CbxJobs_PanelJobsItemStateChanged
 
     /**
      * @param args the command line arguments
