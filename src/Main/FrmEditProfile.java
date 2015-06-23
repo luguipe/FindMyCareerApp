@@ -1,5 +1,15 @@
 package Main;
 
+import java.awt.Color;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import java.util.ArrayList;
+
+
+    
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,19 +18,54 @@ package Main;
 
 /**
  *
- * @author 3106024814
+ * @author Gui Perez
  */
 public class FrmEditProfile extends javax.swing.JFrame {
-
+    
+    ResultSet rs;
+    //Queries query = new Queries();
     Careers careers;
- //   MainScreen mainFrm;
+    Connection con = null;
+    Statement st;
+    ResultSet resultSet;
+    FrmLogin frmlogin;
+    FrmUserMain frmUserMain;
+    String id;
+    
+    
+    Database db = new Database();
+    FrmLogin login = new FrmLogin();
+    
     /**
      * Creates new form profile
+     * @throws java.sql.SQLException
      */
-    public FrmEditProfile() {
+    public FrmEditProfile(){
+        this.frmUserMain = new FrmUserMain();
+        //this.id = null;
+        this.frmlogin = null;
         initComponents();
         careers = new Careers();
-   //     mainFrm = new MainScreen();
+        id = frmlogin.getUserID();
+        
+        System.out.println(id);
+    }
+    
+    private void selectUserByID()
+    {
+        ArrayList<String> userData = new ArrayList<>();
+        String sql = "SELECT password, firstName, lastName, dob, phone, FROM user WHERE userID = "+id+"";
+        
+        try {
+            st = con.prepareStatement(sql);
+           // resultSet = st.executeQuery();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+                
+    
+    
+    
     }
 
     /**
@@ -231,6 +276,8 @@ public class FrmEditProfile extends javax.swing.JFrame {
 
     private void BtnExit_FrmEditProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExit_FrmEditProfileActionPerformed
         // TODO add your handling code here:
+        System.exit(0);
+        
     }//GEN-LAST:event_BtnExit_FrmEditProfileActionPerformed
 
     /**
