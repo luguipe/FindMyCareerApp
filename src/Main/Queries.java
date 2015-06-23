@@ -106,29 +106,5 @@ public class Queries extends Database
         return null;
     }
     
-//    public PreparedStatement updateProfile() throw SQLException
-//    {
-//    
-//        Connection c = null;
-//                
-//        try
-//        {
-//        c = getConnection();
-//        
-//        PreparedStatement updateProfile;
-//        sql = "UPDATE `user` SET `firstName`='Anne',`lastName`='Braydon',`dob`='1979-06-30',`phone`='88888888',`email`='anne@gmail.com',`password`='sesame30' WHERE userId = 30"; 
-//        updateProfile = c.prepareStatement(sql);
-//        
-//        return updateProfile;
-//        }
-//        catch (SQLException e)
-//        {
-//    
-//          System.out.println("Error: " + e.getMessage());
-//        }
-//        return null;
-//    
-//    
-//    }
     
 }

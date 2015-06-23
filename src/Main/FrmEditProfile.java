@@ -5,6 +5,8 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
+
 
     
 
@@ -28,54 +30,46 @@ public class FrmEditProfile extends javax.swing.JFrame {
     ResultSet resultSet;
     FrmLogin frmlogin;
     FrmUserMain frmUserMain;
+    String id;
+    
     
     String id = frmlogin.id;
     
     Database db = new Database();
-    
-    
-    
+    FrmLogin login = new FrmLogin();
     
     /**
      * Creates new form profile
      * @throws java.sql.SQLException
      */
     public FrmEditProfile(){
-       
+        this.frmUserMain = new FrmUserMain();
+        //this.id = null;
+        this.frmlogin = null;
         initComponents();
         careers = new Careers();
+        id = frmlogin.getUserID();
         
-        //getContentPane().setBackground(Color.yellow);
+        System.out.println(id);
+    }
+    
+    private void selectUserByID()
+    {
+        ArrayList<String> userData = new ArrayList<>();
+        String sql = "SELECT password, firstName, lastName, dob, phone, FROM user WHERE userID = "+id+"";
         
-        db.setDatabase("findmycareer");
-        db.setHost("localhost");
-        db.setPassword("");
-        db.setPort("3306");
-        db.setUser("root");
-        
-        try
-        {
-            con = db.getConnection();
-            System.out.println("Connected");
-                   
-            
-//        
-//        String updateProfile = "UPDATE user SET 'userID' = '', 'firstName' = TxtFirstName, 'lastName' = TxtLastName, 'dob' = TxtDob, 'phone'= TxtPhone, 'email'= TxtEmail"; 
-//            
-//        PreparedStatement st = query.selectAll("user");
-//        rs = query.execute(st);
-//        
-        } catch(Exception e){
-                
-            JOptionPane.showMessageDialog(null,e);
-                
+        try {
+            st = con.prepareStatement(sql);
+           // resultSet = st.executeQuery();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
         }
-        
+                
+    
+    
+    
     }
 
-        
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -88,6 +82,7 @@ public class FrmEditProfile extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         PanEditData = new javax.swing.JPanel();
+        TxtFirstName = new javax.swing.JTextField();
         LblFirstName = new javax.swing.JLabel();
         TxtLastName = new javax.swing.JTextField();
         LblLastName = new javax.swing.JLabel();
@@ -100,9 +95,6 @@ public class FrmEditProfile extends javax.swing.JFrame {
         LblEmail = new javax.swing.JLabel();
         BtnCareer = new javax.swing.JButton();
         BtnExit_FrmEditProfile = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        TxtPassword = new javax.swing.JPasswordField();
-        TxtFirstName = new javax.swing.JTextField();
 
         jButton2.setText("View Usage Statistics");
 
@@ -140,12 +132,6 @@ public class FrmEditProfile extends javax.swing.JFrame {
             }
         });
 
-        TxtEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TxtEmailActionPerformed(evt);
-            }
-        });
-
         LblDob.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         LblDob.setText("DOB:");
 
@@ -169,31 +155,13 @@ public class FrmEditProfile extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setText("Password:");
-
-        TxtFirstName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TxtFirstNameActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout PanEditDataLayout = new javax.swing.GroupLayout(PanEditData);
         PanEditData.setLayout(PanEditDataLayout);
         PanEditDataLayout.setHorizontalGroup(
             PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanEditDataLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BtnSaveDetails)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BtnExit_FrmEditProfile)
-                .addGap(18, 18, 18))
             .addGroup(PanEditDataLayout.createSequentialGroup()
-                .addGroup(PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(PanEditDataLayout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(BtnCareer, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanEditDataLayout.createSequentialGroup()
+                .addGroup(PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanEditDataLayout.createSequentialGroup()
                         .addGroup(PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanEditDataLayout.createSequentialGroup()
                                 .addComponent(LblLastName)
@@ -204,18 +172,26 @@ public class FrmEditProfile extends javax.swing.JFrame {
                                     .addComponent(LblFirstName)
                                     .addComponent(LblDob)
                                     .addComponent(LblEmail)
-                                    .addComponent(LblPhone)
-                                    .addComponent(jLabel1))
+                                    .addComponent(LblPhone))
                                 .addGap(18, 18, 18)))
-                        .addGroup(PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(TxtPassword)
-                            .addComponent(TxtDob, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                        .addGroup(PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TxtDob, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(TxtPhone, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(TxtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
-                            .addComponent(TxtLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                            .addComponent(TxtFirstName))))
+                                .addComponent(TxtEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(TxtLastName)
+                                .addComponent(TxtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanEditDataLayout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addComponent(BtnCareer)))
                 .addContainerGap(27, Short.MAX_VALUE))
+            .addGroup(PanEditDataLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(BtnSaveDetails)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BtnExit_FrmEditProfile)
+                .addGap(18, 18, 18))
         );
         PanEditDataLayout.setVerticalGroup(
             PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,13 +216,9 @@ public class FrmEditProfile extends javax.swing.JFrame {
                 .addGroup(PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(LblEmail))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(TxtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(BtnCareer)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(PanEditDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnSaveDetails)
                     .addComponent(BtnExit_FrmEditProfile))
@@ -276,13 +248,6 @@ public class FrmEditProfile extends javax.swing.JFrame {
 
     private void TxtLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtLastNameActionPerformed
         // TODO add your handling code here:
-        
-        
-        
-                
-
-        
-        
     }//GEN-LAST:event_TxtLastNameActionPerformed
 
     private void TxtPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtPhoneActionPerformed
@@ -293,7 +258,11 @@ public class FrmEditProfile extends javax.swing.JFrame {
         // TODO add your handling code here:
       this.setVisible(false);
         
-
+//        if(mainFrm == null)
+//        {
+//            mainFrm = new MainScreen();
+//        }
+//            mainFrm.setVisible(true);
     }//GEN-LAST:event_BtnSaveDetailsActionPerformed
 
     private void BtnCareerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCareerActionPerformed
@@ -309,28 +278,13 @@ public class FrmEditProfile extends javax.swing.JFrame {
 
     private void BtnExit_FrmEditProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExit_FrmEditProfileActionPerformed
         // TODO add your handling code here:
-        
-        System.exit(0);  
+        System.exit(0);
         
     }//GEN-LAST:event_BtnExit_FrmEditProfileActionPerformed
-
-    private void TxtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtEmailActionPerformed
-        // TODO add your handling code here:
-        
-        
-    }//GEN-LAST:event_TxtEmailActionPerformed
-
-    private void TxtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtFirstNameActionPerformed
-        // TODO add your handling code here:
-        
-        
-    }//GEN-LAST:event_TxtFirstNameActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
-
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -357,13 +311,8 @@ public class FrmEditProfile extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
-                try {
-                    new FrmEditProfile().setVisible(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(FrmEditProfile.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new FrmEditProfile().setVisible(true);
             }
         });
     }
@@ -382,12 +331,8 @@ public class FrmEditProfile extends javax.swing.JFrame {
     private javax.swing.JTextField TxtEmail;
     private javax.swing.JTextField TxtFirstName;
     private javax.swing.JTextField TxtLastName;
-    private javax.swing.JPasswordField TxtPassword;
     private javax.swing.JTextField TxtPhone;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
-
 }
-
