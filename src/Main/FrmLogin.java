@@ -227,7 +227,6 @@ public class FrmLogin extends javax.swing.JFrame {
             frmUserMain = new FrmUserMain();            
             frmUserMain.setVisible(true);
             
-            
         }else {
             String message = "The username/password is incorrect.";
             msgbox.setMessage(message);
