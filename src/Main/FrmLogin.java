@@ -29,6 +29,8 @@ public class FrmLogin extends javax.swing.JFrame {
     PreparedStatement statement;
     ResultSet rs;
     PopUpMsgBox msgbox = new PopUpMsgBox();
+    Date date = new Date();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     /**
      * Creates new form FrmLogin1
      */
@@ -147,8 +149,7 @@ public class FrmLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         userName = this.TxtUserId.getText();
         password = this.TxtPassword.getText(); 
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        
         String lastLogin = dateFormat.format(date);
         
         String user = null;
