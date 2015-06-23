@@ -271,30 +271,33 @@
                               <Component id="LblEmail" min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
-                                      <Component id="TxtEmail" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace pref="154" max="32767" attributes="0"/>
+                                      <EmptySpace pref="178" max="32767" attributes="0"/>
                                       <Component id="btnCancelReg" min="-2" pref="107" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="BtnSave" min="-2" pref="107" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="148" max="-2" attributes="0"/>
+                                      <Component id="TxtEmail" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="LblSurname" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
                               <Component id="TxtSurname" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="LblConfirmPassword" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="LblDob" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="LblConfirmPassword" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="LblDob" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="TxtDob" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="TxtDob" pref="250" max="32767" attributes="0"/>
                                   <Component id="TxtConfirmPassword" max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -447,7 +450,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="11" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Date of Birth"/>
+        <Property name="text" type="java.lang.String" value="Date of Birth (yyyy/mm/dd)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnCancelReg">

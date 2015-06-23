@@ -29,7 +29,7 @@ public class FrmRegister extends javax.swing.JFrame {
     PreparedStatement statement;
     ResultSet rs;
     Date date = new Date();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     /**
      * Creates new form FrmRegister1
      */
@@ -294,7 +294,7 @@ public class FrmRegister extends javax.swing.JFrame {
         });
 
         LblDob.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        LblDob.setText("Date of Birth");
+        LblDob.setText("Date of Birth (yyyy/mm/dd)");
 
         btnCancelReg.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCancelReg.setText("Cancel");
@@ -366,24 +366,26 @@ public class FrmRegister extends javax.swing.JFrame {
                                 .addComponent(LblEmail)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(87, 87, 87)
-                                        .addComponent(TxtEmail))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
                                         .addComponent(btnCancelReg, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(BtnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(BtnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(148, 148, 148)
+                                        .addComponent(TxtEmail))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(LblSurname)
-                                .addGap(59, 59, 59)
+                                .addGap(119, 119, 119)
                                 .addComponent(TxtSurname))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(LblConfirmPassword)
-                                    .addComponent(LblDob))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(LblConfirmPassword)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(LblDob, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(TxtDob)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(TxtDob, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                                     .addComponent(TxtConfirmPassword)))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(340, 340, 340)
@@ -443,7 +445,9 @@ public class FrmRegister extends javax.swing.JFrame {
      }
      
     private void BtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSaveActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:       
+        
+//        SimpleDateFormat dobFormat = new SimpleDateFormat("yyyy/MM/dd");
         
         
         String firstName = this.TxtFirstName.getText();
@@ -475,10 +479,19 @@ public class FrmRegister extends javax.swing.JFrame {
             msgbox.setMsgBoxType("info");
             msgbox.popUpMsgBox();
         
+        } else if(!dob.matches("([0-9]{4})/([0-9]{2})/([0-9]{2})")){
+            String message = "Invalid Date of Birth.";
+            msgbox.setMessage(message);
+            msgbox.setTitle("Error");
+            msgbox.setMsgBoxType("info");
+            msgbox.popUpMsgBox();
         } else {
             this.setVisible(false);
             this.dgConfirm.setVisible(true);
         }
+        
+        
+        
       
 
     }//GEN-LAST:event_BtnSaveActionPerformed
@@ -509,10 +522,13 @@ public class FrmRegister extends javax.swing.JFrame {
         String email = this.txtEmail.getText();
         String password = TxtPassword.getText();
         String userType = "TYPE02";
-//        String date = dateFormat.format(date);
-         
         
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         
+        String dateCreation = dateFormat.format(date);
+                
+                
         this.dgConfirm.dispose();
         this.setVisible(false);
         if (frmLogin == null){
@@ -530,16 +546,11 @@ public class FrmRegister extends javax.swing.JFrame {
        
         
         try {
-            String query = "INSERT INTO user (userName, password, firstName, lastName, dob, phone, email, codUserType)"
-                    + " VALUES ('"+userName+"','"+password+"','"+firstName+"','"+lastName+"','"+dob+"','"+phone+"','"+email+"','"+userType+"')";
+            String query = "INSERT INTO user (userName, password, firstName, lastName, dob, phone, email, codUserType, dateCreation)"
+                    + " VALUES ('"+userName+"','"+password+"','"+firstName+"','"+lastName+"','"+dob+"','"+phone+"','"+email+"','"+userType+"','"+dateCreation+"')";
             statement = con.prepareStatement(query);
             statement.execute();
             
-//            while(rs.next())
-//            {
-//                register = rs.getString("userName");
-//                System.out.println(userName);
-//            }
             statement.close();
             
          } catch (Exception e) {
@@ -680,4 +691,6 @@ public class FrmRegister extends javax.swing.JFrame {
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
+
+
 }
