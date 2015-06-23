@@ -19,9 +19,9 @@ import java.util.logging.Logger;
 public class FrmUserMain extends javax.swing.JFrame 
 {
     //  TODO
-    // SETUP SAVE TO PROFILE BUTTON, UPDATE QUERY TO USERPROFILE ON DATABASE, NEED LOGIN FOR THAT?
-    // SETUP COURSES, SKILLS, OUTCOMES
-    // SETUP LOGOUT, CODE INVALID FOR JDIALOG, NEED NEW LOGIN FORM
+    // SETUP SAVE TO PROFILE BUTTON
+    // SETUP SKILLS, RESET THE OTHER COMBOBOXES WHEN USER SELECTS A NEW INDUSTRY
+    // SETUP LOGOUT
     
     CardLayout card; //Creates the layout the form will use - Jak
     FrmLogin frmLogin;
@@ -47,6 +47,9 @@ public class FrmUserMain extends javax.swing.JFrame
     
     String finalJob;
     String finalCourse;
+    
+    //int finalID = Integer.parseInt(id);
+    String finalID = id;
     
     boolean isClicked = false; //Creates a boolean to check if the courses combobox has been clicked before it changes itemState - Jak
     
@@ -665,13 +668,15 @@ public class FrmUserMain extends javax.swing.JFrame
     }//GEN-LAST:event_CbxIndustries_FrmUserMainActionPerformed
 
     private void BtnSaveCareerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSaveCareerActionPerformed
-        
-        //RAN OUT OF TIME
-        //ID MUST BE INT IN DATABASE
-        
+        //buggy - todo
         try {
-            String query = "INSERT INTO `findmycareer`.`career` (`codJob`, `codCourse`, `userID`) VALUES ('"+finalJob+"', '"+finalCourse+"', '"+id+"')";
-        } catch (Exception e) {
+            //String query = "INSERT INTO `findmycareer`.`career` (`codJob`, `codCourse`, `userID`) VALUES ('"+finalJob+"', '"+finalCourse+"', '"+finalID+"')";
+            String query = "INSERT INTO `findmycareer`.`career` (`codJob`, `codCourse`, `userID`) VALUES ('"+finalJob+"', '"+finalCourse+"', '54')";
+            statement = conn.prepareStatement(query);
+            statement.executeUpdate();
+        } catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_BtnSaveCareerActionPerformed
 
@@ -731,15 +736,7 @@ public class FrmUserMain extends javax.swing.JFrame
 
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
         System.exit(0); //TO DO - Jak
-            this.setVisible(false);
-            
-            if(frmLogin == null)
-            {
-                frmLogin = new FrmLogin();
-            }     
-                frmLogin.setVisible(true);
-        
-        
+
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void CbxIndustries_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxIndustries_FrmUserMainItemStateChanged
@@ -969,11 +966,6 @@ public class FrmUserMain extends javax.swing.JFrame
         CbxJobs_PanelJobs.setEnabled(true);
         
         String selectedItem = CbxCourses_PanelCourses.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
-        
-        
-        //BUG: DOUBLES UP OUTPUT?
-       // System.out.println("FinalCourseChoice: " + finalCourse);
-
         String selectedItemID = null; //Creates a string variable - Jak
         
         //Working
@@ -1001,7 +993,7 @@ public class FrmUserMain extends javax.swing.JFrame
         //</editor-fold>
         
         //May need to enable in future
-        //        //<editor-fold desc="Try-Catch for Courses Panel">
+        //<editor-fold desc="Sets the final course">
 //        ArrayList<String> courses = new ArrayList<>(); //Creates an array to store the data for the courses - Jak
 //        
 //        try 
@@ -1023,7 +1015,7 @@ public class FrmUserMain extends javax.swing.JFrame
 //        {
 //           JOptionPane.showMessageDialog(null, e); 
 //        }
-//        //</editor-fold>
+        //</editor-fold>
         
         //Working
         //<editor-fold desc="Try-Catch for Courses Description">
@@ -1070,7 +1062,12 @@ public class FrmUserMain extends javax.swing.JFrame
             {
                 selectedJobID = rs.getString("codCourse");
                 courses.add(selectedJobID);
-                //System.out.println(selectedJobID);
+                //System.out.println(courses);
+                finalCourse = selectedJobID;
+                System.out.println(finalID);
+//                
+////BUG: DOUBLES UP OUTPUT?
+//        System.out.println("FinalCourseChoice: " + finalCourse);
             }
             statement.close(); //Close the connections - Jak
             rs.close();
@@ -1190,25 +1187,28 @@ public class FrmUserMain extends javax.swing.JFrame
          //<editor-fold desc="Try-Catch for Jobs Description">
         
         String selectedItem = CbxJobs_PanelJobs.getSelectedItem().toString();
-        finalJob = selectedItem;
+        
         
         //BUG: DOUBLES UP SELECTION
         //System.out.println("FinalCareerChoice: " + finalJob);
         
-//        try {
-//            String query = "SELECT codJob FROM jobs WHERE job = '"+selectedItem+"'";
-//            statement = conn.prepareStatement(query);
-//            rs = statement.executeQuery();
-//            
-//            while(rs.next())
-//            {
-//                TxtJobDescr_PanelJobs.setText(rs.getString("descr"));
-//            }
-//            statement.close();
-//            rs.close();
-//            
-//        } catch (Exception e) {
-//        }
+        try {
+            String query = "SELECT codJob FROM jobs WHERE job = '"+selectedItem+"'";
+            statement = conn.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                
+                //BUG: DOUBLES UP OUTPUT?
+                finalJob = rs.getString("codJob");
+                //System.out.println("finalJobChoice: " + finalJob);
+            }
+            statement.close();
+            rs.close();
+            
+        } catch (Exception e) {
+        }
         
         try
         {
