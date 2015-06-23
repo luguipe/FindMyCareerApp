@@ -9,6 +9,8 @@ package Main;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -145,6 +147,9 @@ public class FrmLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         userName = this.TxtUserId.getText();
         password = this.TxtPassword.getText(); 
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        String lastLogin = dateFormat.format(date);
         
         String user = null;
         String pass = null;
@@ -219,8 +224,20 @@ public class FrmLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
        
+       //Update last login date
+       try {
+            String query = "UPDATE user SET lastLogIn = '"+lastLogin+"' WHERE userName='"+userName+"' ";
+            statement = con.prepareStatement(query);
+            statement.execute();
+                        
+            statement.close();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
        
-        
+       
+
         if(userName.equals(user) && password.equals(pass) && id.equals(id)){
             this.setVisible(false);
             
