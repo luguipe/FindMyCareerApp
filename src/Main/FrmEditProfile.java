@@ -29,7 +29,10 @@ public class FrmEditProfile extends javax.swing.JFrame {
     FrmLogin frmlogin;
     FrmUserMain frmUserMain;
     
+    String id = frmlogin.id;
+    
     Database db = new Database();
+    
     
     
     
@@ -67,7 +70,7 @@ public class FrmEditProfile extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,e);
                 
         }
-        TxtFirstName.setText(db.test);
+        
     }
 
         
