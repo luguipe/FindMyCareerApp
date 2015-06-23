@@ -200,6 +200,7 @@ public class FrmUserMain extends javax.swing.JFrame
         BtnProfile = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
+        lblLastName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(580, 530));
@@ -412,7 +413,7 @@ public class FrmUserMain extends javax.swing.JFrame
                     .addGroup(PanelCoursesLayout.createSequentialGroup()
                         .addComponent(LblCourses_PanelCourses)
                         .addGap(18, 18, 18)
-                        .addComponent(CbxCourses_PanelCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(CbxCourses_PanelCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         PanelCoursesLayout.setVerticalGroup(
@@ -550,6 +551,10 @@ public class FrmUserMain extends javax.swing.JFrame
 
         jLabel1.setText("Welcome: ");
 
+        lblName.setText("Dave");
+
+        lblLastName.setText("Hunt!");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -586,8 +591,10 @@ public class FrmUserMain extends javax.swing.JFrame
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1)
+                        .addGap(2, 2, 2)
+                        .addComponent(lblName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblName)))
+                        .addComponent(lblLastName)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -596,7 +603,8 @@ public class FrmUserMain extends javax.swing.JFrame
                 .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(lblName))
+                    .addComponent(lblName)
+                    .addComponent(lblLastName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CbxIndustries_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -874,6 +882,8 @@ public class FrmUserMain extends javax.swing.JFrame
         }
         //</editor-fold>
         
+        
+        
         //<editor-fold desc="Try-Catch for Courses Panel">
         ArrayList<String> courses = new ArrayList<>(); //Creates an array to store the data for the courses - Jak
         
@@ -925,34 +935,37 @@ public class FrmUserMain extends javax.swing.JFrame
 //BUGGY RECOMMENT EVERYTHING LATER, FIX UP NULLPOINTER EXCEPTION
 //HAPPENING ON ITEMSTATECHANGED
 //        //Remove any text from the description box - Jak
-//        CbxJobs_PanelJobs.setEnabled(true);
-//        
-//        String selectedItem = CbxCourses_PanelCourses.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
-//        String selectedItemID = null; //Creates a string variable - Jak
-//        
-//        //<editor-fold desc="Courses">
-//        
-//        //<editor-fold desc="Gets the selectedItemID">
-//        try 
-//        {
-//            String queryID = "SELECT codCategory FROM category WHERE category = '"+selectedItem+"'"; //Creates a query to grab the category ID based on the selected item in the combobox - Jak
-//            statement = conn.prepareStatement(queryID);
-//            rs = statement.executeQuery();
-//            
-//            while(rs.next())
-//            {
-//                selectedItemID = rs.getString("codCategory"); //Assigns the categoryID column to the selectedItemID string - Jak
-//            }
-//            statement.close(); //Close the connections - Jak
-//            rs.close();
-//        } 
-//        catch (Exception e)
-//        {
-//            JOptionPane.showMessageDialog(null, e);
-//        }
-//        //</editor-fold>
-//        
-//        //<editor-fold desc="Try-Catch for Courses Panel">
+        CbxJobs_PanelJobs.setEnabled(true);
+        
+        String selectedItem = CbxCourses_PanelCourses.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
+        String selectedItemID = null; //Creates a string variable - Jak
+        
+        //Working
+        //<editor-fold desc="Courses">
+        
+        //Working
+        //<editor-fold desc="Gets the selectedItemID">
+        try 
+        {
+            String queryID = "SELECT codCategory FROM category WHERE category = '"+selectedItem+"'"; //Creates a query to grab the category ID based on the selected item in the combobox - Jak
+            statement = conn.prepareStatement(queryID);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                selectedItemID = rs.getString("codCategory"); //Assigns the categoryID column to the selectedItemID string - Jak
+            }
+            statement.close(); //Close the connections - Jak
+            rs.close();
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
+        
+        //May need to enable in future
+        //        //<editor-fold desc="Try-Catch for Courses Panel">
 //        ArrayList<String> courses = new ArrayList<>(); //Creates an array to store the data for the courses - Jak
 //        
 //        try 
@@ -975,100 +988,119 @@ public class FrmUserMain extends javax.swing.JFrame
 //           JOptionPane.showMessageDialog(null, e); 
 //        }
 //        //</editor-fold>
-//        
-//        //<editor-fold desc="Try-Catch for Courses Description">
-//        try
-//        {
-//            String queryDesc = "SELECT descr FROM courses WHERE course = '"+selectedItem+"'";
-//            statement = conn.prepareStatement(queryDesc);
-//            rs = statement.executeQuery();
-//            
-//            while(rs.next())
-//            {
-//                TxtCourseDescr_PanelCourse.setText(rs.getString("descr"));
-//            }
-//            statement.close();
-//            rs.close();
-//        } 
-//        catch (Exception e)
-//        {
-//            JOptionPane.showMessageDialog(null, e);
-//        }
+        
+        //Working
+        //<editor-fold desc="Try-Catch for Courses Description">
+        try
+        {
+            String queryDesc = "SELECT descr FROM courses WHERE course = '"+selectedItem+"'";
+            statement = conn.prepareStatement(queryDesc);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                TxtCourseDescr_PanelCourse.setText(rs.getString("descr"));
+            }
+            statement.close();
+            rs.close();
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
 //        
 //        //</editor-fold>
-//        
+        
 //        //</editor-fold>
-//        
+        
 //        //<editor-fold desc="Initial Jobs">
 //        String selectedItemJob = CbxJobs_PanelJobs.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
-//        String selectedJobID = null;
-//        String jobIDCourse = null;
-//                
-//        //<editor-fold desc="Gets selected JobID">
-//        try 
-//        {
-//            String query = "SELECT codCourse FROM courses WHERE codCourse = '"+selectedItemID+"'"; //Creates a query to grab the category ID based on the selected item in the combobox - Jak
-//            statement = conn.prepareStatement(query);
-//            rs = statement.executeQuery();
-//            
-//            while(rs.next())
-//            {
-//                selectedJobID = rs.getString("codCourse"); //Assigns the categoryID column to the selectedItemID string - Jak
-//            }
-//            statement.close(); //Close the connections - Jak
-//            rs.close();
-//        } 
-//        catch (Exception e)
-//        {
-//            JOptionPane.showMessageDialog(null, e);
-//        }
-//        //</editor-fold>
+        String selectedCourseName = CbxCourses_PanelCourses.getSelectedItem().toString();
+        String selectedJobID = null;
+        String jobIDCourse = null;
+                
+        //Works?
+        //<editor-fold desc="Gets selected courseID">
+        try 
+        {
+            String query = "SELECT codCourse FROM courses WHERE course = '"+selectedCourseName+"'";
+            statement = conn.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                selectedJobID = rs.getString("codCourse");
+                //System.out.println(selectedJobID);
+            }
+            statement.close(); //Close the connections - Jak
+            rs.close();
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
+        
+        //Works?
+        //<editor-fold desc="Gets bridged JobID">
+        try 
+        {
+            String query = "SELECT codJob FROM jobs_courses WHERE codCourse = '"+selectedJobID+"'";
+            statement = conn.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            //ArrayList<String> jobsid = new ArrayList<>();
+            
+            while(rs.next())
+            {
+                jobIDCourse = rs.getString("codJob");
+                //jobsid.add(jobIDCourse);
+               // System.out.println("Bridge table: " + jobsid);
+                System.out.println("Bridge table: " + jobIDCourse);
+            }
+            statement.close(); //Close the connections - Jak
+            rs.close();
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
+        
+        //Buggy, can pull all jobs, cant pull jobs according to jobID, if it does, it only pulls last in list
+        //<editor-fold desc="Try-Catch for Jobs Panel">
+        try 
+        {
+            ArrayList<String> jobs = new ArrayList<>();
+            
+            String query = "SELECT job FROM jobs WHERE codJob = '"+jobIDCourse+"'";
+            
+//            String query = "SELECT job FROM `jobs` WHERE codJob in ('JOB01', 'JOB02', 'JOB03')";
+            
+//String query = "SELECT job FROM jobs";
+            statement = conn.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                String jobName = rs.getString("job");
+                jobs.add(jobName);
+                CbxJobs_PanelJobs.setModel(new javax.swing.DefaultComboBoxModel(jobs.toArray()));
+                //CbxJobs_PanelJobs.addItem(jobName);
+                
+                System.out.println(jobs);
+               
+            }
+            statement.close(); //Close the connections - Jak
+            rs.close();
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
 //        
-//        //<editor-fold desc="Gets bridged JobID">
-//        try 
-//        {
-//            String query = "SELECT codJob FROM jobs_courses WHERE codCourse = '"+selectedJobID+"'"; //Creates a query to grab the category ID based on the selected item in the combobox - Jak
-//            statement = conn.prepareStatement(query);
-//            rs = statement.executeQuery();
-//            
-//            while(rs.next())
-//            {
-//                jobIDCourse = rs.getString("codJob"); //Assigns the categoryID column to the selectedItemID string - Jak
-//            }
-//            statement.close(); //Close the connections - Jak
-//            rs.close();
-//        } 
-//        catch (Exception e)
-//        {
-//            JOptionPane.showMessageDialog(null, e);
-//        }
-//        //</editor-fold>
-//        
-//        //<editor-fold desc="Try-Catch for Jobs Panel">
-//        try 
-//        {
-//            ArrayList<String> jobs = new ArrayList<>();
-//            
-//            String query = "SELECT job FROM jobs WHERE codJob = '"+jobIDCourse+"'"; //Creates a query to grab the category ID based on the selected item in the combobox - Jak
-//            statement = conn.prepareStatement(query);
-//            rs = statement.executeQuery();
-//            
-//            while(rs.next())
-//            {
-//                String jobName = rs.getString("job"); //Assigns the categoryID column to the selectedItemID string - Jak
-//                jobs.add(jobName);
-//                CbxJobs_PanelJobs.setModel(new javax.swing.DefaultComboBoxModel(jobs.toArray()));
-//            }
-//            statement.close(); //Close the connections - Jak
-//            rs.close();
-//        } 
-//        catch (Exception e)
-//        {
-//            JOptionPane.showMessageDialog(null, e);
-//        }
-//        //</editor-fold>
-//        
-//        //<editor-fold desc="Try-Catch for Jobs Description">
+        //        //<editor-fold desc="Try-Catch for Jobs Description">
 //        
 //        //</editor-fold>
 //        
@@ -1159,6 +1191,7 @@ public class FrmUserMain extends javax.swing.JFrame
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel lblLastName;
     private javax.swing.JLabel lblName;
     private javax.swing.JPanel main;
     // End of variables declaration//GEN-END:variables
