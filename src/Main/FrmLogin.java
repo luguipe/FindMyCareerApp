@@ -244,8 +244,8 @@ public class FrmLogin extends javax.swing.JFrame {
        
         
         if(userName.equals(user) && password.equals(pass) && id.equals(id)){
-            this.setVisible(false);
             
+            this.setVisible(false);
             frmUserMain = new FrmUserMain();            
             frmUserMain.setVisible(true);
             
