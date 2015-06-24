@@ -432,7 +432,8 @@ public class FrmRegister extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-     private boolean fieldsFull()
+    //In order to save the details, none of the fields can be empty.  
+    private boolean fieldsFull()
      {
       boolean makeVisible = false;
       String password = TxtPassword.getText();
@@ -446,11 +447,8 @@ public class FrmRegister extends javax.swing.JFrame {
      }
      
     private void BtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSaveActionPerformed
-        // TODO add your handling code here:       
-        
-//        SimpleDateFormat dobFormat = new SimpleDateFormat("yyyy/MM/dd");
-        
-        
+    
+     //Get the details from the Registration window and set them in the Confirmation dialog.   
         String firstName = this.TxtFirstName.getText();
         this.txtFirstName.setText(firstName);
         
@@ -472,7 +470,8 @@ public class FrmRegister extends javax.swing.JFrame {
         String password = TxtPassword.getText();
         String confPassword = TxtConfirmPassword.getText();
         
-        
+
+        //If both passwords don't match, pops up an error message 
         if (!confPassword.equals(password)){
             String message = "The passwords don't match.";
             msgbox.setMessage(message);
@@ -480,25 +479,41 @@ public class FrmRegister extends javax.swing.JFrame {
             msgbox.setMsgBoxType("info");
             msgbox.popUpMsgBox();
         
+        //if the date of birth doesn't follow this format: yyyy/MM/dd, pops up an error message
         } else if(!dob.matches("([0-9]{4})/([0-9]{2})/([0-9]{2})")){
             String message = "Invalid Date of Birth.";
             msgbox.setMessage(message);
             msgbox.setTitle("Error");
             msgbox.setMsgBoxType("info");
+            msgbox.popUpMsgBox();       
+        
+        //If the phone number is not 10 digits long, pops up an error message    
+        } else if(!phone.matches("([0-9]{10})")){
+            String message = "Invalid Phone number.";
+            msgbox.setMessage(message);
+            msgbox.setTitle("Error");
+            msgbox.setMsgBoxType("info");
             msgbox.popUpMsgBox();
+        
+        //If the emaill doesn't follow this format: example@email.com, pops up an error message
+        } else if(!email.matches("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")){
+            String message = "Invalid Email address.";
+            msgbox.setMessage(message);
+            msgbox.setTitle("Error");
+            msgbox.setMsgBoxType("info");
+            msgbox.popUpMsgBox();
+                           
+        //If all of above matches, it opens the Confirmation dialog    
         } else {
             this.setVisible(false);
             this.dgConfirm.setVisible(true);
-        }
         
-        
-        
-      
+        }    
 
     }//GEN-LAST:event_BtnSaveActionPerformed
 
     private void btnCancelRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelRegActionPerformed
-        // TODO add your handling code here:
+        // Exits the Registration window and goes back to the login window
         this.setVisible(false);
         if (frmLogin == null){
             frmLogin = new FrmLogin();
@@ -508,13 +523,13 @@ public class FrmRegister extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelRegActionPerformed
 
     private void btnEditDetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditDetActionPerformed
-        // TODO add your handling code here:
+        //Exits the Confirmation dialog and goes back to the Registration window to edit the ddetails
         this.setVisible(true);
         this.dgConfirm.dispose();
     }//GEN-LAST:event_btnEditDetActionPerformed
 
     private void btnConfirmRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmRegActionPerformed
-        // TODO add your handling code here:
+        //Insert the details from the Registration window into the database
         String userName = this.txtUserName.getText();
         String firstName = this.txtFirstName.getText();       
         String lastName = this.txtLastName.getText();     

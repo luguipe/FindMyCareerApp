@@ -24,8 +24,7 @@ public class FrmLogin extends javax.swing.JFrame {
     String password = null;
     private static String id; //Access for Gui
     private static String userType; //Access for Jak - These are static so FrmUserMain can access it - Jak
-//    public String id = null; //Access for GUI
-//    public String userType = null;
+
     Database db = new Database();
     Connection con;
     PreparedStatement statement;
@@ -150,7 +149,7 @@ public class FrmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegisterActionPerformed
-        // TODO add your handling code here:
+        // Opens Register window
         this.setVisible(false);
         if (frmRegister == null){
             frmRegister = new FrmRegister();
@@ -160,7 +159,8 @@ public class FrmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnRegisterActionPerformed
 
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
-        // TODO add your handling code here:
+        //Get the information from the database to login into the application 
+        
         userName = this.TxtUserId.getText();
         password = this.TxtPassword.getText(); 
         
@@ -252,13 +252,13 @@ public class FrmLogin extends javax.swing.JFrame {
         }
        
        
-
+        //If User name and password match with the information from the database, logs in and opens the User Main window
         if(userName.equals(user) && password.equals(pass) && id.equals(id)){
             this.setVisible(false);
             
             frmUserMain = new FrmUserMain();            
             frmUserMain.setVisible(true);
-            
+        //if not, pops up an error message 
         }else {
             String message = "The username/password is incorrect.";
             msgbox.setMessage(message);
