@@ -430,6 +430,7 @@ public class FrmRegister extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
      private boolean fieldsFull()
      {

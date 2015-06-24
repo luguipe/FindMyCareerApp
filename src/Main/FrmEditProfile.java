@@ -104,7 +104,7 @@ public class FrmEditProfile extends javax.swing.JFrame {
         try {
                 System.out.println(sql);
                 st = con.prepareStatement(sql);
-                st.execute();
+                st.executeUpdate();
                 
                 st.close();
         } catch (Exception e) {
