@@ -560,18 +560,26 @@ public class FrmRegister extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
        
-        
+
         try {
             String query = "INSERT INTO user (userName, password, firstName, lastName, dob, phone, email, codUserType, dateCreation)"
                     + " VALUES ('"+userName+"','"+password+"','"+firstName+"','"+lastName+"','"+dob+"','"+phone+"','"+email+"','"+userType+"','"+dateCreation+"')";
             statement = con.prepareStatement(query);
             statement.execute();
-            
+           
             statement.close();
-            
+
+         } catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e){
+             String message = "User Name already exists. Please register again.";
+             msgbox.setMessage(message);
+             msgbox.setTitle("Error");
+             msgbox.setMsgBoxType("info");
+             msgbox.popUpMsgBox();
          } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+           JOptionPane.showMessageDialog(null, e);
+           System.out.println(e);
+
+         }
         
     }//GEN-LAST:event_btnConfirmRegActionPerformed
 
