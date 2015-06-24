@@ -9,28 +9,33 @@ package Main;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author Yusef, Jak
+ * @author 1105642614
  */
 public class FrmLogin extends javax.swing.JFrame {
     FrmRegister frmRegister;
     FrmUserMain frmUserMain;
-    
     String userName = null;
     String password = null;
-    
     private static String id; //Access for Gui
     private static String userType; //Access for Jak - These are static so FrmUserMain can access it - Jak
-    
+//    public String id = null; //Access for GUI
+//    public String userType = null;
     Database db = new Database();
     Connection con;
     PreparedStatement statement;
     ResultSet rs;
     PopUpMsgBox msgbox = new PopUpMsgBox();
-
+    Date date = new Date();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    /**
+     * Creates new form FrmLogin1
+     */
     public FrmLogin() {
         initComponents();
         db.setDatabase("findmycareer");
@@ -39,14 +44,10 @@ public class FrmLogin extends javax.swing.JFrame {
         db.setPort("3306");
         db.setUser("root");
         
-        try {
-            con = db.getConnection();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+        
     }
-    
-    //METHODS
+
+        //METHODS
     public static String getUserType() //Method for FrmUserMain to access the variable - Jak
     {
         return userType;
@@ -56,7 +57,7 @@ public class FrmLogin extends javax.swing.JFrame {
     {
         return id;
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -145,7 +146,6 @@ public class FrmLogin extends javax.swing.JFrame {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegisterActionPerformed
@@ -163,10 +163,20 @@ public class FrmLogin extends javax.swing.JFrame {
         userName = this.TxtUserId.getText();
         password = this.TxtPassword.getText(); 
         
+        String lastLogin = dateFormat.format(date);
+        
         String user = null;
         String pass = null;
+        
+        
+        try {
+            con = db.getConnection();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
 
-        //Gets username - Jak, Yusef
+        //Gets username
         try {
             String query = "SELECT userName FROM user WHERE userName='"+userName+"'";
             statement = con.prepareStatement(query);
@@ -182,7 +192,7 @@ public class FrmLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
         
-        //Get UserID - Jak, Yusef
+        //Get UserID
         try {
             String query = "SELECT userID FROM user WHERE userName='"+userName+"'";
             statement = con.prepareStatement(query);
@@ -198,7 +208,7 @@ public class FrmLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
         
-        //Gets password - Jak, Yusef
+        //Gets password
         try {
             String query = "SELECT password FROM user WHERE userID='"+id+"'";
             statement = con.prepareStatement(query);
@@ -213,7 +223,7 @@ public class FrmLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
         
-        //Gets userType - Jak, Yusef
+        //Gets userType
        try {
             String query = "SELECT codUserType FROM user WHERE userID='"+id+"'";
             statement = con.prepareStatement(query);
@@ -227,13 +237,27 @@ public class FrmLogin extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
- 
-        if(userName.equals(user) && password.equals(pass) && id.equals(id)){
+       
+       //Update last login date
+       try {
+            String query = "UPDATE user SET lastLogIn = '"+lastLogin+"' WHERE userName='"+userName+"' ";
+            statement = con.prepareStatement(query);
+            statement.execute();
+                        
+            statement.close();
             
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+       
+       
+
+        if(userName.equals(user) && password.equals(pass) && id.equals(id)){
             this.setVisible(false);
+            
             frmUserMain = new FrmUserMain();            
             frmUserMain.setVisible(true);
-        
+            
         }else {
             String message = "The username/password is incorrect.";
             msgbox.setMessage(message);

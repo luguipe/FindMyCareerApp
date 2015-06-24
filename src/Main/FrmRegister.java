@@ -6,6 +6,13 @@
 
 package Main;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 
 
 
@@ -17,7 +24,12 @@ package Main;
 public class FrmRegister extends javax.swing.JFrame {
     FrmLogin frmLogin;  
     PopUpMsgBox msgbox = new PopUpMsgBox();
-    
+    Database db = new Database();
+    Connection con;
+    PreparedStatement statement;
+    ResultSet rs;
+    Date date = new Date();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     /**
      * Creates new form FrmRegister1
      */
@@ -25,7 +37,11 @@ public class FrmRegister extends javax.swing.JFrame {
         initComponents();
         this.dgConfirm.setVisible(false);
         BtnSave.setEnabled(false);
-        
+        db.setDatabase("findmycareer");
+        db.setHost("localhost");
+        db.setPassword("");
+        db.setPort("3306");
+        db.setUser("root");
     }
 
     /**
@@ -51,6 +67,8 @@ public class FrmRegister extends javax.swing.JFrame {
         txtDob = new javax.swing.JTextField();
         txtPhone = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
+        lblUserName = new javax.swing.JLabel();
+        txtUserName = new javax.swing.JTextField();
         TxtEmail = new javax.swing.JTextField();
         TxtPassword = new javax.swing.JPasswordField();
         LblRegister = new javax.swing.JLabel();
@@ -68,6 +86,8 @@ public class FrmRegister extends javax.swing.JFrame {
         LblPassword = new javax.swing.JLabel();
         TxtConfirmPassword = new javax.swing.JPasswordField();
         LblEmail = new javax.swing.JLabel();
+        LblUserName = new javax.swing.JLabel();
+        TxtUserName = new javax.swing.JTextField();
 
         dgConfirm.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         dgConfirm.setAlwaysOnTop(true);
@@ -117,39 +137,44 @@ public class FrmRegister extends javax.swing.JFrame {
 
         txtEmail.setEditable(false);
 
+        lblUserName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblUserName.setText("User Name");
+
+        txtUserName.setEditable(false);
+
         javax.swing.GroupLayout dgConfirmLayout = new javax.swing.GroupLayout(dgConfirm.getContentPane());
         dgConfirm.getContentPane().setLayout(dgConfirmLayout);
         dgConfirmLayout.setHorizontalGroup(
             dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dgConfirmLayout.createSequentialGroup()
-                .addGap(126, 126, 126)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(dgConfirmLayout.createSequentialGroup()
-                        .addComponent(btnEditDet)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnConfirmReg, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblRegister1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(dgConfirmLayout.createSequentialGroup()
-                .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDob, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(dgConfirmLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dgConfirmLayout.createSequentialGroup()
-                            .addGap(50, 50, 50)
+                        .addGap(126, 126, 126)
+                        .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dgConfirmLayout.createSequentialGroup()
+                                .addComponent(btnEditDet)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnConfirmReg, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblRegister1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(dgConfirmLayout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(LblPhone1)
                                 .addComponent(LblEmail1)
-                                .addComponent(LblFirstName1)
                                 .addComponent(LblSurname1)
-                                .addComponent(LblDob1))
-                            .addGap(46, 46, 46)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 133, Short.MAX_VALUE))
+                                .addComponent(lblUserName, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(LblFirstName1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(LblDob1))
+                        .addGap(42, 42, 42)
+                        .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtFirstName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(txtLastName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(txtDob, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(txtUserName, javax.swing.GroupLayout.Alignment.LEADING))))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         dgConfirmLayout.setVerticalGroup(
             dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,25 +183,29 @@ public class FrmRegister extends javax.swing.JFrame {
                 .addComponent(lblRegister1)
                 .addGap(25, 25, 25)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LblFirstName1)
-                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblUserName))
                 .addGap(22, 22, 22)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LblSurname1)
-                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblFirstName1))
                 .addGap(22, 22, 22)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LblDob1)
-                    .addComponent(txtDob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LblPhone1)
-                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblSurname1))
                 .addGap(22, 22, 22)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LblEmail1)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+                    .addComponent(txtDob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblDob1))
+                .addGap(22, 22, 22)
+                .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblPhone1))
+                .addGap(22, 22, 22)
+                .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblEmail1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
                 .addGroup(dgConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditDet)
                     .addComponent(btnConfirmReg))
@@ -265,7 +294,7 @@ public class FrmRegister extends javax.swing.JFrame {
         });
 
         LblDob.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        LblDob.setText("Date of Birth");
+        LblDob.setText("Date of Birth (yyyy/mm/dd)");
 
         btnCancelReg.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCancelReg.setText("Cancel");
@@ -292,47 +321,76 @@ public class FrmRegister extends javax.swing.JFrame {
         LblEmail.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LblEmail.setText("Email");
 
+        LblUserName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        LblUserName.setText("User Name");
+        LblUserName.setToolTipText("");
+
+        TxtUserName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TxtUserNameKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(65, 65, 65)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LblFirstName)
-                            .addComponent(LblEmail)
-                            .addComponent(LblPassword)
-                            .addComponent(LblConfirmPassword))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(TxtFirstName, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TxtEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                            .addComponent(TxtPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                            .addComponent(TxtConfirmPassword, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(62, 62, 62)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(LblDob)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TxtDob, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(LblPassword)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                                .addComponent(TxtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(LblPhone)
-                                    .addComponent(LblSurname))
-                                .addGap(23, 23, 23)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(LblFirstName)
+                                            .addGap(45, 45, 45))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(LblUserName)
+                                            .addGap(44, 44, 44)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(LblPhone)
+                                        .addGap(49, 49, 49)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(TxtPhone)
+                                    .addComponent(TxtFirstName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                                    .addComponent(TxtUserName))))
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(LblEmail)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(TxtSurname, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(TxtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnCancelReg, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BtnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
+                                        .addComponent(btnCancelReg, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(BtnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(148, 148, 148)
+                                        .addComponent(TxtEmail))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(LblSurname)
+                                .addGap(119, 119, 119)
+                                .addComponent(TxtSurname))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(LblConfirmPassword)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(LblDob, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(TxtDob, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                                    .addComponent(TxtConfirmPassword)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(340, 340, 340)
-                        .addComponent(LblRegister)))
+                        .addComponent(LblRegister)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(72, 72, 72))
         );
         layout.setVerticalGroup(
@@ -350,27 +408,25 @@ public class FrmRegister extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LblEmail)
                     .addComponent(TxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblUserName)
+                    .addComponent(TxtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LblDob)
+                    .addComponent(TxtDob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TxtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(LblPhone))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(LblDob)
-                            .addComponent(TxtDob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(BtnSave)
-                            .addComponent(btnCancelReg)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TxtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LblPassword))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TxtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LblConfirmPassword))))
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TxtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblConfirmPassword)
+                    .addComponent(TxtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblPassword))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BtnSave)
+                    .addComponent(btnCancelReg))
+                .addGap(59, 59, 59))
         );
 
         pack();
@@ -378,18 +434,20 @@ public class FrmRegister extends javax.swing.JFrame {
      private boolean fieldsFull()
      {
       boolean makeVisible = false;
-      String password1 = TxtPassword.getText();
-      String password2 = TxtConfirmPassword.getText();
-      boolean passTest = password1.equals(password2);
+      String password = TxtPassword.getText();
+      String confPassword = TxtConfirmPassword.getText();
+     
       makeVisible = !(TxtFirstName.getText().equals("") || (TxtSurname.getText().equals("")) || (TxtDob.getText().equals("")) || 
-              (TxtEmail.getText().equals("")) || (TxtPhone.getText().equals("")) || (password1.equals(""))
-              || (password2.equals("")));
+              (TxtEmail.getText().equals("")) || (TxtPhone.getText().equals("")) || (password.equals(""))
+              || (confPassword.equals("")) || (TxtUserName.getText().equals("")));
       return makeVisible; 
               
      }
      
     private void BtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSaveActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:       
+        
+//        SimpleDateFormat dobFormat = new SimpleDateFormat("yyyy/MM/dd");
         
         
         String firstName = this.TxtFirstName.getText();
@@ -407,11 +465,22 @@ public class FrmRegister extends javax.swing.JFrame {
         String email = this.TxtEmail.getText();
         this.txtEmail.setText(email);
         
-        String password1 = TxtPassword.getText();
-        String password2 = TxtConfirmPassword.getText();
+        String userName = this.TxtUserName.getText();
+        this.txtUserName.setText(userName);
         
-        if (!password2.equals(password1)){
+        String password = TxtPassword.getText();
+        String confPassword = TxtConfirmPassword.getText();
+        
+        
+        if (!confPassword.equals(password)){
             String message = "The passwords don't match.";
+            msgbox.setMessage(message);
+            msgbox.setTitle("Error");
+            msgbox.setMsgBoxType("info");
+            msgbox.popUpMsgBox();
+        
+        } else if(!dob.matches("([0-9]{4})/([0-9]{2})/([0-9]{2})")){
+            String message = "Invalid Date of Birth.";
             msgbox.setMessage(message);
             msgbox.setTitle("Error");
             msgbox.setMsgBoxType("info");
@@ -420,9 +489,10 @@ public class FrmRegister extends javax.swing.JFrame {
             this.setVisible(false);
             this.dgConfirm.setVisible(true);
         }
-      
-       
         
+        
+        
+      
 
     }//GEN-LAST:event_BtnSaveActionPerformed
 
@@ -444,12 +514,47 @@ public class FrmRegister extends javax.swing.JFrame {
 
     private void btnConfirmRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmRegActionPerformed
         // TODO add your handling code here:
+        String userName = this.txtUserName.getText();
+        String firstName = this.txtFirstName.getText();       
+        String lastName = this.txtLastName.getText();     
+        String dob = this.txtDob.getText();       
+        String phone = this.txtPhone.getText();       
+        String email = this.txtEmail.getText();
+        String password = TxtPassword.getText();
+        String userType = "TYPE02";
+        
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        
+        String dateCreation = dateFormat.format(date);
+                
+                
         this.dgConfirm.dispose();
         this.setVisible(false);
         if (frmLogin == null){
             frmLogin = new FrmLogin();
 
             frmLogin.setVisible(true);
+        }
+       
+        try {
+            con = db.getConnection();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+       
+        
+        try {
+            String query = "INSERT INTO user (userName, password, firstName, lastName, dob, phone, email, codUserType, dateCreation)"
+                    + " VALUES ('"+userName+"','"+password+"','"+firstName+"','"+lastName+"','"+dob+"','"+phone+"','"+email+"','"+userType+"','"+dateCreation+"')";
+            statement = con.prepareStatement(query);
+            statement.execute();
+            
+            statement.close();
+            
+         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
         }
         
     }//GEN-LAST:event_btnConfirmRegActionPerformed
@@ -509,6 +614,11 @@ public class FrmRegister extends javax.swing.JFrame {
         BtnSave.setEnabled(fieldsFull()); 
     }//GEN-LAST:event_TxtPasswordKeyTyped
 
+    private void TxtUserNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TxtUserNameKeyTyped
+        // TODO add your handling code here:
+        BtnSave.setEnabled(fieldsFull()); 
+    }//GEN-LAST:event_TxtUserNameKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -559,6 +669,7 @@ public class FrmRegister extends javax.swing.JFrame {
     private javax.swing.JLabel LblRegister;
     private javax.swing.JLabel LblSurname;
     private javax.swing.JLabel LblSurname1;
+    private javax.swing.JLabel LblUserName;
     private javax.swing.JPasswordField TxtConfirmPassword;
     private javax.swing.JTextField TxtDob;
     private javax.swing.JTextField TxtEmail;
@@ -566,15 +677,20 @@ public class FrmRegister extends javax.swing.JFrame {
     private javax.swing.JPasswordField TxtPassword;
     private javax.swing.JTextField TxtPhone;
     private javax.swing.JTextField TxtSurname;
+    private javax.swing.JTextField TxtUserName;
     private javax.swing.JButton btnCancelReg;
     private javax.swing.JButton btnConfirmReg;
     private javax.swing.JButton btnEditDet;
     private javax.swing.JDialog dgConfirm;
     private javax.swing.JLabel lblRegister1;
+    private javax.swing.JLabel lblUserName;
     private javax.swing.JTextField txtDob;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
+
+
 }
