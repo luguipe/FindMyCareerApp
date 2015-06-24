@@ -405,7 +405,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="LblCourses_PanelCourses" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="CbxCourses_PanelCourses" min="-2" pref="202" max="-2" attributes="0"/>
+                              <Component id="CbxCourses_PanelCourses" min="-2" pref="199" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="27" max="32767" attributes="0"/>
@@ -614,7 +614,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="LblJobs_PanelJobs" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="CbxJobs_PanelJobs" min="-2" pref="146" max="-2" attributes="0"/>
+                              <Component id="CbxJobs_PanelJobs" min="-2" pref="199" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="27" max="32767" attributes="0"/>

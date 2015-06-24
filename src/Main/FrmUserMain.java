@@ -19,8 +19,7 @@ import java.util.logging.Logger;
 public class FrmUserMain extends javax.swing.JFrame 
 {
     //  TODO
-    // SETUP SAVE TO PROFILE BUTTON
-    // SETUP SKILLS, RESET THE OTHER COMBOBOXES WHEN USER SELECTS A NEW INDUSTRY
+    // SETUP SKILLS
     // SETUP LOGOUT
     
     CardLayout card; //Creates the layout the form will use - Jak
@@ -437,7 +436,7 @@ public class FrmUserMain extends javax.swing.JFrame
                     .addGroup(PanelCoursesLayout.createSequentialGroup()
                         .addComponent(LblCourses_PanelCourses)
                         .addGap(18, 18, 18)
-                        .addComponent(CbxCourses_PanelCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(CbxCourses_PanelCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         PanelCoursesLayout.setVerticalGroup(
@@ -550,7 +549,7 @@ public class FrmUserMain extends javax.swing.JFrame
                     .addGroup(PanelJobsLayout.createSequentialGroup()
                         .addComponent(LblJobs_PanelJobs)
                         .addGap(18, 18, 18)
-                        .addComponent(CbxJobs_PanelJobs, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(CbxJobs_PanelJobs, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         PanelJobsLayout.setVerticalGroup(
@@ -678,10 +677,14 @@ public class FrmUserMain extends javax.swing.JFrame
             String query = "INSERT INTO `findmycareer`.`career` (`codJob`, `codCourse`, `userID`) VALUES ('"+finalJob+"', '"+finalCourse+"', '"+finalID+"')";
             statement = conn.prepareStatement(query);
             statement.execute();
+            
+            JOptionPane.showMessageDialog(null, "Saved to profile.");
         } 
-        catch (Exception e) 
+        catch (SQLException e) 
         {
-            JOptionPane.showMessageDialog(null, e);
+            //JOptionPane.showMessageDialog(null, "Oh no! Something went wrong.");
+            JOptionPane.showMessageDialog(null, "Your profile already contains this Job.");
+            System.out.println(e);
         }
     }//GEN-LAST:event_BtnSaveCareerActionPerformed
 
@@ -741,7 +744,9 @@ public class FrmUserMain extends javax.swing.JFrame
 
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
         System.exit(0); //TO DO - Jak
-
+        
+        //Do logout tommorrow as well as filling the skills in demand
+        
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void CbxIndustries_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxIndustries_FrmUserMainItemStateChanged
@@ -754,9 +759,9 @@ public class FrmUserMain extends javax.swing.JFrame
         //Resets the Combobox - Jak
         //CbxCourses_PanelCourses.removeAllItems(); //Removes all previous items in the combobox - Jak
         CbxCourses_PanelCourses.setEnabled(false); //Disables the Course selection combobox - Jak
-       
         CbxSkills_PanelSkills.setEnabled(false); //Disables the Skills selection combobox - Jak
         CbxJobs_PanelJobs.setEnabled(false); //Disables the Jobs selection combobox - Jak
+        BtnSaveCareer.setEnabled(false);
         
         //Resets the description boxes - Jak
         TxtDescrCategory_PanelCategory.setText(""); //Removes any text from the description boxes - Jak
@@ -866,12 +871,17 @@ public class FrmUserMain extends javax.swing.JFrame
            JOptionPane.showMessageDialog(null, e); 
         }
         //</editor-fold>
+        
  
     }//GEN-LAST:event_CbxIndustries_FrmUserMainItemStateChanged
 
     private void CbxCategories_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxCategories_FrmUserMainItemStateChanged
         // TODO add your handling code here:       
         CbxCourses_PanelCourses.setEnabled(true); //Enables the combobox - Jak
+        BtnSaveCareer.setEnabled(false);
+        CbxJobs_PanelJobs.setEnabled(false);
+        TxtJobDescr_PanelJobs.setText("");
+        TxtCourseDescr_PanelCourse.setText("");
         
         String selectedItem = CbxCategories_FrmUserMain.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
         String selectedItemID = null; //Creates a string variable - Jak
@@ -941,32 +951,34 @@ public class FrmUserMain extends javax.swing.JFrame
         }
         //</editor-fold>
         
-        //<editor-fold desc="Try-Catch for Courses Description">
-        try
-        {
-            String queryDesc = "SELECT descr FROM courses WHERE codCategory = '"+selectedItemID+"'";
-            statement = conn.prepareStatement(queryDesc);
-            rs = statement.executeQuery();
-            
-            while(rs.next())
-            {
-                TxtCourseDescr_PanelCourse.setText(rs.getString("descr"));
-            }
-            statement.close();
-            rs.close();
-        } 
-        catch (Exception e)
-        {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        
-        //</editor-fold>
+        //Not in use
+        //        //<editor-fold desc="Try-Catch for Courses Description">
+//        try
+//        {
+//            String queryDesc = "SELECT descr FROM courses WHERE codCategory = '"+selectedItemID+"'";
+//            statement = conn.prepareStatement(queryDesc);
+//            rs = statement.executeQuery();
+//            
+//            while(rs.next())
+//            {
+//                TxtCourseDescr_PanelCourse.setText(rs.getString("descr"));
+//            }
+//            statement.close();
+//            rs.close();
+//        } 
+//        catch (Exception e)
+//        {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+//        
+//        //</editor-fold>
         
     }//GEN-LAST:event_CbxCategories_FrmUserMainItemStateChanged
 
     private void CbxCourses_PanelCoursesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxCourses_PanelCoursesItemStateChanged
         CbxJobs_PanelJobs.setEnabled(true);
-        
+        TxtJobDescr_PanelJobs.setText("");
+
         String selectedItem = CbxCourses_PanelCourses.getSelectedItem().toString(); //Grabs the selected item in the courses combobox - Jak
         
         //NOT IN USE
@@ -1107,6 +1119,7 @@ public class FrmUserMain extends javax.swing.JFrame
 //        //</editor-fold>
         
         //Buggy, can pull all jobs, cant pull jobs according to jobID, if it does, it only pulls last in list
+        //Had to do it manually for now until i crack this bug - Jak
         //<editor-fold desc="Try-Catch for Jobs Panel">
         try 
         {
