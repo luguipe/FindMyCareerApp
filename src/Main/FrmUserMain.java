@@ -19,10 +19,8 @@ import java.util.logging.Logger;
 public class FrmUserMain extends javax.swing.JFrame 
 {
     //  TODO
-    // SETUP PROFILE BUTTON WITH USERTYPE FROM DATABASE, NEED LOGIN FORM AND USERTYPE VARIABLE IN THAT
-    // SETUP SAVE TO PROFILE BUTTON, UPDATE QUERY TO USERPROFILE ON DATABASE, NEED LOGIN FOR THAT?
-    // SETUP COURSES, SKILLS, OUTCOMES
-    // SETUP LOGOUT, CODE INVALID FOR JDIALOG, NEED NEW LOGIN FORM
+    // SETUP SKILLS
+    // SETUP LOGOUT
     
     CardLayout card; //Creates the layout the form will use - Jak
     FrmLogin frmLogin;
@@ -45,6 +43,14 @@ public class FrmUserMain extends javax.swing.JFrame
    
     String userType; //Creates a string variable - Jak
     String id;
+    
+    String finalJob;
+    String finalCourse;
+    
+    int finalID;
+    //String finalID = id;
+    
+    boolean isClicked = false; //Creates a boolean to check if the courses combobox has been clicked before it changes itemState - Jak
     
     public FrmUserMain() 
     {
@@ -71,6 +77,7 @@ public class FrmUserMain extends javax.swing.JFrame
     //Assigns userType to the userType in FrmLogin - Jak
     userType = login.getUserType(); //This accesses a private static field, may need to access through class reference - Jak
     id = login.getUserID();
+    finalID = Integer.parseInt(id);
     
      //METHODS
       selectIndustries(); //Runs the selectIndustries Method - Jak
@@ -123,19 +130,35 @@ public class FrmUserMain extends javax.swing.JFrame
         CbxIndustries_FrmUserMain.setModel(new javax.swing.DefaultComboBoxModel(industries.toArray())); //Sets the Array to the Model of the Combobox - Jak
     }
     
-    private void selectName()
+    private void selectName() //NEEDS WORK
     {
-        String query = "SELECT firstName FROM user WHERE userID ='"+id+"'";
-        
+       
         //<editor-fold desc="Try-Catch for user firstName and lastName">
         try 
         {
+            String query = "SELECT firstName FROM user WHERE userID ='"+id+"'";
             statement = conn.prepareStatement(query);
             rs = statement.executeQuery();
             
             while(rs.next())
             {
                 lblName.setText(rs.getString("firstName"));
+            }
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        try 
+        {
+            String query = "SELECT lastName FROM user WHERE userID ='"+id+"'";
+            statement = conn.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                lblLastName.setText(rs.getString("lastName"));
             }
         } 
         catch (Exception e)
@@ -199,6 +222,7 @@ public class FrmUserMain extends javax.swing.JFrame
         BtnProfile = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lblName = new javax.swing.JLabel();
+        lblLastName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(580, 530));
@@ -304,6 +328,7 @@ public class FrmUserMain extends javax.swing.JFrame
         });
 
         BtnSaveCareer.setText("Save to profile");
+        BtnSaveCareer.setEnabled(false);
         BtnSaveCareer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnSaveCareerActionPerformed(evt);
@@ -411,7 +436,7 @@ public class FrmUserMain extends javax.swing.JFrame
                     .addGroup(PanelCoursesLayout.createSequentialGroup()
                         .addComponent(LblCourses_PanelCourses)
                         .addGap(18, 18, 18)
-                        .addComponent(CbxCourses_PanelCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(CbxCourses_PanelCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         PanelCoursesLayout.setVerticalGroup(
@@ -437,6 +462,7 @@ public class FrmUserMain extends javax.swing.JFrame
 
         CbxSkills_PanelSkills.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Skills in Demand", "Essential Employablity Skills" }));
         CbxSkills_PanelSkills.setToolTipText("Choose the kind of skills you want to see");
+        CbxSkills_PanelSkills.setEnabled(false);
         CbxSkills_PanelSkills.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxSkills_PanelSkillsActionPerformed(evt);
@@ -491,6 +517,12 @@ public class FrmUserMain extends javax.swing.JFrame
         PanelJobs.setMinimumSize(new java.awt.Dimension(500, 300));
         PanelJobs.setPreferredSize(new java.awt.Dimension(500, 300));
 
+        CbxJobs_PanelJobs.setEnabled(false);
+        CbxJobs_PanelJobs.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                CbxJobs_PanelJobsItemStateChanged(evt);
+            }
+        });
         CbxJobs_PanelJobs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxJobs_PanelJobsActionPerformed(evt);
@@ -517,7 +549,7 @@ public class FrmUserMain extends javax.swing.JFrame
                     .addGroup(PanelJobsLayout.createSequentialGroup()
                         .addComponent(LblJobs_PanelJobs)
                         .addGap(18, 18, 18)
-                        .addComponent(CbxJobs_PanelJobs, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(CbxJobs_PanelJobs, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         PanelJobsLayout.setVerticalGroup(
@@ -546,6 +578,8 @@ public class FrmUserMain extends javax.swing.JFrame
         });
 
         jLabel1.setText("Welcome: ");
+
+        lblName.setText("Dave");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -583,8 +617,10 @@ public class FrmUserMain extends javax.swing.JFrame
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1)
+                        .addGap(2, 2, 2)
+                        .addComponent(lblName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblName)))
+                        .addComponent(lblLastName)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -593,7 +629,8 @@ public class FrmUserMain extends javax.swing.JFrame
                 .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(lblName))
+                    .addComponent(lblName)
+                    .addComponent(lblLastName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CbxIndustries_FrmUserMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -617,7 +654,8 @@ public class FrmUserMain extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void CbxCourses_PanelCoursesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxCourses_PanelCoursesActionPerformed
-
+    
+        //isClicked = true;
         
     }//GEN-LAST:event_CbxCourses_PanelCoursesActionPerformed
 
@@ -631,7 +669,23 @@ public class FrmUserMain extends javax.swing.JFrame
     }//GEN-LAST:event_CbxIndustries_FrmUserMainActionPerformed
 
     private void BtnSaveCareerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSaveCareerActionPerformed
-        
+        try 
+        {
+            //SOLVE ERRORS WITH DUPLICATE ENTRIES
+            
+            //INSERTS the required fields into the 'career' table in the database. - Jak
+            String query = "INSERT INTO `findmycareer`.`career` (`codJob`, `codCourse`, `userID`) VALUES ('"+finalJob+"', '"+finalCourse+"', '"+finalID+"')";
+            statement = conn.prepareStatement(query);
+            statement.execute();
+            
+            JOptionPane.showMessageDialog(null, "Saved to profile.");
+        } 
+        catch (SQLException e) 
+        {
+            //JOptionPane.showMessageDialog(null, "Oh no! Something went wrong.");
+            JOptionPane.showMessageDialog(null, "Your profile already contains this Job.");
+            System.out.println(e);
+        }
     }//GEN-LAST:event_BtnSaveCareerActionPerformed
 
     private void CbxSkills_PanelSkillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxSkills_PanelSkillsActionPerformed
@@ -690,11 +744,9 @@ public class FrmUserMain extends javax.swing.JFrame
 
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
         System.exit(0); //TO DO - Jak
-        //takes the user back to the login screen, Makes sure logged out?
-
-        //this.setVisible(false);
         
-        //frmLogin.setVisible(true);
+        //Do logout tommorrow as well as filling the skills in demand
+        
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void CbxIndustries_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxIndustries_FrmUserMainItemStateChanged
@@ -705,10 +757,11 @@ public class FrmUserMain extends javax.swing.JFrame
         card.show(main, "industry"); //Displays the panel named "industry"
        
         //Resets the Combobox - Jak
-        CbxCourses_PanelCourses.removeAllItems(); //Removes all previous items in the combobox - Jak
+        //CbxCourses_PanelCourses.removeAllItems(); //Removes all previous items in the combobox - Jak
         CbxCourses_PanelCourses.setEnabled(false); //Disables the Course selection combobox - Jak
         CbxSkills_PanelSkills.setEnabled(false); //Disables the Skills selection combobox - Jak
         CbxJobs_PanelJobs.setEnabled(false); //Disables the Jobs selection combobox - Jak
+        BtnSaveCareer.setEnabled(false);
         
         //Resets the description boxes - Jak
         TxtDescrCategory_PanelCategory.setText(""); //Removes any text from the description boxes - Jak
@@ -771,17 +824,68 @@ public class FrmUserMain extends javax.swing.JFrame
         }
         //</editor-fold>
         
+        //Resets the courses combo box, according to the value in the categories combobox - Jak
+        //<editor-fold desc="Gets the selectedItemID for the courses combobox">
+        String selectedItemCourse = CbxCategories_FrmUserMain.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
+        String selectedItemIDCourse = null;        
+        try 
+        {
+            String queryID = "SELECT codCategory FROM category WHERE category = '"+selectedItemCourse+"'"; //Creates a query to grab the category ID based on the selected item in the combobox - Jak
+            statement = conn.prepareStatement(queryID);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                selectedItemIDCourse = rs.getString("codCategory"); //Assigns the categoryID column to the selectedItemID string - Jak
+            }
+            statement.close(); //Close the connections - Jak
+            rs.close();
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
+        
+        //Fills the Courses combobox        
+        //<editor-fold desc="Try-Catch for Courses Panel">
+        ArrayList<String> courses = new ArrayList<>(); //Creates an array to store the data for the courses - Jak
+        
+        try 
+        {
+            String queryCourse = "SELECT course FROM courses WHERE codCategory = '"+selectedItemIDCourse+"'"; //Sets up a query to grab a course based on the category selected in the category combobox - Jak
+            statement = conn.prepareStatement(queryCourse);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                String courseName = rs.getString("course");
+                courses.add(courseName); //Adds it to the Array - Jak
+                CbxCourses_PanelCourses.setModel(new javax.swing.DefaultComboBoxModel(courses.toArray())); //Sets the Array to the model of the ComboBox - Jak
+            }
+            statement.close(); //Close the connections - Jak
+            rs.close();
+        }
+        catch (Exception e)
+        {
+           JOptionPane.showMessageDialog(null, e); 
+        }
+        //</editor-fold>
+        
+ 
     }//GEN-LAST:event_CbxIndustries_FrmUserMainItemStateChanged
 
     private void CbxCategories_FrmUserMainItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxCategories_FrmUserMainItemStateChanged
-        // TODO add your handling code here:
-        
-        CbxCourses_PanelCourses.removeAllItems(); //Removes all previous items stored in the Courses combo box - Jak        
+        // TODO add your handling code here:       
         CbxCourses_PanelCourses.setEnabled(true); //Enables the combobox - Jak
+        BtnSaveCareer.setEnabled(false);
+        CbxJobs_PanelJobs.setEnabled(false);
+        TxtJobDescr_PanelJobs.setText("");
+        TxtCourseDescr_PanelCourse.setText("");
         
         String selectedItem = CbxCategories_FrmUserMain.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
         String selectedItemID = null; //Creates a string variable - Jak
- 
+
         //<editor-fold desc="Gets the selectedItemID">
         try 
         {
@@ -822,7 +926,7 @@ public class FrmUserMain extends javax.swing.JFrame
             JOptionPane.showMessageDialog(null, e);
         }
         //</editor-fold>
-        
+
         //<editor-fold desc="Try-Catch for Courses Panel">
         ArrayList<String> courses = new ArrayList<>(); //Creates an array to store the data for the courses - Jak
         
@@ -847,37 +951,43 @@ public class FrmUserMain extends javax.swing.JFrame
         }
         //</editor-fold>
         
-                //<editor-fold desc="Try-Catch for Courses Description">
-        try
-        {
-            String queryDesc = "SELECT descr FROM courses WHERE codCategory = '"+selectedItemID+"'";
-            statement = conn.prepareStatement(queryDesc);
-            rs = statement.executeQuery();
-            
-            while(rs.next())
-            {
-                TxtCourseDescr_PanelCourse.setText(rs.getString("descr"));
-            }
-            statement.close();
-            rs.close();
-        } 
-        catch (Exception e)
-        {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        
-        //</editor-fold>
+        //Not in use
+        //        //<editor-fold desc="Try-Catch for Courses Description">
+//        try
+//        {
+//            String queryDesc = "SELECT descr FROM courses WHERE codCategory = '"+selectedItemID+"'";
+//            statement = conn.prepareStatement(queryDesc);
+//            rs = statement.executeQuery();
+//            
+//            while(rs.next())
+//            {
+//                TxtCourseDescr_PanelCourse.setText(rs.getString("descr"));
+//            }
+//            statement.close();
+//            rs.close();
+//        } 
+//        catch (Exception e)
+//        {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+//        
+//        //</editor-fold>
         
     }//GEN-LAST:event_CbxCategories_FrmUserMainItemStateChanged
 
     private void CbxCourses_PanelCoursesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxCourses_PanelCoursesItemStateChanged
-//        Remove any text from the description box - Jak
-       // TxtCourseDescr_PanelCourse.setText("");
+        CbxJobs_PanelJobs.setEnabled(true);
+        TxtJobDescr_PanelJobs.setText("");
+
+        String selectedItem = CbxCourses_PanelCourses.getSelectedItem().toString(); //Grabs the selected item in the courses combobox - Jak
         
-//        String selectedItem = CbxCourses_PanelCourses.getSelectedItem().toString(); //Grabs the selected item in the categories combobox - Jak
+        //NOT IN USE
 //        String selectedItemID = null; //Creates a string variable - Jak
-//        
-        //        //<editor-fold desc="Gets the selectedItemID">
+
+        //<editor-fold desc="Courses">
+        
+        //NOT IN USE, used for grabbing all the courses based on the id of the selected course
+        //        //<editor-fold desc="Gets the selected category ID">
 //        try 
 //        {
 //            String queryID = "SELECT codCategory FROM category WHERE category = '"+selectedItem+"'"; //Creates a query to grab the category ID based on the selected item in the combobox - Jak
@@ -897,27 +1007,229 @@ public class FrmUserMain extends javax.swing.JFrame
 //        }
 //        //</editor-fold>
         
+        //Working
+        //<editor-fold desc="Sets the final course">
+        try 
+        {
+            String queryCourse = "SELECT codCourse FROM courses WHERE course = '"+selectedItem+"'";
+            statement = conn.prepareStatement(queryCourse);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                finalCourse = rs.getString("codCourse");
+            }
+            statement.close(); //Close the connections - Jak
+            rs.close();
+        }
+        catch (Exception e)
+        {
+           JOptionPane.showMessageDialog(null, e); 
+        }
+        //</editor-fold>
+        
+        //Working
         //<editor-fold desc="Try-Catch for Courses Description">
-//        try
+        try
+        {
+            String queryDesc = "SELECT descr FROM courses WHERE course = '"+selectedItem+"'";
+            statement = conn.prepareStatement(queryDesc);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                TxtCourseDescr_PanelCourse.setText(rs.getString("descr"));
+            }
+            statement.close();
+            rs.close();
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+     
+//        //</editor-fold>
+        
+        //</editor-fold>
+        
+        //Fills the Jobs combo box with a list of jobs, based on the ID of the selected course from the previouse combobox - Jak
+        //<editor-fold desc="Initial Jobs">
+        
+        //BUGGY NOT IN USE
+//        String selectedCourseName = CbxCourses_PanelCourses.getSelectedItem().toString();
+//        String selectedJobID = null;
+//        String jobIDCourse = null;
+                
+        //BUGGY
+        //        //<editor-fold desc="Gets selected courseID">
+//        try 
 //        {
-//            String queryDesc = "SELECT descr FROM courses WHERE course = '"+selectedItem+"'";
-//            statement = conn.prepareStatement(queryDesc);
+//            String query = "SELECT codCourse FROM courses WHERE course = '"+selectedCourseName+"'";
+//            statement = conn.prepareStatement(query);
 //            rs = statement.executeQuery();
+//            
+//            ArrayList<String> courses = new ArrayList();
 //            
 //            while(rs.next())
 //            {
-//                TxtCourseDescr_PanelCourse.setText(rs.getString("descr"));
+//                selectedJobID = rs.getString("codCourse");
+//                courses.add(selectedJobID);
+//                //System.out.println(courses);
+//                finalCourse = selectedJobID;
+//                System.out.println(finalID);
+////                
+//////BUG: DOUBLES UP OUTPUT?
+////        System.out.println("FinalCourseChoice: " + finalCourse);
 //            }
-//            statement.close();
+//            statement.close(); //Close the connections - Jak
 //            rs.close();
 //        } 
 //        catch (Exception e)
 //        {
 //            JOptionPane.showMessageDialog(null, e);
 //        }
+//        //</editor-fold>
         
+        //BUGGY - Jak
+        //        //<editor-fold desc="Gets bridged JobID">
+//        try 
+//        {
+//            String query = "SELECT codJob FROM jobs_courses WHERE codCourse = '"+selectedJobID+"'";
+//            statement = conn.prepareStatement(query);
+//            rs = statement.executeQuery();
+//            
+//            ArrayList<String> jobsid = new ArrayList<>();
+//            
+//            while(rs.next())
+//            {
+//                jobIDCourse = rs.getString("codJob");
+//                jobsid.add(jobIDCourse);
+//                System.out.println("Bridge table: " + jobsid);
+//                
+//                //System.out.println("Bridge table: " + jobIDCourse);
+//                //CbxJobs_PanelJobs.addItem(jobIDCourse);
+//            }
+//            statement.close(); //Close the connections - Jak
+//            rs.close();
+//        } 
+//        catch (Exception e)
+//        {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+//        //</editor-fold>
+        
+        //Buggy, can pull all jobs, cant pull jobs according to jobID, if it does, it only pulls last in list
+        //Had to do it manually for now until i crack this bug - Jak
+        //<editor-fold desc="Try-Catch for Jobs Panel">
+        try 
+        {
+            ArrayList<String> cert4 = new ArrayList<>();
+            ArrayList<String> dipSoft = new ArrayList<>();
+            
+            //BUGGY
+            //String query = "SELECT job FROM jobs WHERE codJob = '"+jobIDCourse+"'";
+            
+            //OLD
+            //String query = "SELECT codJob FROM jobs_courses";
+           // String query = "SELECT job FROM jobs WHERE codJob =";
+
+            //KNOWN BUG - I can pull all the selected JobID's,
+            //But when i try to display all the Jobs relating to the ID, it only displays the last job based on the last JobID in the list
+            
+            //FIX THIS
+            //MANUAL, CANT FIX BUG
+            //<editor-fold desc="MANUAL FILLING OF EACH JOB IN THE JOBS COMBOBOX">
+            if(CbxCourses_PanelCourses.getSelectedIndex() == 0)
+            {
+                String query = "SELECT job FROM `jobs` WHERE codJob in ('JOB01', 'JOB02', 'JOB03')";
+                statement = conn.prepareStatement(query);
+                rs = statement.executeQuery();
+                
+                while(rs.next())
+                {
+                String jobName = rs.getString("job");
+                cert4.add(jobName);
+                CbxJobs_PanelJobs.setModel(new javax.swing.DefaultComboBoxModel(cert4.toArray()));
+                }
+            }
+            else if(CbxCourses_PanelCourses.getSelectedIndex() == 1)
+            {
+                String query = "SELECT job FROM `jobs` WHERE codJob in ('JOB04', 'JOB05', 'JOB06', 'JOB07', 'JOB08', 'JOB09', 'JOB10')";
+                statement = conn.prepareStatement(query);
+                rs = statement.executeQuery();
+                
+                while(rs.next())
+                {
+                String jobName = rs.getString("job");
+                dipSoft.add(jobName);
+                CbxJobs_PanelJobs.setModel(new javax.swing.DefaultComboBoxModel(dipSoft.toArray()));
+                }
+            }
+            //</editor-fold>
+        }
+            
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
         //</editor-fold>
+
+        //</editor-fold>
+        
     }//GEN-LAST:event_CbxCourses_PanelCoursesItemStateChanged
+
+    private void CbxJobs_PanelJobsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxJobs_PanelJobsItemStateChanged
+        // TODO add your handling code here:
+        BtnSaveCareer.setEnabled(true);
+        
+         //<editor-fold desc="Try-Catch for Jobs Description">
+        
+        String selectedItem = CbxJobs_PanelJobs.getSelectedItem().toString();
+        
+        try
+        {
+            String query = "SELECT codJob FROM jobs WHERE job = '"+selectedItem+"'";
+            statement = conn.prepareStatement(query);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                finalJob = rs.getString("codJob");
+                
+                //Testing data
+//                System.out.println("final Job: " + finalJob);
+//                System.out.println("Final Course:" + finalCourse);
+//                System.out.println("Final UserID:" + finalID);
+            }
+            statement.close();
+            rs.close();
+            
+        } 
+        catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        try
+        {
+            String queryDesc = "SELECT descr FROM jobs WHERE job = '"+selectedItem+"'";
+            statement = conn.prepareStatement(queryDesc);
+            rs = statement.executeQuery();
+            
+            while(rs.next())
+            {
+                TxtJobDescr_PanelJobs.setText(rs.getString("descr"));
+            }
+            statement.close();
+            rs.close();
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //</editor-fold>
+        
+    }//GEN-LAST:event_CbxJobs_PanelJobsItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -1002,6 +1314,7 @@ public class FrmUserMain extends javax.swing.JFrame
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel lblLastName;
     private javax.swing.JLabel lblName;
     private javax.swing.JPanel main;
     // End of variables declaration//GEN-END:variables

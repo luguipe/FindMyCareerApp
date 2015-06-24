@@ -17,43 +17,43 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="126" max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="btnEditDet" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="btnConfirmReg" min="-2" pref="85" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="lblRegister1" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="txtFirstName" alignment="1" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="txtLastName" alignment="1" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="txtDob" alignment="1" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtPhone" min="-2" pref="200" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="126" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="btnEditDet" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="btnConfirmReg" min="-2" pref="85" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="lblRegister1" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="LblPhone1" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="LblEmail1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="LblFirstName1" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="LblSurname1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="LblDob1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblUserName" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="LblFirstName1" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                              <Component id="txtEmail" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="LblDob1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="txtFirstName" alignment="0" pref="200" max="32767" attributes="0"/>
+                              <Component id="txtLastName" alignment="0" pref="200" max="32767" attributes="0"/>
+                              <Component id="txtDob" alignment="0" pref="200" max="32767" attributes="0"/>
+                              <Component id="txtPhone" alignment="0" pref="200" max="32767" attributes="0"/>
+                              <Component id="txtEmail" alignment="0" pref="200" max="32767" attributes="0"/>
+                              <Component id="txtUserName" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace min="0" pref="133" max="32767" attributes="0"/>
+                  <EmptySpace pref="136" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -64,30 +64,35 @@
                   <Component id="lblRegister1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="LblFirstName1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtUserName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblUserName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="txtFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="LblFirstName1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="LblSurname1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtLastName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="LblSurname1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="LblDob1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtDob" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="LblPhone1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtPhone" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="LblDob1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="LblEmail1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtEmail" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtPhone" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="LblPhone1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="129" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtEmail" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="LblEmail1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="83" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnEditDet" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnConfirmReg" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -188,6 +193,19 @@
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JLabel" name="lblUserName">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="11" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="User Name"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtUserName">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </NonVisualComponents>
@@ -196,7 +214,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -213,52 +231,82 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="LblFirstName" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="LblEmail" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="LblPassword" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="LblConfirmPassword" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="TxtFirstName" alignment="1" max="32767" attributes="0"/>
-                          <Component id="TxtEmail" alignment="1" pref="228" max="32767" attributes="0"/>
-                          <Component id="TxtPassword" alignment="1" pref="228" max="32767" attributes="0"/>
-                          <Component id="TxtConfirmPassword" alignment="1" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="LblDob" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="TxtDob" min="-2" pref="255" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="LblPhone" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="LblSurname" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="TxtSurname" alignment="0" min="-2" pref="254" max="-2" attributes="0"/>
-                                  <Component id="TxtPhone" alignment="0" min="-2" pref="254" max="-2" attributes="0"/>
-                              </Group>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="LblPassword" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="51" max="32767" attributes="0"/>
+                              <Component id="TxtPassword" min="-2" pref="228" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="btnCancelReg" min="-2" pref="107" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="BtnSave" min="-2" pref="107" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="LblFirstName" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="LblUserName" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="LblPhone" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="TxtPhone" max="32767" attributes="0"/>
+                                  <Component id="TxtFirstName" alignment="1" pref="228" max="32767" attributes="0"/>
+                                  <Component id="TxtUserName" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="LblEmail" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace pref="178" max="32767" attributes="0"/>
+                                      <Component id="btnCancelReg" min="-2" pref="107" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="BtnSave" min="-2" pref="107" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="148" max="-2" attributes="0"/>
+                                      <Component id="TxtEmail" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="LblSurname" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
+                              <Component id="TxtSurname" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="LblConfirmPassword" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="LblDob" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="TxtDob" pref="250" max="32767" attributes="0"/>
+                                  <Component id="TxtConfirmPassword" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="340" pref="340" max="-2" attributes="0"/>
                       <Component id="LblRegister" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
@@ -281,35 +329,29 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="LblEmail" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="TxtEmail" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="LblUserName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="TxtUserName" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="LblDob" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="TxtDob" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="TxtPhone" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="LblPhone" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="LblDob" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="TxtDob" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="BtnSave" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnCancelReg" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="TxtPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="LblPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="TxtConfirmPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="LblConfirmPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="TxtConfirmPassword" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="LblConfirmPassword" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="TxtPassword" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="LblPassword" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="94" max="32767" attributes="0"/>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="BtnSave" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCancelReg" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -408,7 +450,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="11" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Date of Birth"/>
+        <Property name="text" type="java.lang.String" value="Date of Birth (yyyy/mm/dd)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnCancelReg">
@@ -443,6 +485,20 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Email"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="LblUserName">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="User Name"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="TxtUserName">
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TxtUserNameKeyTyped"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
