@@ -569,6 +569,7 @@ public class FrmRegister extends javax.swing.JFrame {
            
             statement.close();
 
+            //If the User Name already exists, pops up an error message
          } catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e){
              String message = "User Name already exists. Please register again.";
              msgbox.setMessage(message);
