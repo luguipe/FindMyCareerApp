@@ -22,8 +22,10 @@ public class FrmLogin extends javax.swing.JFrame {
     FrmUserMain frmUserMain;
     String userName = null;
     String password = null;
-    public String id = null; //Access for GUI
-    public String userType = null;
+    private static String id; //Access for Gui
+    private static String userType; //Access for Jak - These are static so FrmUserMain can access it - Jak
+//    public String id = null; //Access for GUI
+//    public String userType = null;
     Database db = new Database();
     Connection con;
     PreparedStatement statement;
@@ -45,6 +47,17 @@ public class FrmLogin extends javax.swing.JFrame {
         
     }
 
+        //METHODS
+    public static String getUserType() //Method for FrmUserMain to access the variable - Jak
+    {
+        return userType;
+    }
+    
+    public static String getUserID()
+    {
+        return id;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -133,6 +146,7 @@ public class FrmLogin extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegisterActionPerformed
