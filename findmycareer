@@ -1,0 +1,209 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package Main;
+
+//IMPLEMETATIONS
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+
+public class Database {
+
+    
+    //
+    //
+    //VARIABLE DECLARATION
+    //
+    //
+    
+    
+    //CONNECTION STRING VARS
+    //
+    //User
+    private String user = null;     
+    //Password
+    private String password = null;   
+    
+    
+    //SQL ELEMENTS
+    //
+    //Connection
+    private Connection conn = null; 
+    //Prepared Statement
+    private PreparedStatement prepStmt = null;
+    //String for the query
+    String sql = null;
+    //Result Set
+    private ResultSet result = null;           
+    //Database Driver
+    private static final String driver = "com.mysql.jdbc.Driver";
+    //Database URL
+    private String host = "localhost";
+    private String port = "3306";
+    private String database = "findmycareer";
+    private String myurl = "jdbc:mysql://?:?/?";
+    private static final String url = "jdbc:mysql://localhost:3306/findmycareer";
+    
+    //Create a new instance of the PopUpMsgBox class to can be able to use msgboxes
+    PopUpMsgBox msgbox = new PopUpMsgBox();
+    
+    //
+    //
+    //CLASS CONSTRUCTOR
+    //
+    //
+    public PreparedStatement selectAll (String table)
+    {
+        
+        //Declare the connection var used in the program
+        Connection c = null;
+        
+        try 
+        {
+        //Create the connection to the database
+        c = getConnection();
+        //
+        PreparedStatement selectAll;
+        sql = "SELECT * FROM ?;";
+        selectAll = c.prepareStatement(sql);
+        selectAll.setString(1, table);
+        return selectAll;
+        }
+        catch (SQLException e) 
+        {
+            //Make appear a popup msgbox with the exception error
+            String message = "Prepared Statement creation failed"
+                           + "\n\n"
+                           + e.getMessage();
+            msgbox.setMessage(message);
+            msgbox.setTitle("Prepared Statement Error");
+            msgbox.setMsgBoxType("error");
+            msgbox.popUpMsgBox();
+        } 
+        return null;
+        
+    }
+    
+    Database(PreparedStatement query) throws SQLException 
+    {
+ 
+        //INIZIO PROGRAMMA
+        try {
+            Connection c = this.getConnection();
+                //Pass to the prepared statement var the prepared statement for the query
+                prepStmt = query;
+                // execute the query
+                result = prepStmt.executeQuery();
+
+                /****ASK TO DAVE ABOUT IT******/
+
+                //Close the connection after the query is executed
+                //c.close();
+        } 
+        catch (SQLException e) 
+        {
+            //Make appear a popup msgbox with the exception error
+            msgbox.setMessage(e.getMessage());
+            msgbox.setTitle("Query Execution Error");
+            msgbox.setMsgBoxType("error");
+            msgbox.popUpMsgBox();
+        } 
+        finally 
+        {
+                //Discard the prepared statement
+                if (prepStmt != null) { prepStmt.close(); }
+                //If the connection fails closes it
+                if (c != null) { c.close(); }
+        }
+}//End of the program
+ 
+    
+    //
+    //
+    //SETTERS AND GETTERS
+    //
+    //
+        
+    
+    //USER
+    //
+    //SET
+    public void setUser(String user) { 
+        this.user = user; 
+    }
+    //GET
+    public String getUser() {
+        return user;
+    }
+
+    //PASSWORD
+    //
+    //SET
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    //GET
+    public String getPassword() {
+        return password;
+    }
+    
+    //CONNECTION
+    //
+    //Return the connection
+    
+    
+    
+    
+    private Connection getConnection() 
+    {
+        //Try Catch block to avoid problems in case the class for the driver is not found
+        try 
+        {
+            //Returns the Class object associated with the class or interface with the given string name
+            Class.forName(driver);
+        } 
+        catch (ClassNotFoundException e) 
+        {
+            //Utilize the class msgbox to show up a popup msgbox with the text of the exception
+            msgbox.setMessage(e.getMessage());
+            msgbox.setTitle("Class Not Found");
+            msgbox.setMsgBoxType("error");
+            msgbox.popUpMsgBox();
+        }
+        //Second try catch block to take care of the connection in case of failure
+        try
+        {
+            //Set the user and password through their set methods
+            this.user = this.getUser();
+            this.password = this.getPassword();
+            //Create the connection to the database
+            conn = DriverManager.getConnection(url, this.user, this.password);
+            System.out.println(conn.toString());
+            //Make appear a popup msgbox with the exception error
+            msgbox.setMessage("Connection ok");
+            msgbox.setTitle("Connection To The Database");
+            msgbox.setMsgBoxType("info");
+            msgbox.popUpMsgBox();
+            //Return the connection ready to be used for queries
+            return this.conn;
+        }
+        catch(SQLException e)
+        {
+            //Make appear a popup msgbox with the exception error
+            msgbox.setMessage(e.getMessage());
+            msgbox.setTitle("Connection Failed");
+            msgbox.setMsgBoxType("error");
+            msgbox.popUpMsgBox();
+        }
+        //Return null after the error has been handled
+        return null;
+    }
+    
+
+    
+}
