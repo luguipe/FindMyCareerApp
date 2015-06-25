@@ -2,10 +2,7 @@ package Main;
 
 //import java.awt.Color;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import java.util.ArrayList;
 
 
     
@@ -22,17 +19,17 @@ import java.util.ArrayList;
  */
 public class FrmEditProfile extends javax.swing.JFrame {
     
-    ResultSet rs;
-    Connection con = null;
-    PreparedStatement st;
+    ResultSet rs; // initialize components
+    Connection con = null; // initialize components connection
+    PreparedStatement st; // initialize components queries
     
   //  Careers careers= new Careers();
    
-    Database db = new Database();
+    Database db = new Database(); //initialize constructors = Gui
     
-    FrmLogin frmlogin = new FrmLogin();
-    FrmUserMain frmUserMain= new FrmUserMain();
-    String id;
+    FrmLogin frmlogin = new FrmLogin(); //initialize constructors Login(Yusef) = Gui
+    FrmUserMain frmUserMain= new FrmUserMain(); //initialize constructors(Jak)  = Gui
+    String id; // access the id on Login form
     
    
     
@@ -40,14 +37,14 @@ public class FrmEditProfile extends javax.swing.JFrame {
      * Creates new form profile
      * @throws java.sql.SQLException
      */
-    public FrmEditProfile(){
+    public FrmEditProfile(){ // start frame with components 
         initComponents();
         
-      db.setUser("root"); 
-      db.setPassword(""); 
-      db.setHost("localhost"); 
-      db.setPort("3306"); 
-      db.setDatabase("findmycareer"); 
+      db.setUser("root"); //setup the connection to the Database = GUi
+      db.setPassword(""); //setup the connection to the Database = GUi
+      db.setHost("localhost"); //setup the connection to the Database = GUi
+      db.setPort("3306"); //setup the connection to the Database = GUi
+      db.setDatabase("findmycareer"); //setup the connection to the Database = GUi
         
         try {
             con = db.getConnection();
@@ -56,19 +53,19 @@ public class FrmEditProfile extends javax.swing.JFrame {
         }
         
               
-        id = frmlogin.getUserID();
+        id = frmlogin.getUserID(); // access id in other object PRIVATE FIELD ACCESSED BY STATIC METHOD -- dont forget this 
         
         System.out.println(id);
         
         selectUserByID();
     }
     
-    private void selectUserByID()
+    private void selectUserByID() //bring information form the database and fill the fields
     {
        // ArrayList<String> userData = new ArrayList<>();
         String sql = "SELECT password, firstName, lastName, dob, email, phone FROM user WHERE userID = "+id+"";
-//          String sql = "SELECT firstName FROM user WHERE userID = "+id+"";
-//          String sql = "SELECT firstName FROM user WHERE userID =1";
+//          String sql = "SELECT firstName FROM user WHERE userID = "+id+""; // test
+//          String sql = "SELECT firstName FROM user WHERE userID =1"; // test
         
         try {
             st = con.prepareStatement(sql);
@@ -76,37 +73,37 @@ public class FrmEditProfile extends javax.swing.JFrame {
             
             while(rs.next())
             {
-//                String firstName = rs.getString("firstName");
-//                userData.add(firstName);
-//                System.out.println(userData.toString());
+//                String firstName = rs.getString("firstName"); ///test
+//                userData.add(firstName);///test
+//                System.out.println(userData.toString());///test
 
-                TxtFirstName.setText(rs.getString("firstName"));
-                TxtLastName.setText(rs.getString("lastName"));
-                TxtDob.setText(rs.getString("dob"));
-                TxtPhone.setText(rs.getString("phone"));
-                TxtEmail.setText(rs.getString("email"));
-                TxtPassword.setText(rs.getString("password"));
+                TxtFirstName.setText(rs.getString("firstName")); //fields
+                TxtLastName.setText(rs.getString("lastName")); //fields
+                TxtDob.setText(rs.getString("dob")); //fields
+                TxtPhone.setText(rs.getString("phone")); //fields
+                TxtEmail.setText(rs.getString("email")); //fields
+                TxtPassword.setText(rs.getString("password")); //fields
             }
-            st.close();
-            rs.close();
+            st.close(); // is in here but i dont know how this works even this is obvious 
+            rs.close(); // is in here but i dont know how this works even this is obvious    =/
         } catch (Exception e) {
            JOptionPane.showMessageDialog(null, e);
-           // System.out.println(e);
         }
-    }
+    } // end of components
     
-    private void updateProfile(){
+    private void updateProfile(){ //update information on the database = Gui
     
         
         String sql = "UPDATE user SET password='"+TxtPassword.getText()+"', firstName='"+TxtFirstName.getText()+"', lastName='"+TxtLastName.getText()+"', dob='"+TxtDob.getText()+"', "
                 + "email='"+TxtEmail.getText()+"', phone='"+TxtPhone.getText()+"' WHERE userID= "+id+";";
         
         try {
-                System.out.println(sql);
+                System.out.println(sql); // shows the sql on the output of netBeans
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
                 
-                st.close();
+                st.close(); // is in here but i dont know how this works even this is obvious 
+                rs.close(); // is in here but i dont know how this works even this is obvious 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -125,13 +122,13 @@ public class FrmEditProfile extends javax.swing.JFrame {
 
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jDialog1 = new javax.swing.JDialog();
+        DialogCareer = new javax.swing.JDialog();
         jPanel3 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        BtnViewCareer = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jButton5 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        TxtCareerChoice = new javax.swing.JList();
+        BtnRemoveCareer = new javax.swing.JButton();
+        BtnBackCareer = new javax.swing.JButton();
         PanEditData = new javax.swing.JPanel();
         LblFirstName = new javax.swing.JLabel();
         TxtLastName = new javax.swing.JTextField();
@@ -153,35 +150,38 @@ public class FrmEditProfile extends javax.swing.JFrame {
 
         jButton1.setText("View User Careers");
 
+        DialogCareer.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        DialogCareer.setMaximumSize(new java.awt.Dimension(486, 420));
+        DialogCareer.setMinimumSize(new java.awt.Dimension(486, 420));
+        DialogCareer.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        DialogCareer.setModalityType(java.awt.Dialog.ModalityType.TOOLKIT_MODAL);
+        DialogCareer.setPreferredSize(new java.awt.Dimension(486, 420));
+        DialogCareer.setResizable(false);
+
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Your Career Choices", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12))); // NOI18N
         jPanel3.setPreferredSize(new java.awt.Dimension(202, 24));
 
-        jButton4.setText("View");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        BtnViewCareer.setText("View");
+        BtnViewCareer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                BtnViewCareerActionPerformed(evt);
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Career Choice 1", "..." };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jList1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jScrollPane1.setViewportView(jList1);
+        TxtCareerChoice.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane1.setViewportView(TxtCareerChoice);
 
-        jButton5.setText("Remove");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        BtnRemoveCareer.setText("Remove");
+        BtnRemoveCareer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                BtnRemoveCareerActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Back");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        BtnBackCareer.setText("Back");
+        BtnBackCareer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                BtnBackCareerActionPerformed(evt);
             }
         });
 
@@ -192,48 +192,52 @@ public class FrmEditProfile extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(114, 114, 114)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton4)
+                        .addComponent(BtnViewCareer)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5)))
-                .addContainerGap(122, Short.MAX_VALUE))
+                        .addComponent(BtnRemoveCareer)))
+                .addGap(150, 150, 150))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton3))
+                .addComponent(BtnBackCareer))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
-                .addGap(20, 20, 20)
-                .addComponent(jButton3))
+                    .addComponent(BtnViewCareer)
+                    .addComponent(BtnRemoveCareer))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BtnBackCareer))
         );
 
-        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
-        jDialog1.getContentPane().setLayout(jDialog1Layout);
-        jDialog1Layout.setHorizontalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialog1Layout.createSequentialGroup()
+        javax.swing.GroupLayout DialogCareerLayout = new javax.swing.GroupLayout(DialogCareer.getContentPane());
+        DialogCareer.getContentPane().setLayout(DialogCareerLayout);
+        DialogCareerLayout.setHorizontalGroup(
+            DialogCareerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DialogCareerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jDialog1Layout.setVerticalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialog1Layout.createSequentialGroup()
+        DialogCareerLayout.setVerticalGroup(
+            DialogCareerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DialogCareerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        DialogCareer.getAccessibleContext().setAccessibleParent(this);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("EIDT USER PROFILE");
+        setMaximumSize(new java.awt.Dimension(386, 296));
+        setMinimumSize(new java.awt.Dimension(386, 296));
 
         PanEditData.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Edit Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12))); // NOI18N
         PanEditData.setToolTipText("");
@@ -400,42 +404,107 @@ public class FrmEditProfile extends javax.swing.JFrame {
       this.setVisible(false);
         
       
-        updateProfile();
-        if(frmUserMain == null)
+        updateProfile(); // call the query to save on the database
+        if(frmUserMain == null) // start to go back to UserMain
         {
             
-            frmUserMain = new FrmUserMain();
+            frmUserMain = new FrmUserMain(); //initilize the constructor FrmUserMain
             
         }
-            frmUserMain.setVisible(true);
+            frmUserMain.setVisible(true); // go back to UserMain
     }//GEN-LAST:event_BtnSaveDetailsActionPerformed
 
     private void BtnCareerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCareerActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
+        
+        this.DialogCareer.setLocationRelativeTo(this.DialogCareer.getParent()); //format position 
+        
+        this.DialogCareer.setVisible(true);
+        
+//        TxtCareerChoice.setT("");
+        
+        String selectCareerTable = "Select * FROM career WHERE userID= '"+id+"'";
+        try {
+                
+                st = con.prepareStatement(selectCareerTable);
+                rs = st.executeQuery();
+            
+                while(rs.next())
+                {
+                
+                    TxtCareerChoice.setToolTipText(rs.getString(WIDTH));
+                
+                }
+                
+        } catch (Exception e) {
+        }
         
         
         
-   
+        
+        //String selectView = 
+        
+        
+        
     }//GEN-LAST:event_BtnCareerActionPerformed
 
     private void BtnExit_FrmEditProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExit_FrmEditProfileActionPerformed
         // TODO add your handling code here:
-        System.exit(0);
+        System.exit(0); //finish application
         
     }//GEN-LAST:event_BtnExit_FrmEditProfileActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void BtnViewCareerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnViewCareerActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+        
+        String selectChoice = TxtCareerChoice.getToolTipText().toString();
+        String sql = "SELECT `career`.`codJob`,`career`.`codCourse`,`jobs`.`job`,`jobs`.`descr`,`courses`.`descr`,`courses`.`course` FROM career , `jobs` , `courses` where `career`.`userID` = '"+selectChoice+"';";
+        
+        try {
+                
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            
+            TxtCareerChoice.setToolTipText(rs.getString("career`.`codJob"));
+            
+            st.close(); // is in here but i dont know how this works even this is obvious 
+            rs.close(); // is in here but i dont know how this works even this is obvious    =/
+            
+        } catch (Exception e) {
+             JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_BtnViewCareerActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void BtnRemoveCareerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRemoveCareerActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+        
+        TxtCareerChoice.getSelectedValue();
+        String selectChoice = TxtCareerChoice.getToolTipText().toString();
+        String sql = "DELETE * FROM career WHERE userID = '"+selectChoice+"'"; 
+        try {
+                
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            
+            TxtCareerChoice.setToolTipText(rs.getString("career`.`codJob"));
+            
+            st.close(); // is in here but i dont know how this works even this is obvious 
+            rs.close(); // is in here but i dont know how this works even this is obvious    =/
+            
+        } catch (Exception e) {
+             JOptionPane.showMessageDialog(null, e);
+        }
+        
+        
+        
+    }//GEN-LAST:event_BtnRemoveCareerActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void BtnBackCareerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBackCareerActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        
+        this.DialogCareer.setVisible(false); // access the DialogCareer box = SAME FRAME
+        
+    }//GEN-LAST:event_BtnBackCareerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -473,15 +542,20 @@ public class FrmEditProfile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnBackCareer;
     private javax.swing.JButton BtnCareer;
     private javax.swing.JButton BtnExit_FrmEditProfile;
+    private javax.swing.JButton BtnRemoveCareer;
     private javax.swing.JButton BtnSaveDetails;
+    private javax.swing.JButton BtnViewCareer;
+    private javax.swing.JDialog DialogCareer;
     private javax.swing.JLabel LblDob;
     private javax.swing.JLabel LblEmail;
     private javax.swing.JLabel LblFirstName;
     private javax.swing.JLabel LblLastName;
     private javax.swing.JLabel LblPhone;
     private javax.swing.JPanel PanEditData;
+    private static javax.swing.JList TxtCareerChoice;
     private javax.swing.JTextField TxtDob;
     private javax.swing.JTextField TxtEmail;
     private javax.swing.JTextField TxtFirstName;
@@ -490,12 +564,7 @@ public class FrmEditProfile extends javax.swing.JFrame {
     private javax.swing.JTextField TxtPhone;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
