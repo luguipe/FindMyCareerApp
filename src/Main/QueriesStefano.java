@@ -40,18 +40,27 @@ public class QueriesStefano extends Database
             //Return the result set ready to be processed 
             return result;
         } 
-        catch (SQLException e) 
+        catch (SQLException | NullPointerException e) 
         {
             //
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, e);
             //Make appear a popup msgbox with the exception error
-            msgbox.setMessage(e.getMessage());
+            String message = "Query execution failed!!"
+                           + "\n\n"
+                           + "QUERY STRING: " + "\n"
+                           + query 
+                           + "\n\n"
+                           + "ERROR MESSAGE: " + "\n"
+                           + e.getMessage();
+            msgbox.setMessage(message);
             msgbox.setTitle("Query Execution Error");
             msgbox.setMsgBoxType("error");
             msgbox.popUpMsgBox();
-            //After the error has been handled if the prepared statement is not null it closes it
+            //If the connection fails closes it
+            if (c != null) { c.close(); }
+            //if the prepared statement is still open it closes it
             if (prepStmt != null) { prepStmt.close(); }
-        } 
+        }
 //        finally 
 //        {
 //            //If the connection fails closes it
@@ -120,12 +129,16 @@ public class QueriesStefano extends Database
     {
         //New result set
         ResultSet r;
+        //New prepared statement
+        PreparedStatement st;
         //Instance of my class where the method is defined
         QueriesStefano ste = new QueriesStefano();
         //STRING SQL
-        String asdf = "SELECT * FROM category;";
+        String query = "SELECT * FROM category;";
         //Simply execute the query specified 
-        r = ste.wtfQuery(asdf);
+        st = ste.wtfQuery(query);
+        //Execute the query
+        r = ste.execute(st);
         //Print out to screen the result of the query
         while(r.next())
         {
@@ -142,36 +155,30 @@ public class QueriesStefano extends Database
  */   
 //</editor-fold>
     
-    public ResultSet wtfQuery (String query) throws SQLException
+    public PreparedStatement wtfQuery (String query) throws SQLException
     {
         try 
         {
             //Create the connection to the database
             c = getConnection();
             //Just execute the query passed as parameter and pass it to the result set var
-            result = prepStmt.executeQuery(query);
+            prepStmt = c.prepareStatement(query);
             //Return the result set obtained from the execution of the query
-            return result;
+            return prepStmt;
         }
-        catch (SQLException | NullPointerException e) 
+        catch (SQLException e) 
         {
             //Make appear a popup msgbox with the exception error
-            String message = "Query execution failed!!"
+            String message = "Prepared Statement creation failed"
                            + "\n\n"
-                           + "QUERY STRING: " + "\n"
-                           + query 
-                           + "\n\n"
-                           + "ERROR MESSAGE: " + "\n"
                            + e.getMessage();
             msgbox.setMessage(message);
-            msgbox.setTitle("Query Execution Error");
+            msgbox.setTitle("Prepared Statement Error");
             msgbox.setMsgBoxType("error");
             msgbox.popUpMsgBox();
             //If the connection fails closes it
             if (c != null) { c.close(); }
-            //if the prepared statement is still open it closes it
-            if (prepStmt != null) { prepStmt.close(); }
-        }
+        } 
         return null;
    }
     
@@ -224,12 +231,8 @@ public class QueriesStefano extends Database
  */   
 //</editor-fold>
     
-    public String[] colTable (String table, String database) throws SQLException
+    public PreparedStatement colTable (String database, String table) throws SQLException
     {
-        //String array to store the columns
-        String[] arrayColTable = null;
-        //Contator for the for cicle
-        int i = 0;
         try
         {
             //Create the connection to the database
@@ -238,35 +241,27 @@ public class QueriesStefano extends Database
             //the column name of the table specified in the function parameters
             sql = "SELECT column_name AS Columns " 
                 + "FROM information_schema.columns " 
-                + "WHERE table_schema = '"  + database +"' "
+                + "WHERE table_schema = '" + database + "' "
                 + "AND table_name = '" + table + "';";
-            //Executes the query
-            result = prepStmt.executeQuery(sql);
-            //For each cicle to create both a string of the table columns and an array of them
-            arrayColTable = new String[result.getFetchSize()];
-            
-          while(result.next())
-            {
-                //Array of the table columns when the method is used to count them
-               //System.out.println(result.getString("Columns"));
-                
-               String d= result.getString("Columns").toString();
-               arrayColTable[i++] = d; 
-               System.out.println(d);
-                
-            }
-            //If loop to decide if return the columns in a string or in an array
-            return arrayColTable;
+            //Prepare the statement 
+            prepStmt = c.prepareStatement(sql);
+            //Set the vars
+            //prepStmt.setString(1, database); //database
+            //prepStmt.setString(2, table); //table
+            System.out.println(sql);
+            //Return the prepared statement
+            return prepStmt;
         }
-        catch (SQLException e) 
+        catch (SQLException | NullPointerException e) 
         {
             //Make appear a popup msgbox with the exception error
             String message = "Query execution failed!!"
                            + "\n\n"
                            + "QUERY STRING: " + "\n"
-                           + sql 
+                           + sql  + "\n"
+                           + "PARAMETERS: DATABASE " + database  + "AND TABLE "  + table
                            + "\n\n"
-                           + "QUERY STRING: " + "\n"
+                           + "ERROR MESSAGE: " + "\n"
                            + e.getMessage();
             msgbox.setMessage(message);
             msgbox.setTitle("Query Execution Error");
@@ -282,70 +277,70 @@ public class QueriesStefano extends Database
     //SELECT PARAMS
     //
     //Method to create and return a prepared statement to select data from the specified table
-    //specifing parameters ready to be executed in the class constructor
-    public PreparedStatement selectParams (String table, String[] params, String[] conds, String allFields) throws SQLException
-    {
-        int i, k;
-        try 
-        {
-            //Create the connection to the database
-            c = getConnection();
-            //Create the prepared statement for the query
-            PreparedStatement selectParams;
-            //If the "*", meaning select all the fields, is not set:
-            if(allFields == null)
-            {
-                sql = "SELECT ";
-                //If the string array for the parameters got more than one parameter
-                //Adds as many "?" as for paramters are stored in the parameter string array
-                for(i=0; i<params.length; i++)
-                {
-                   sql += params[i] + ","; 
-                }
-                //Delete the "," after the last ? to avoid erorrs during the execution of the query
-                //NB: the -2 at the end is because there is a white space too at the end of the string
-                //to consider
-                sql = sql.substring(0, sql.length()-2);
-                //Add the table value and the "WHERE" clause to the string
-                sql += " " + table + " WHERE ";
-                for(k=0; k<conds.length; k++)
-                {
-                   sql += conds[k] + " AND " + "\n"; 
-                }
-                //Delete the last "AND" from the string
-                sql = sql.substring(0, sql.length()-4);
-            }
-            else { sql = "SELECT * FROM " +  table + " "; }        
-            
-            
-            
-            
-            //Stores the actual MySql code for the query in the string var
-            sql = "SELECT ? FROM " +  table 
-                + "WHERE ? = ?"    
-                + ";";
-            //selectAll.
-            //Pass to the prepared statement the query string
-            //selectAll = c.prepareStatement(sql);
-            //Return the prepared statement which can now be executed by the execute method
-            //return selectParams;
-        }
-        catch (SQLException e) 
-        {
-            //Make appear a popup msgbox with the exception error
-            String message = "Prepared Statement creation failed"
-                           + "\n\n"
-                           + e.getMessage();
-            msgbox.setMessage(message);
-            msgbox.setTitle("Prepared Statement Error");
-            msgbox.setMsgBoxType("error");
-            msgbox.popUpMsgBox();
-            //If the connection fails closes it
-            if (c != null) { c.close(); }
-        } 
-        return null;
-    }
-     
+//    //specifing parameters ready to be executed in the class constructor
+//    public PreparedStatement selectParams (String table, String[] params, String[] conds, String allFields) throws SQLException
+//    {
+//        int i, k;
+//        try 
+//        {
+//            //Create the connection to the database
+//            c = getConnection();
+//            //Create the prepared statement for the query
+//            PreparedStatement selectParams;
+//            //If the "*", meaning select all the fields, is not set:
+//            if(allFields == null)
+//            {
+//                sql = "SELECT ";
+//                //If the string array for the parameters got more than one parameter
+//                //Adds as many "?" as for paramters are stored in the parameter string array
+//                for(i=0; i<params.length; i++)
+//                {
+//                   sql += params[i] + ","; 
+//                }
+//                //Delete the "," after the last ? to avoid erorrs during the execution of the query
+//                //NB: the -2 at the end is because there is a white space too at the end of the string
+//                //to consider
+//                sql = sql.substring(0, sql.length()-2);
+//                //Add the table value and the "WHERE" clause to the string
+//                sql += " " + table + " WHERE ";
+//                for(k=0; k<conds.length; k++)
+//                {
+//                   sql += conds[k] + " AND " + "\n"; 
+//                }
+//                //Delete the last "AND" from the string
+//                sql = sql.substring(0, sql.length()-4);
+//            }
+//            else { sql = "SELECT * FROM " +  table + " "; }        
+//            
+//            
+//            
+//            
+//            //Stores the actual MySql code for the query in the string var
+//            sql = "SELECT ? FROM " +  table 
+//                + "WHERE ? = ?"    
+//                + ";";
+//            //selectAll.
+//            //Pass to the prepared statement the query string
+//            //selectAll = c.prepareStatement(sql);
+//            //Return the prepared statement which can now be executed by the execute method
+//            //return selectParams;
+//        }
+//        catch (SQLException e) 
+//        {
+//            //Make appear a popup msgbox with the exception error
+//            String message = "Prepared Statement creation failed"
+//                           + "\n\n"
+//                           + e.getMessage();
+//            msgbox.setMessage(message);
+//            msgbox.setTitle("Prepared Statement Error");
+//            msgbox.setMsgBoxType("error");
+//            msgbox.popUpMsgBox();
+//            //If the connection fails closes it
+//            if (c != null) { c.close(); }
+//        } 
+//        return null;
+//    }
+//     
     
     //DELETE
     //
@@ -358,7 +353,7 @@ public class QueriesStefano extends Database
             //Create the connection to the database
             c = getConnection();
             //Stores the MySql code for the query in the string var
-            sql = "DELETE FROM " +  table + " WHERE ;";
+            sql = "DELETE FROM " +  table + " WHERE ";
             for(i=0; i<params.length; i++)
             {
                 sql += params[i][0] + " = ? " +  params[i][3] + " ";
@@ -367,6 +362,9 @@ public class QueriesStefano extends Database
             //Delete the last conjunction and also the white space after it
             sql = sql.substring(0, sql.length()-(params[end][3].length()+1));
             sql+= ";";
+            
+            System.out.println(sql);
+            
             //Pass to the prepared statement the query string
             prepStmt = c.prepareStatement(sql);
             for(i=0; i<params.length; i++)

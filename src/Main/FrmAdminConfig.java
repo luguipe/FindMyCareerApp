@@ -14,17 +14,13 @@ import java.awt.*;
 public class FrmAdminConfig extends javax.swing.JFrame {
 
     FrmAdmin admin = new FrmAdmin();
-    CardLayout card = new CardLayout();
+   // CardLayout card = new CardLayout();
     /**
      * Creates new form FrmAdminConfig
      */
     public FrmAdminConfig() {
         initComponents();
-        //Sets the combobox for the task for the admin
-        this.CbxTask.removeAllItems();
-        this.CbxTask.addItem("Edit Profile");
-        this.CbxTask.addItem("Update Database");
-        this.CbxTask.addItem("Search Users Infos");
+        
     }
 
     /**
@@ -44,9 +40,9 @@ public class FrmAdminConfig extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MAIN SCREEN");
+        setMaximumSize(new java.awt.Dimension(335, 310));
         setMinimumSize(new java.awt.Dimension(335, 285));
-        setPreferredSize(new java.awt.Dimension(335, 285));
-        setResizable(false);
+        setPreferredSize(new java.awt.Dimension(335, 310));
 
         BtnExitApp_FrmAdmin.setText("Close App");
         BtnExitApp_FrmAdmin.addActionListener(new java.awt.event.ActionListener() {
@@ -63,10 +59,36 @@ public class FrmAdminConfig extends javax.swing.JFrame {
         });
 
         LblDescrJDgOptions.setText("<html>CHOOSE A TASK TO PERFORM <br><br> Please, choose one task from the list below and <br> then click on Configure to proceed.</html>");
+        LblDescrJDgOptions.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        LblDescrJDgOptions.setMaximumSize(new java.awt.Dimension(270, 200));
+        LblDescrJDgOptions.setMinimumSize(new java.awt.Dimension(270, 70));
+        LblDescrJDgOptions.setPreferredSize(new java.awt.Dimension(270, 70));
 
-        LblTask.setText("Select Action");
+        LblTask.setText("Select a Task");
 
-        CbxTask.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Update Database", "Search Users Infos", "Edit Profile", " ", " " }));
+        CbxTask.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Edit Profile", "Modify Database", "Search by Personal Infos", "Other Parameters" }));
+        CbxTask.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                CbxTaskItemStateChanged(evt);
+            }
+        });
+        CbxTask.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                CbxTaskPopupMenuWillBecomeVisible(evt);
+            }
+        });
+        CbxTask.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CbxTaskMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                CbxTaskMousePressed(evt);
+            }
+        });
         CbxTask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxTaskActionPerformed(evt);
@@ -78,35 +100,35 @@ public class FrmAdminConfig extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(20, 20, 20)
+                .addComponent(BtnConfigure, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addComponent(BtnExitApp_FrmAdmin)
+                .addGap(24, 24, 24))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LblDescrJDgOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(LblTask)
                         .addGap(18, 18, 18)
-                        .addComponent(CbxTask, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(LblDescrJDgOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(137, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(BtnConfigure, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BtnExitApp_FrmAdmin)
-                .addGap(22, 22, 22))
+                        .addComponent(CbxTask, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(LblDescrJDgOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(LblDescrJDgOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LblTask)
                     .addComponent(CbxTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnConfigure)
                     .addComponent(BtnExitApp_FrmAdmin))
-                .addGap(19, 19, 19))
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -130,13 +152,20 @@ public class FrmAdminConfig extends javax.swing.JFrame {
 
     private void BtnConfigureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnConfigureActionPerformed
         String txt = this.CbxTask.getSelectedItem().toString();
-        admin.pane(txt);
-        
+       // this.dispose();
+         
+       
             if(txt == "Edit Profile")
             {    
             FrmEditProfile edit = new FrmEditProfile();
             edit.setVisible(true);
             
+            }
+            else 
+            {
+                admin.setVisible(true);
+         
+        admin.pane(txt);
             }
             this.dispose();
         
@@ -145,8 +174,69 @@ public class FrmAdminConfig extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnConfigureActionPerformed
 
     private void CbxTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbxTaskActionPerformed
+        String txt = this.CbxTask.getSelectedItem().toString();
+        String text = null;
+        switch(txt)
+        {
+            case "Edit Profile":
+                text = "<html>"
+                     + "ACCESS PERSONAL PROFILE <br><br> "
+                     + "Redirect the user to their profile <br> "
+                     + "to view or edit their personal details."
+                     + "</html>";
+                        
+                break;
         
+            case "Modiry Database": 
+                text = "<html>"
+                     + "MODIFY DATABASE INFORMATIONS <br><br> "
+                     + "Redirect to the modify database page where "
+                     + "is possible to view, insert, update or delete data"
+                     + " from the database."
+                     + "</html>";
+                break;
+            case "Search by Personal Infos":
+                text = "<html>"
+                     + "SEARCH USERS BY PERSONAL DETAILS <br><br> "
+                     + "Redirect to the user page where is possible to interrogate "
+                     + "the database to retrieve a list of users filtering them  "
+                     + "by their personal details."
+                     + "</html>";
+                break;
+            case "Other Parameters":
+                text = "<html>"
+                     + "OTHER PARAMETERS <br><br> "
+                     + "This section is dedicated to interrogate the "
+                     + "database retrieving the users, eg, by industry, by study area, by career etc."
+                     + "</html>";
+                break;
+            default:
+                text = "<html>"
+                     + "CHOOSE A TASK TO PERFORM <br><br> "
+                     + "Please, choose one task from the list below and  "
+                     + "then click on Configure to proceed."
+                     + "</html>";
+                break;
+        }
+        this.LblDescrJDgOptions.setText(text);
     }//GEN-LAST:event_CbxTaskActionPerformed
+
+    private void CbxTaskMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CbxTaskMouseClicked
+       
+       //this.CbxTask.hidePopup();
+    }//GEN-LAST:event_CbxTaskMouseClicked
+
+    private void CbxTaskItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CbxTaskItemStateChanged
+        
+    }//GEN-LAST:event_CbxTaskItemStateChanged
+
+    private void CbxTaskPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_CbxTaskPopupMenuWillBecomeVisible
+        
+    }//GEN-LAST:event_CbxTaskPopupMenuWillBecomeVisible
+
+    private void CbxTaskMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CbxTaskMousePressed
+         
+    }//GEN-LAST:event_CbxTaskMousePressed
 
     /**
      * @param args the command line arguments
