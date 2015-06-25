@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
         
 /**
  *
- * @author 1105642614
+ * @author Yusef
  */
 public class FrmRegister extends javax.swing.JFrame {
     FrmLogin frmLogin;  
