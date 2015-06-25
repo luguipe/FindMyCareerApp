@@ -1238,8 +1238,6 @@ public class FrmUserMain extends javax.swing.JFrame
             {
                 JOptionPane.showMessageDialog(null, e);
             }
-            
-            
         }
         if(CbxSkills_PanelSkills.getSelectedItem() == "Skills in Demand")
         {
