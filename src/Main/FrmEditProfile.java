@@ -2,6 +2,7 @@ package Main;
 
 //import java.awt.Color;
 import java.sql.*;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 
@@ -189,18 +190,20 @@ public class FrmEditProfile extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(114, 114, 114)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(BtnViewCareer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BtnRemoveCareer)))
-                .addGap(150, 150, 150))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(BtnBackCareer))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addComponent(BtnViewCareer)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BtnRemoveCareer))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -422,30 +425,37 @@ public class FrmEditProfile extends javax.swing.JFrame {
         this.DialogCareer.setVisible(true);
         
 //        TxtCareerChoice.setT("");
-        
-        String selectCareerTable = "Select * FROM career WHERE userID= '"+id+"'";
+        DefaultListModel<String> model = new DefaultListModel<String>();
+        String viewCareer = "select j.job-- , u.age, u.email, j.job, co.course \n" +
+                            "from career as c\n" +
+                            "\n" +
+                            "join jobs as j on j.codJob = c.codJob\n" +
+                            "\n" +
+                            "join courses as co on co.codCourse = c.codCourse\n" +
+                            "join\n" +
+                            "(\n" +
+                            "	select cat.codCategory, cat.category, ind.codIndustry, ind.industry\n" +
+                            "	from category as cat\n" +
+                            "	join industry as ind on ind.codIndustry = cat.codIndustry\n" +
+                            ") as cc on cc.codCategory = co.codCategory\n" +
+                            "join userview as u on u.userID = c.userID\n" +
+                            "where  u.userID = '"+id+"'";
         try {
                 
-                st = con.prepareStatement(selectCareerTable);
+                st = con.prepareStatement(viewCareer);
                 rs = st.executeQuery();
             
                 while(rs.next())
                 {
                 
-                    TxtCareerChoice.setToolTipText(rs.getString(WIDTH));
-                
+                    model.addElement(rs.getString("job"));
+                    TxtCareerChoice.setModel(model); //Displays career choices, not until the form refreshes //Buggy
+                    System.out.println(rs.getString("job"));               
                 }
                 
         } catch (Exception e) {
         }
-        
-        
-        
-        
-        //String selectView = 
-        
-        
-        
+
     }//GEN-LAST:event_BtnCareerActionPerformed
 
     private void BtnExit_FrmEditProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExit_FrmEditProfileActionPerformed
